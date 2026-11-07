@@ -8,7 +8,7 @@
 *{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 80% -10%,#20275a 0,transparent 40%),var(--bg);color:var(--text);font:15px/1.5 Inter,system-ui,Segoe UI,sans-serif}button,input,textarea,select{font:inherit}button{cursor:pointer}.app{display:grid;grid-template-columns:245px 1fr;min-height:100vh}.side{border-right:1px solid var(--line);padding:26px 16px;background:#0b1020dd}.brand{font-size:24px;font-weight:900;letter-spacing:3px;margin:0 12px 4px}.brand span{color:var(--cyan)}.tag{color:var(--muted);font-size:12px;margin:0 12px 30px}.navlabel{font-size:10px;letter-spacing:2px;color:#687595;margin:22px 12px 9px}.nav{display:flex;gap:12px;align-items:center;width:100%;padding:12px;border:0;border-radius:12px;background:transparent;color:#b9c3dd;text-align:left;margin:3px 0}.nav:hover,.nav.active{background:#1b2542;color:white}.nav.active{box-shadow:inset 3px 0 var(--cyan)}.nav .ico{width:22px;text-align:center}.sidefoot{position:sticky;top:90vh;margin:50px 10px 0;color:#7885a6;font-size:12px}.main{min-width:0;padding:28px clamp(18px,4vw,56px) 60px;max-width:1500px;width:100%;margin:auto}.top{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:34px}.eyebrow{color:var(--cyan);font-size:11px;letter-spacing:2px;font-weight:800}.top h1{font-size:clamp(26px,4vw,38px);line-height:1.12;margin:8px 0}.sub{color:var(--muted);margin:0}.pill{border:1px solid var(--line);border-radius:30px;padding:9px 14px;color:#c6d1eb;font-size:12px;white-space:nowrap}.hero{padding:28px;border:1px solid #34416b;border-radius:22px;background:linear-gradient(115deg,#18264a,#171a35 65%,#29204d);position:relative;overflow:hidden;margin-bottom:28px}.hero:after{content:"✦";position:absolute;font-size:150px;color:#ffffff0b;right:45px;top:-45px}.hero h2{font-size:26px;margin:5px 0}.hero p{color:#bdc8e4;max-width:560px;margin:0 0 18px}.btn{border:0;border-radius:11px;padding:11px 16px;font-weight:750;background:linear-gradient(100deg,var(--cyan),#9b9aff);color:#07101e}.btn.secondary{background:#202a47;color:#e5eaff;border:1px solid #394668}.btn:hover{filter:brightness(1.1)}.sectionhead{display:flex;justify-content:space-between;align-items:end;margin:28px 0 14px}.sectionhead h2{font-size:19px;margin:0}.sectionhead p{color:var(--muted);font-size:13px;margin:0}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.tool{border:1px solid var(--line);background:linear-gradient(145deg,#141c32,#101629);border-radius:17px;padding:19px;min-height:158px;cursor:pointer;transition:.18s}.tool:hover{transform:translateY(-3px);border-color:#6574a7;background:#1a2440}.tool .symbol{font-size:23px}.tool h3{margin:12px 0 4px;font-size:16px}.tool p{color:var(--muted);font-size:13px;margin:0}.panel{border:1px solid var(--line);background:#101629;border-radius:18px;padding:22px;margin-top:20px}.panel h2{margin:0 0 5px}.panel .hint{color:var(--muted);font-size:13px;margin:0 0 18px}.field{display:flex;flex-direction:column;gap:7px;margin:14px 0}.field label{font-size:13px;color:#cbd5ed}.field input,.field textarea,.field select{width:100%;background:#090f20;border:1px solid #303b5c;color:white;border-radius:10px;padding:12px;outline:none}.field textarea{min-height:120px;resize:vertical}.field input:focus,.field textarea:focus{border-color:var(--cyan)}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}.output{white-space:pre-wrap;background:#0a1020;border:1px solid #283452;border-radius:12px;padding:15px;color:#dbe5ff;min-height:60px;margin-top:15px}.hidden{display:none!important}.video{width:100%;max-height:380px;background:#05070d;border-radius:12px;margin-top:14px}.thumbcanvas{width:100%;max-width:640px;aspect-ratio:16/9;border-radius:12px;background:#1b2550;display:block;margin-top:14px;border:1px solid #34416b}.small{font-size:12px;color:var(--muted)}.toast{position:fixed;bottom:22px;right:22px;background:#1d3150;border:1px solid #526b99;padding:12px 17px;border-radius:12px;display:none;z-index:5}.mobiletop{display:none}
 @media(max-width:900px){.app{grid-template-columns:1fr}.side{position:sticky;top:0;z-index:4;display:flex;align-items:center;gap:8px;padding:10px 14px;border-right:0;border-bottom:1px solid var(--line);overflow:auto}.brand{font-size:19px;margin:0 8px 0 0}.tag,.navlabel,.sidefoot{display:none}.nav{width:auto;white-space:nowrap;padding:9px 11px;margin:0}.nav .ico{display:none}.main{padding-top:24px}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:560px){.grid{grid-template-columns:1fr}.top{align-items:flex-start;flex-direction:column}.hero{padding:22px}.hero h2{font-size:22px}}
-.editorgrid{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(250px,.8fr);gap:16px}.stage{background:#05070d;border:1px solid #34416b;border-radius:14px;overflow:hidden}.stage canvas{width:100%;display:block;aspect-ratio:16/9;object-fit:contain}.cliplist{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.clipchip{background:#202a47;border:1px solid #394668;color:#eaf0ff;padding:8px 11px;border-radius:9px}.clipchip.active{border-color:var(--cyan);color:var(--cyan)}.controlbox{background:#0b1224;border:1px solid #293655;border-radius:13px;padding:14px}.controlbox h3{margin:0 0 10px;font-size:14px}.controlbox .field{margin:10px 0}.controlbox .field textarea{min-height:68px}.editoractions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.editoractions button{font-size:13px}.range{width:100%;accent-color:#65e6ff}.exportnote{font-size:12px;color:var(--muted);margin-top:10px}@media(max-width:850px){.editorgrid{grid-template-columns:1fr}}</style></head>
+.editorgrid{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(250px,.8fr);gap:16px}.stage{background:#05070d;border:1px solid #34416b;border-radius:14px;overflow:hidden}.stage canvas{width:100%;display:block;aspect-ratio:16/9;object-fit:contain}.cliplist{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.clipchip{background:#202a47;border:1px solid #394668;color:#eaf0ff;padding:8px 11px;border-radius:9px}.clipchip.active{border-color:var(--cyan);color:var(--cyan)}.controlbox{background:#0b1224;border:1px solid #293655;border-radius:13px;padding:14px}.controlbox h3{margin:0 0 10px;font-size:14px}.controlbox .field{margin:10px 0}.controlbox .field textarea{min-height:68px}.editoractions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.editoractions button{font-size:13px}.range{width:100%;accent-color:#65e6ff}.exportnote{font-size:12px;color:var(--muted);margin-top:10px}@media(max-width:850px){.editorgrid{grid-template-columns:1fr}}.accountbar{display:flex;align-items:center;gap:9px;flex-wrap:wrap;justify-content:flex-end}.accountbar .pill{max-width:240px;overflow:hidden;text-overflow:ellipsis}.accountbar button{font-size:12px;padding:9px 12px}#authPanel{margin:-12px 0 24px}#authPanel .field{max-width:620px}@media(max-width:560px){.accountbar{justify-content:flex-start}}\n</style></head>
 <body><div class="app">
 <aside class="side"><div><div class="brand">SYN<span>TRIX</span></div><p class="tag">THE CREATOR PLATFORM</p></div>
 <div class="navlabel">WORKSPACE</div>
@@ -22,7 +22,26 @@
 <button class="nav" data-page="projects"><span class="ico">▣</span> My Projects</button>
 <div class="sidefoot">Made for creators. Built to create.</div></aside>
 <main class="main">
-<header class="top"><div><div class="eyebrow">YOUR CREATOR HQ</div><h1 id="pageTitle">Make something great.</h1><p class="sub" id="pageSub">Your ideas deserve to get out there. Let's make it happen.</p></div><div class="pill">✦ FREE CREATOR WORKSPACE</div></header>
+<header class="top"><div><div class="eyebrow">YOUR CREATOR HQ</div><h1 id="pageTitle">Make something great.</h1><p class="sub" id="pageSub">Your ideas deserve to get out there. Let's make it happen.</p></div><div class="accountbar"><span id="accountStatus" class="pill">👤 Guest session</span><button class="btn secondary" id="openAuth">Sign in / account</button></div></header>
+
+<section id="authPanel" class="panel hidden">
+ <h2>🔐 SYNTRIX account</h2>
+ <p class="hint">Use Google for a real account, or continue as a guest. Guest projects are temporary and disappear when this browser tab session ends.</p>
+ <p id="authMessage" class="small">You are using SYNTRIX as a guest.</p>
+ <div id="authConfig" class="hidden">
+  <p class="small">One-time connection setup: create a free Supabase project, enable Google under Authentication → Providers, then paste the project URL and public anon key here. Never paste a Google client secret or password here.</p>
+  <div class="field"><label>Supabase project URL</label><input id="supabaseUrl" placeholder="https://your-project.supabase.co"></div>
+  <div class="field"><label>Supabase public anon key</label><input id="supabaseAnon" placeholder="eyJ..."></div>
+  <button class="btn secondary" id="saveAuthConfig">Save connection</button>
+ </div>
+ <div class="actions">
+  <button class="btn" id="googleLogin">Continue with Google</button>
+  <button class="btn secondary" id="guestContinue">Continue as guest</button>
+  <button class="btn secondary hidden" id="signOut">Sign out</button>
+  <button class="btn secondary" id="showAuthSetup">Set up Google login</button>
+  <button class="btn secondary" id="closeAuth">Close</button>
+ </div>
+</section>
 <section id="homePage">
 <div class="hero"><div class="eyebrow">WELCOME TO SYNTRIX</div><h2>Big ideas. Better videos.</h2><p>Plan, create and improve your content in one place. Start with an idea, build it into a video, and keep getting better.</p><button class="btn" data-go="ideas">Create something →</button></div>
 <div class="sectionhead"><div><h2>Your creative tools</h2><p>Pick a tool and get moving.</p></div></div>
@@ -58,6 +77,7 @@
 <div class="tool"><div class="symbol">📅</div><h3>Make a realistic schedule</h3><p>Consistency you can maintain beats a schedule you quit.</p></div>
 </div></div></section>
 </main></div><div class="toast" id="toast"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 const pages=['home','video','thumb','script','ideas','growth','hub','projects'];const titles={projects:['Your projects.','Your saved work, all in one place on this device.'],home:['Make something great.','Your ideas deserve to get out there. Let’s make it happen.'],video:['Build your next video.','Bring your clips and your plan together.'],thumb:['Make them stop scrolling.','Design a thumbnail that makes the idea clear.'],script:['Find the story.','Turn a topic into a strong video structure.'],ideas:['Never run out of ideas.','A little inspiration goes a long way.'],growth:['Make your video clearer.','Improve the way you present your content.'],hub:['Keep levelling up.','A few useful creator lessons.']};
 function showPage(p){pages.forEach(x=>document.getElementById(x+'Page').classList.toggle('hidden',x!==p));document.querySelectorAll('.nav').forEach(b=>b.classList.toggle('active',b.dataset.page===p));document.getElementById('pageTitle').textContent=titles[p][0];document.getElementById('pageSub').textContent=titles[p][1];window.scrollTo(0,0)}
@@ -66,7 +86,6 @@ function toast(s){let t=document.getElementById('toast');t.textContent=s;t.style
 const cv=document.getElementById('thumbCanvas'),ctx=cv.getContext('2d');
 function draw(){let c=document.getElementById('thumbColor').value;let g=ctx.createLinearGradient(0,0,1280,720);g.addColorStop(0,c);g.addColorStop(1,'#111326');ctx.fillStyle=g;ctx.fillRect(0,0,1280,720);ctx.fillStyle='#ffffff12';for(let i=0;i<10;i++){ctx.beginPath();ctx.arc(1000+i*42,100+i*55,100,0,Math.PI*2);ctx.fill()}ctx.fillStyle='#65e6ff';ctx.fillRect(76,78,260,12);ctx.fillStyle='#fff';ctx.font='bold 38px Arial';ctx.fillText((document.getElementById('thumbLabel').value||'NEW VIDEO').toUpperCase(),80,145);ctx.font='900 100px Arial';ctx.shadowColor='#000';ctx.shadowBlur=16;let words=(document.getElementById('thumbTitle').value||'YOUR TITLE').toUpperCase().split(' '),line='',y=330;for(let w of words){let test=line+w+' ';if(ctx.measureText(test).width>1060){ctx.fillText(line,80,y);line=w+' ';y+=115}else line=test}ctx.fillText(line,80,y);ctx.shadowBlur=0;ctx.fillStyle='#65e6ff';ctx.fillRect(80,610,170,9)}
 draw();document.getElementById('drawThumb').onclick=draw;document.getElementById('downloadThumb').onclick=()=>{let a=document.createElement('a');a.download='syntrix-thumbnail.png';a.href=cv.toDataURL('image/png');a.click()};
-document.getElementById('videoFile').onchange=e=>{let f=e.target.files[0];if(f){let v=document.getElementById('videoPreview');v.src=URL.createObjectURL(f);v.classList.remove('hidden')}};
 document.getElementById('saveVideo').onclick=()=>{localStorage.setItem('syntrix-video-notes',document.getElementById('videoNotes').value);toast('Project notes saved on this device')};
 document.getElementById('makeScript').onclick=()=>{let topic=document.getElementById('scriptTopic').value.trim();if(!topic){toast('Add a topic first');return}let style=document.getElementById('scriptStyle').value;let s='VIDEO: '+topic+'\nSTYLE: '+style+'\n\n1. HOOK (0–5 sec)\nOpen with the most surprising moment or a question.\n\n2. INTRO\nExplain what you are trying and why it matters.\n\n3. MAIN SECTION\nShow 3 key moments. Add reactions, examples or useful details.\n\n4. PAYOFF\nDeliver the result viewers came to see.\n\n5. ENDING\nFinish with one natural question or next-video tease.';let o=document.getElementById('scriptOutput');o.textContent=s;o.classList.remove('hidden');document.getElementById('copyScript').classList.remove('hidden')};
 document.getElementById('copyScript').onclick=()=>navigator.clipboard.writeText(document.getElementById('scriptOutput').textContent).then(()=>toast('Copied!'));
@@ -161,4 +180,87 @@ document.getElementById('exportEdit').onclick=async()=>{
 };
 
 let saved=localStorage.getItem('syntrix-video-notes');if(saved){document.getElementById('recentText').textContent='Saved video project notes are on this device. Open Video Studio to continue.';document.getElementById('videoNotes').value=saved}
+
+
+// --- SYNTRIX access: real Supabase Google OAuth + temporary guest mode ---
+let syntrixUser = null;
+let syntrixGuest = true;
+let syntrixAuthClient = null;
+const AUTH_CONFIG_KEY = 'syntrix-auth-config-v1';
+function authConfig(){try{return JSON.parse(localStorage.getItem(AUTH_CONFIG_KEY)||'{}')}catch(e){return {}}}
+function setAuthMessage(message){const el=document.getElementById('authMessage');if(el)el.textContent=message}
+function updateAuthUI(){
+ const status=document.getElementById('accountStatus');
+ const signOut=document.getElementById('signOut');
+ if(syntrixUser){status.textContent='✅ '+(syntrixUser.email||'Google account');signOut.classList.remove('hidden');setAuthMessage('Signed in with Google. Your account session is active. Projects are currently saved in this browser only.')}
+ else{status.textContent='👤 Guest session';signOut.classList.add('hidden');setAuthMessage('Guest mode is active. Projects are temporary and are cleared when this browser tab session ends.')}
+}
+function setGuestMode(){
+ syntrixUser=null;syntrixGuest=true;
+ updateAuthUI();renderProjects();
+ toast('Guest mode ready — create away! ✨');
+}
+function initSupabaseClient(){
+ const cfg=authConfig();
+ if(!cfg.url||!cfg.anon||!window.supabase?.createClient){syntrixAuthClient=null;return false}
+ try{syntrixAuthClient=window.supabase.createClient(cfg.url,cfg.anon);return true}catch(e){syntrixAuthClient=null;setAuthMessage('Could not connect. Check the Supabase URL and public anon key.');return false}
+}
+async function refreshSyntrixAuth(){
+ if(!initSupabaseClient()){setGuestMode();return}
+ try{
+  const {data,error}=await syntrixAuthClient.auth.getSession();
+  if(error)throw error;
+  syntrixUser=data.session?.user||null;syntrixGuest=!syntrixUser;
+  updateAuthUI();renderProjects();
+  syntrixAuthClient.auth.onAuthStateChange((_event,session)=>{
+   syntrixUser=session?.user||null;syntrixGuest=!syntrixUser;
+   updateAuthUI();renderProjects();
+  });
+ }catch(e){syntrixUser=null;syntrixGuest=true;updateAuthUI();setAuthMessage('Auth connection needs checking: '+(e.message||'unknown error'));renderProjects()}
+}
+document.getElementById('openAuth').onclick=()=>document.getElementById('authPanel').classList.toggle('hidden');
+document.getElementById('closeAuth').onclick=()=>document.getElementById('authPanel').classList.add('hidden');
+document.getElementById('showAuthSetup').onclick=()=>{
+ document.getElementById('authConfig').classList.toggle('hidden');
+ const cfg=authConfig();document.getElementById('supabaseUrl').value=cfg.url||'';document.getElementById('supabaseAnon').value=cfg.anon||'';
+};
+document.getElementById('saveAuthConfig').onclick=async()=>{
+ const url=document.getElementById('supabaseUrl').value.trim().replace(/\/$/,'');
+ const anon=document.getElementById('supabaseAnon').value.trim();
+ if(!/^https:\/\/.+\.supabase\.co$/.test(url)||!anon){toast('Add a valid Supabase URL and public anon key');return}
+ localStorage.setItem(AUTH_CONFIG_KEY,JSON.stringify({url,anon}));
+ if(initSupabaseClient()){setAuthMessage('Connection saved. Now choose Continue with Google.');toast('Auth connection saved!');}
+ else{setAuthMessage('Could not load the auth connection. Check the values and try again.')}
+};
+document.getElementById('googleLogin').onclick=async()=>{
+ if(!initSupabaseClient()){
+  document.getElementById('authPanel').classList.remove('hidden');
+  document.getElementById('authConfig').classList.remove('hidden');
+  setAuthMessage('Google sign-in is not connected yet. Add your Supabase project URL and public anon key, and enable Google as a provider in Supabase.');
+  toast('One-time Google login setup needed 🔧');return;
+ }
+ try{
+  const {error}=await syntrixAuthClient.auth.signInWithOAuth({provider:'google',options:{redirectTo:window.location.origin+window.location.pathname}});
+  if(error)throw error;
+ }catch(e){setAuthMessage('Google sign-in could not start: '+(e.message||'check your Supabase Google provider settings'));toast('Google sign-in needs setup')}
+};
+document.getElementById('guestContinue').onclick=()=>{setGuestMode();document.getElementById('authPanel').classList.add('hidden')};
+document.getElementById('signOut').onclick=async()=>{
+ if(syntrixAuthClient)await syntrixAuthClient.auth.signOut();
+ setGuestMode();
+};
+function projectStorage(){
+ return syntrixUser ? localStorage : sessionStorage;
+}
+function projectStorageKey(){
+ return syntrixUser ? PROJECT_KEY+'-user-'+syntrixUser.id : PROJECT_KEY+'-guest';
+}
+function getProjects(){
+ try{return JSON.parse(projectStorage().getItem(projectStorageKey())||'[]')}catch(e){return []}
+}
+function putProjects(items){
+ projectStorage().setItem(projectStorageKey(),JSON.stringify(items));renderProjects();
+}
+refreshSyntrixAuth();
+
 </script></body></html>
