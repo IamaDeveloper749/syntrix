@@ -18,11 +18,27 @@
 @media(max-width:560px){.file-picker{padding:12px;gap:10px}.file-picker .file-cta{display:none}}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}.output{white-space:pre-wrap;background:#0a1020;border:1px solid #283452;border-radius:12px;padding:15px;color:#dbe5ff;min-height:60px;margin-top:15px}.hidden{display:none!important}.video{width:100%;max-height:380px;background:#05070d;border-radius:12px;margin-top:14px}.thumbcanvas{width:100%;max-width:640px;aspect-ratio:16/9;border-radius:12px;background:#1b2550;display:block;margin-top:14px;border:1px solid #34416b}.small{font-size:12px;color:var(--muted)}.toast{position:fixed;bottom:22px;right:22px;background:#1d3150;border:1px solid #526b99;padding:12px 17px;border-radius:12px;display:none;z-index:5}.mobiletop{display:none}
 @media(max-width:900px){.app{grid-template-columns:1fr}.side{position:sticky;top:0;z-index:4;display:flex;align-items:center;gap:8px;padding:10px 14px;border-right:0;border-bottom:1px solid var(--line);overflow:auto}.brand{font-size:19px;margin:0 8px 0 0}.tag,.navlabel,.sidefoot{display:none}.nav{width:auto;white-space:nowrap;padding:9px 11px;margin:0}.nav .ico{display:none}.main{padding-top:24px}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:560px){.grid{grid-template-columns:1fr}.top{align-items:flex-start;flex-direction:column}.hero{padding:22px}.hero h2{font-size:22px}}
-.editorgrid{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(250px,.8fr);gap:16px}.stage{background:#05070d;border:1px solid #34416b;border-radius:14px;overflow:hidden}.stage canvas{width:100%;display:block;aspect-ratio:16/9;object-fit:contain}.cliplist{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.clipchip{background:#202a47;border:1px solid #394668;color:#eaf0ff;padding:8px 11px;border-radius:9px}.clipchip.active{border-color:var(--cyan);color:var(--cyan)}.timeline-row{display:flex;align-items:center;gap:7px;flex-wrap:wrap;padding:8px;background:#0b1224;border:1px solid #293655;border-radius:11px}.timeline-row .clipchip{flex:1;min-width:130px;text-align:left}.clipmove{border:1px solid #394668;background:#202a47;color:#eaf0ff;border-radius:8px;padding:7px 9px;font-size:12px}.clipmove:disabled{opacity:.35;cursor:not-allowed}.controlbox{background:#0b1224;border:1px solid #293655;border-radius:13px;padding:14px}.controlbox h3{margin:0 0 10px;font-size:14px}.controlbox .field{margin:10px 0}.controlbox .field textarea{min-height:68px}.editoractions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.editoractions button{font-size:13px}.range{width:100%;accent-color:#65e6ff}.exportnote{font-size:12px;color:var(--muted);margin-top:10px}@media(max-width:850px){.editorgrid{grid-template-columns:1fr}}.accountbar{display:flex;align-items:center;gap:9px;flex-wrap:wrap;justify-content:flex-end}.accountbar .pill{max-width:240px;overflow:hidden;text-overflow:ellipsis}.accountbar button{font-size:12px;padding:9px 12px}#authPanel{margin:-12px 0 24px}#authPanel .field{max-width:620px}@media(max-width:560px){.accountbar{justify-content:flex-start}}\n</style></head>
+.editorgrid{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(250px,.8fr);gap:16px}.stage{background:#05070d;border:1px solid #34416b;border-radius:14px;overflow:hidden}.stage canvas{width:100%;display:block;aspect-ratio:16/9;object-fit:contain}.cliplist{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.clipchip{background:#202a47;border:1px solid #394668;color:#eaf0ff;padding:8px 11px;border-radius:9px}.clipchip.active{border-color:var(--cyan);color:var(--cyan)}.timeline-row{display:flex;align-items:center;gap:7px;flex-wrap:wrap;padding:8px;background:#0b1224;border:1px solid #293655;border-radius:11px}.timeline-row .clipchip{flex:1;min-width:130px;text-align:left}.clipmove{border:1px solid #394668;background:#202a47;color:#eaf0ff;border-radius:8px;padding:7px 9px;font-size:12px}.clipmove:disabled{opacity:.35;cursor:not-allowed}.controlbox{background:#0b1224;border:1px solid #293655;border-radius:13px;padding:14px}.controlbox h3{margin:0 0 10px;font-size:14px}.controlbox .field{margin:10px 0}.controlbox .field textarea{min-height:68px}.editoractions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.editoractions button{font-size:13px}.range{width:100%;accent-color:#65e6ff}.exportnote{font-size:12px;color:var(--muted);margin-top:10px}@media(max-width:850px){.editorgrid{grid-template-columns:1fr}}.accountbar{display:flex;align-items:center;gap:9px;flex-wrap:wrap;justify-content:flex-end}.accountbar .pill{max-width:240px;overflow:hidden;text-overflow:ellipsis}.accountbar button{font-size:12px;padding:9px 12px}#authPanel{margin:-12px 0 24px}#authPanel .field{max-width:620px}@media(max-width:560px){.accountbar{justify-content:flex-start}}\n
+.ops-layout{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:16px}
+.ops-checklist,.ops-task-list{display:flex;flex-direction:column;gap:9px}
+.ops-check,.ops-task{display:flex;align-items:center;gap:10px;padding:11px 12px;background:#0b1224;border:1px solid #293655;border-radius:11px;color:#dce5fb}
+.ops-check input,.ops-task input{width:17px;height:17px;accent-color:#65e6ff;flex:0 0 auto}
+.ops-check span,.ops-task span{flex:1;min-width:0}
+.ops-check input:checked+span,.ops-task input:checked+span{text-decoration:line-through;color:#7f8eae}
+.ops-task button{padding:6px 9px;background:#202a47;border:1px solid #394668;color:#eaf0ff;border-radius:8px;font-size:12px}
+.ops-kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.ops-kpis .field{min-width:0}
+.ops-rules{color:#c7d2ec;padding-left:20px;margin-bottom:0}
+.ops-rules li{margin:9px 0}
+.ops-metrics .tool{min-height:125px}
+.ops-metrics .tool h3{font-size:28px;margin:4px 0}
+@media(max-width:700px){.ops-layout{grid-template-columns:1fr}.ops-kpis{grid-template-columns:1fr}}
+</style></head>
 <body><div class="app">
 <aside class="side"><div><div class="brand">SYN<span>TRIX</span></div><p class="tag">THE CREATOR PLATFORM</p></div>
 <div class="navlabel">WORKSPACE</div>
 <button class="nav active" data-page="home"><span class="ico">⌂</span> Home</button>
+<button class="nav" data-page="control"><span class="ico">◈</span> NIKO Control</button>
 <button class="nav" data-page="video"><span class="ico">▶</span> Video Studio</button>
 <button class="nav" data-page="thumb"><span class="ico">▧</span> Thumbnail Lab</button>
 <button class="nav" data-page="script"><span class="ico">✎</span> Script Writer</button>
@@ -51,6 +67,32 @@
   <button class="btn secondary" id="showAuthSetup">Set up Google login</button>
   <button class="btn secondary" id="closeAuth">Close</button>
  </div>
+</section>
+<section id="controlPage" class="hidden">
+<div class="hero"><div class="eyebrow">NIKO × SYNTRIX OPERATIONS</div><h2>Your business command centre.</h2><p>Plan the work, track progress and keep the creator business moving. This first version saves your control-centre data in this browser.</p><div class="actions"><button class="btn" data-go="projects">Open projects →</button><button class="btn secondary" data-go="ideas">Generate ideas</button><button class="btn secondary" data-go="growth">Open growth tools</button></div></div>
+<div class="sectionhead"><div><h2>Business snapshot</h2><p>Your numbers, updated by you.</p></div><span class="pill">LOCAL WORKSPACE</span></div>
+<div class="grid ops-metrics">
+ <div class="tool"><div class="symbol">📁</div><p>Saved projects</p><h3 id="opsProjectCount">0</h3></div>
+ <div class="tool"><div class="symbol">✅</div><p>Tasks completed</p><h3 id="opsDoneCount">0</h3></div>
+ <div class="tool"><div class="symbol">🎯</div><p>Tasks remaining</p><h3 id="opsOpenCount">0</h3></div>
+</div>
+<div class="ops-layout">
+ <section class="panel"><h2>⚡ Launch checklist</h2><p class="hint">The basics to get SYNTRIX ready for real users.</p><div id="opsChecklist" class="ops-checklist"></div></section>
+ <section class="panel"><h2>📌 Operations task list</h2><p class="hint">Add the next thing that needs doing. Tick it off when finished.</p><div class="field"><label for="opsTaskInput">New task</label><input id="opsTaskInput" maxlength="100" placeholder="e.g. Test thumbnail export"></div><button class="btn" id="opsAddTask">Add task</button><div id="opsTaskList" class="ops-task-list"></div></section>
+</div>
+<div class="ops-layout">
+ <section class="panel"><h2>📊 Growth tracker</h2><p class="hint">Enter real numbers when you have them. Nothing is connected to YouTube yet.</p><div class="ops-kpis">
+  <div class="field"><label for="opsUsers">SYNTRIX users</label><input id="opsUsers" type="number" min="0" step="1" placeholder="0"></div>
+  <div class="field"><label for="opsSubscribers">Channel subscribers</label><input id="opsSubscribers" type="number" min="0" step="1" placeholder="0"></div>
+  <div class="field"><label for="opsViews">Video views</label><input id="opsViews" type="number" min="0" step="1" placeholder="0"></div>
+ </div><button class="btn secondary" id="opsSaveKpis">Save numbers</button><p class="small" id="opsKpiSaved">Numbers stay on this device.</p></section>
+ <section class="panel"><h2>🧠 NIKO's operating rules</h2><p class="hint">The principles that keep the business organised.</p><ul class="ops-rules"><li>Build useful features before adding more buttons.</li><li>Test every tool from a real creator's point of view.</li><li>Track actual results; never invent analytics.</li><li>Keep costs low and explain when a feature needs an external service.</li><li>Protect user data and ask before connecting accounts.</li></ul></section>
+</div>
+<div class="panel"><h2>🗺️ Next build priorities</h2><p class="hint">The bigger systems SYNTRIX will need as it grows.</p><div class="grid">
+ <div class="tool"><div class="symbol">🎨</div><h3>Creation engine</h3><p>Reliable thumbnails, image tools, scripts and video workflows.</p></div>
+ <div class="tool"><div class="symbol">📣</div><h3>Marketing engine</h3><p>Campaign plans, publishing schedule and promotional assets.</p></div>
+ <div class="tool"><div class="symbol">📈</div><h3>Analytics engine</h3><p>Real channel and product data, trends and useful reports.</p></div>
+</div></div>
 </section>
 <section id="homePage">
 <div class="hero"><div class="eyebrow">WELCOME TO SYNTRIX</div><h2>Big ideas. Better videos.</h2><p>Plan, create and improve your content in one place. Start with an idea, build it into a video, and keep getting better.</p><button class="btn" data-go="ideas">Create something →</button></div>
@@ -99,7 +141,7 @@ let syntrixUser = null;
 let syntrixGuest = true;
 let syntrixAuthClient = null;
 const AUTH_CONFIG_KEY = 'syntrix-auth-config-v1';
-const pages=['home','video','thumb','script','ideas','growth','hub','projects'];const titles={projects:['Your projects.','Your saved work, all in one place on this device.'],home:['Make something great.','Your ideas deserve to get out there. Let’s make it happen.'],video:['Build your next video.','Bring your clips and your plan together.'],thumb:['Make them stop scrolling.','Design a thumbnail that makes the idea clear.'],script:['Find the story.','Turn a topic into a strong video structure.'],ideas:['Never run out of ideas.','A little inspiration goes a long way.'],growth:['Make your video clearer.','Improve the way you present your content.'],hub:['Keep levelling up.','A few useful creator lessons.']};
+const pages=['home','control','video','thumb','script','ideas','growth','hub','projects'];const titles={control:['Run the business.','NIKO’s SYNTRIX command centre.'],projects:['Your projects.','Your saved work, all in one place on this device.'],home:['Make something great.','Your ideas deserve to get out there. Let’s make it happen.'],video:['Build your next video.','Bring your clips and your plan together.'],thumb:['Make them stop scrolling.','Design a thumbnail that makes the idea clear.'],script:['Find the story.','Turn a topic into a strong video structure.'],ideas:['Never run out of ideas.','A little inspiration goes a long way.'],growth:['Make your video clearer.','Improve the way you present your content.'],hub:['Keep levelling up.','A few useful creator lessons.']};
 function showPage(p){pages.forEach(x=>document.getElementById(x+'Page').classList.toggle('hidden',x!==p));document.querySelectorAll('.nav').forEach(b=>b.classList.toggle('active',b.dataset.page===p));document.getElementById('pageTitle').textContent=titles[p][0];document.getElementById('pageSub').textContent=titles[p][1];window.scrollTo(0,0)}
 document.querySelectorAll('[data-page]').forEach(b=>b.addEventListener('click',()=>showPage(b.dataset.page)));document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>showPage(b.dataset.go)));
 function toast(s){let t=document.getElementById('toast');t.textContent=s;t.style.display='block';setTimeout(()=>t.style.display='none',2200)}
@@ -155,6 +197,67 @@ function openProject(id){
  if(kind==='growth'){document.getElementById('growthOutput').textContent=p.content;document.getElementById('growthOutput').classList.remove('hidden')}
 }
 renderProjects();
+
+// --- NIKO control centre: local operations dashboard ---
+const OPS_KEY='syntrix-niko-ops-v1';
+const defaultOpsChecklist=[
+ 'Write down the one-sentence SYNTRIX promise',
+ 'Test sign-up and the first-time user experience',
+ 'Test thumbnail creation and image download',
+ 'Test video editing and export',
+ 'Create a simple feedback method for early users',
+ 'Publish a clear launch announcement'
+];
+function getOpsData(){
+ try{return JSON.parse(localStorage.getItem(OPS_KEY)||'{}')}catch(e){return {}}
+}
+function saveOpsData(data){localStorage.setItem(OPS_KEY,JSON.stringify(data))}
+function getOpsTasks(){
+ const data=getOpsData();
+ if(!Array.isArray(data.tasks)){
+  data.tasks=[
+   {id:'t1',text:'Test every main SYNTRIX tool',done:false},
+   {id:'t2',text:'Fix the biggest issue found during testing',done:false},
+   {id:'t3',text:'Prepare the first launch announcement',done:false}
+  ];
+  saveOpsData(data);
+ }
+ return data.tasks;
+}
+function renderOps(){
+ const data=getOpsData(),tasks=getOpsTasks(),checks=Array.isArray(data.checks)?data.checks:[];
+ const checklist=document.getElementById('opsChecklist');checklist.innerHTML='';
+ defaultOpsChecklist.forEach((label,i)=>{
+  const row=document.createElement('label');row.className='ops-check';
+  const input=document.createElement('input');input.type='checkbox';input.checked=!!checks[i];
+  input.addEventListener('change',()=>{const d=getOpsData();d.checks=Array.isArray(d.checks)?d.checks:[];d.checks[i]=input.checked;saveOpsData(d);renderOps()});
+  const span=document.createElement('span');span.textContent=label;row.append(input,span);checklist.append(row);
+ });
+ const list=document.getElementById('opsTaskList');list.innerHTML='';
+ tasks.forEach(task=>{
+  const row=document.createElement('label');row.className='ops-task';
+  const input=document.createElement('input');input.type='checkbox';input.checked=!!task.done;
+  input.addEventListener('change',()=>{const d=getOpsData();d.tasks=getOpsTasks().map(t=>t.id===task.id?{...t,done:input.checked}:t);saveOpsData(d);renderOps()});
+  const span=document.createElement('span');span.textContent=task.text;
+  const del=document.createElement('button');del.type='button';del.textContent='Remove';del.addEventListener('click',e=>{e.preventDefault();const d=getOpsData();d.tasks=getOpsTasks().filter(t=>t.id!==task.id);saveOpsData(d);renderOps()});
+  row.append(input,span,del);list.append(row);
+ });
+ const done=tasks.filter(t=>t.done).length;
+ document.getElementById('opsProjectCount').textContent=getProjects().length;
+ document.getElementById('opsDoneCount').textContent=done;
+ document.getElementById('opsOpenCount').textContent=tasks.length-done;
+ const kpis=data.kpis||{};
+ ['Users','Subscribers','Views'].forEach((key)=>{const el=document.getElementById('ops'+key);if(document.activeElement!==el)el.value=kpis[key.toLowerCase()]??''});
+}
+document.getElementById('opsAddTask').addEventListener('click',()=>{
+ const input=document.getElementById('opsTaskInput'),value=input.value.trim();if(!value){toast('Write a task first');return}
+ const data=getOpsData();data.tasks=getOpsTasks();data.tasks.push({id:Date.now().toString(),text:value,done:false});saveOpsData(data);input.value='';renderOps();toast('Task added');
+});
+document.getElementById('opsTaskInput').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('opsAddTask').click()});
+document.getElementById('opsSaveKpis').addEventListener('click',()=>{
+ const data=getOpsData();data.kpis={users:Number(document.getElementById('opsUsers').value)||0,subscribers:Number(document.getElementById('opsSubscribers').value)||0,views:Number(document.getElementById('opsViews').value)||0};saveOpsData(data);document.getElementById('opsKpiSaved').textContent='Saved just now · Numbers are manually entered, not live-connected.';toast('Growth numbers saved');
+});
+renderOps();
 
 
 const clipFiles=[];let activeClip=-1,renderLoop=0,recorder=null,recordedChunks=[];
