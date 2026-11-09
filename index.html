@@ -52,10 +52,10 @@
 
 <section id="authPanel" class="panel hidden">
  <h2>🔐 SYNTRIX account</h2>
- <p class="hint">Use Google for a real account, or continue as a guest. Guest projects are temporary and disappear when this browser tab session ends.</p>
+ <p class="hint">Sign in with Google to use your SYNTRIX account, or continue as a guest. Guest projects are temporary and disappear when this browser tab session ends.</p>
  <p id="authMessage" class="small">You are using SYNTRIX as a guest.</p>
  <div id="authConfig" class="hidden">
-  <p class="small">One-time connection setup: create a free Supabase project, enable Google under Authentication → Providers, then paste the project URL and public anon key here. Never paste a Google client secret or password here.</p>
+  <p class="small">Connection details are already saved for SYNTRIX. Google sign-in must be enabled in Supabase under Authentication → Providers. Never paste a Google client secret or password here.</p>
   <div class="field"><label>Supabase project URL</label><input id="supabaseUrl" placeholder="https://your-project.supabase.co"></div>
   <div class="field"><label>Supabase public anon key</label><input id="supabaseAnon" placeholder="eyJ..."></div>
   <button class="btn secondary" id="saveAuthConfig">Save connection</button>
@@ -141,6 +141,8 @@ let syntrixUser = null;
 let syntrixGuest = true;
 let syntrixAuthClient = null;
 const AUTH_CONFIG_KEY = 'syntrix-auth-config-v1';
+const SYNTRIX_SUPABASE_URL = 'https://akdvrpqgwsopplsibefn.supabase.co';
+const SYNTRIX_SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_jMKeDhWfdQinR4lFY4T5Mg_Nn7sG9ma';
 const pages=['home','control','video','thumb','script','ideas','growth','hub','projects'];const titles={control:['Run the business.','NIKO’s SYNTRIX command centre.'],projects:['Your projects.','Your saved work, all in one place on this device.'],home:['Make something great.','Your ideas deserve to get out there. Let’s make it happen.'],video:['Build your next video.','Bring your clips and your plan together.'],thumb:['Make them stop scrolling.','Design a thumbnail that makes the idea clear.'],script:['Find the story.','Turn a topic into a strong video structure.'],ideas:['Never run out of ideas.','A little inspiration goes a long way.'],growth:['Make your video clearer.','Improve the way you present your content.'],hub:['Keep levelling up.','A few useful creator lessons.']};
 function showPage(p){pages.forEach(x=>document.getElementById(x+'Page').classList.toggle('hidden',x!==p));document.querySelectorAll('.nav').forEach(b=>b.classList.toggle('active',b.dataset.page===p));document.getElementById('pageTitle').textContent=titles[p][0];document.getElementById('pageSub').textContent=titles[p][1];window.scrollTo(0,0)}
 document.querySelectorAll('[data-page]').forEach(b=>b.addEventListener('click',()=>showPage(b.dataset.page)));document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>showPage(b.dataset.go)));
@@ -422,7 +424,7 @@ function loadVideoNotesForCurrentUser(){const saved=projectStorage().getItem('sy
 
 
 // --- SYNTRIX access: real Supabase Google OAuth + temporary guest mode ---
-function authConfig(){try{return JSON.parse(localStorage.getItem(AUTH_CONFIG_KEY)||'{}')}catch(e){return {}}}
+function authConfig(){try{const saved=JSON.parse(localStorage.getItem(AUTH_CONFIG_KEY)||'{}');return {url:saved.url||SYNTRIX_SUPABASE_URL,anon:saved.anon||SYNTRIX_SUPABASE_PUBLISHABLE_KEY}}catch(e){return {url:SYNTRIX_SUPABASE_URL,anon:SYNTRIX_SUPABASE_PUBLISHABLE_KEY}}}
 function setAuthMessage(message){const el=document.getElementById('authMessage');if(el)el.textContent=message}
 function updateAuthUI(){
  const status=document.getElementById('accountStatus');
