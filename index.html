@@ -159,7 +159,7 @@ renderProjects();
 
 const clipFiles=[];let activeClip=-1,renderLoop=0,recorder=null,recordedChunks=[];
 const editVideo=document.getElementById('editSource'),editCanvas=document.getElementById('editCanvas'),editCtx=editCanvas.getContext('2d');
-let trimStartSeconds=0,trimEndSeconds=0,exportingEdit=false;
+let trimStartSeconds=0,trimEndSeconds=0,exportingEdit=false,editAudioContext=null,editAudioSource=null;
 function setVideoFormat(){
  const portrait=document.getElementById('videoFormat').value==='portrait';
  editCanvas.width=portrait?720:1280;editCanvas.height=portrait?1280:720;
@@ -262,10 +262,14 @@ document.getElementById('exportEdit').onclick=async()=>{
  let audioContext=null,recorderStream=null;
  try{
   const canvasStream=editCanvas.captureStream(30);
-  audioContext=new (window.AudioContext||window.webkitAudioContext)();
+  if(!editAudioContext){
+   editAudioContext=new (window.AudioContext||window.webkitAudioContext)();
+   editAudioSource=editAudioContext.createMediaElementSource(editVideo);
+  }
+  audioContext=editAudioContext;
   const audioDestination=audioContext.createMediaStreamDestination();
-  const audioSource=audioContext.createMediaElementSource(editVideo);
-  audioSource.connect(audioDestination);audioSource.connect(audioContext.destination);
+  editAudioSource.disconnect();
+  editAudioSource.connect(audioDestination);editAudioSource.connect(audioContext.destination);
   await audioContext.resume();
   recorderStream=new MediaStream([...canvasStream.getVideoTracks(),...audioDestination.stream.getAudioTracks()]);
   const mime=['video/webm;codecs=vp9,opus','video/webm;codecs=vp8,opus','video/webm'].find(x=>MediaRecorder.isTypeSupported(x));
@@ -304,7 +308,7 @@ document.getElementById('exportEdit').onclick=async()=>{
   exportingEdit=false;editVideo.pause();if(recorder&&recorder.state!=='inactive')recorder.stop();
   toast('Export stopped: '+(err.message||'Please try again'));
  }finally{
-  if(audioContext)audioContext.close().catch(()=>{});
+  if(editAudioSource)editAudioSource.disconnect();
  }
 };
 
