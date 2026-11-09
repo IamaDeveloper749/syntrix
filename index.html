@@ -55,13 +55,19 @@
 </div><div class="sectionhead"><h2>Recent projects</h2></div><div class="panel"><p id="recentText" class="small">No saved projects yet. Your work on this device will appear here.</p></div>
 </section>
 <section id="videoPage" class="hidden"><div class="panel"><h2>Video Studio <span class="pill">EDITOR BETA</span></h2><p class="hint">Upload clips, add titles, subtitles, stickers and visual filters, then export your edit. Editing happens in your browser.</p>
-<div class="field"><label>Upload video clips</label><input id="videoFiles" type="file" accept="video/*" multiple></div><div id="clipList" class="cliplist"></div>
+<div class="editorgrid" style="grid-template-columns:repeat(2,minmax(0,1fr));margin-bottom:14px">
+<div class="field"><label>1. Add video clips</label><input id="videoFiles" type="file" accept="video/*" multiple><p class="small">Choose one or more clips from your device.</p></div>
+<div class="field"><label>2. Video shape</label><select id="videoFormat"><option value="landscape">YouTube / Landscape (16:9)</option><option value="portrait">Shorts / Reels / TikTok (9:16)</option></select><p class="small">You can switch formats while editing.</p></div>
+</div><div id="clipList" class="cliplist"></div>
 <div class="editorgrid"><div><div class="stage"><canvas id="editCanvas" width="1280" height="720"></canvas></div><video id="editSource" class="hidden" playsinline></video>
 <div class="editoractions"><button class="btn secondary" id="playEdit">▶ Play</button><button class="btn secondary" id="pauseEdit">Ⅱ Pause</button><button class="btn secondary" id="restartEdit">↺ Restart</button></div>
-<div class="field"><label>Clip position</label><input id="clipSeek" class="range" type="range" min="0" max="1000" value="0"></div><div class="small" id="clipTime">Upload a clip to begin.</div>
+<div class="field"><label>Preview position</label><input id="clipSeek" class="range" type="range" min="0" max="1000" value="0"></div>
+<div class="field"><label>Trim start</label><input id="trimStart" class="range" type="range" min="0" max="100" step="0.1" value="0"><span class="small" id="trimStartLabel">0.0s</span></div>
+<div class="field"><label>Trim end</label><input id="trimEnd" class="range" type="range" min="0" max="100" step="0.1" value="100"><span class="small" id="trimEndLabel">End of clip</span></div>
+<div class="small" id="clipTime">Upload a clip to begin.</div>
 </div><div class="controlbox"><h3>✍️ Text & subtitles</h3><div class="field"><label>Main text overlay</label><input id="overlayText" maxlength="70" placeholder="Your video title..."></div><div class="field"><label>Subtitle line</label><textarea id="subtitleText" maxlength="150" placeholder="Type what is being said..."></textarea></div><div class="field"><label>Text colour</label><input id="overlayColor" type="color" value="#ffffff"></div><div class="field"><label>Text size</label><input id="overlaySize" type="range" min="24" max="100" value="58"></div>
 <h3>✨ Stickers & effects</h3><div class="field"><label>Sticker</label><select id="sticker"><option value="">No sticker</option><option>⭐</option><option>🔥</option><option>😂</option><option>💯</option><option>🎮</option><option>❤️</option><option>⚡</option><option>👀</option></select></div><div class="field"><label>Visual effect</label><select id="videoEffect"><option value="none">Normal</option><option value="contrast(1.25) saturate(1.35)">Vibrant</option><option value="grayscale(1)">Black & white</option><option value="sepia(.8)">Vintage</option><option value="brightness(1.18) saturate(.8)">Bright</option><option value="hue-rotate(65deg) saturate(1.3)">Colour shift</option></select></div>
-<div class="editoractions"><button class="btn" id="exportEdit">Export video</button><button class="btn secondary" data-save-project="video">Save project</button></div><p class="exportnote">Export is WebM format. Keep this tab open while exporting. Large videos may take a while.</p></div></div>
+<div class="editoractions"><button class="btn" id="exportEdit">Export video</button><button class="btn secondary" data-save-project="video">Save project</button></div><p class="exportnote">Exports the selected clip and trim range as WebM. Switch between landscape and portrait before exporting. Keep this tab open while exporting.</p></div></div>
 <div class="field"><label>Project notes</label><textarea id="videoNotes" placeholder="Intro, best moments, ending..."></textarea></div><button class="btn secondary" id="saveVideo">Save project notes</button></div></section>
 <section id="thumbPage" class="hidden"><div class="panel"><h2>Thumbnail Lab</h2><p class="hint">Create a simple downloadable thumbnail layout. No AI image generation in this version.</p><div class="field"><label>Thumbnail headline</label><input id="thumbTitle" maxlength="55" value="THIS CHANGED EVERYTHING"></div><div class="field"><label>Small label</label><input id="thumbLabel" maxlength="28" value="NEW VIDEO"></div><div class="field"><label>Background colour</label><input id="thumbColor" type="color" value="#222c70"></div><div class="actions"><button class="btn" id="drawThumb">Update thumbnail</button><button class="btn secondary" id="downloadThumb">Download PNG</button><button class="btn secondary" data-save-project="thumb">Save project</button></div><canvas id="thumbCanvas" class="thumbcanvas" width="1280" height="720"></canvas></div></section>
 <section id="scriptPage" class="hidden"><div class="panel"><h2>Script Writer</h2><p class="hint">Build a starter script structure from your topic.</p><div class="field"><label>Video topic</label><input id="scriptTopic" placeholder="e.g. I tried the hardest Roblox obby"></div><div class="field"><label>Style</label><select id="scriptStyle"><option>Funny and energetic</option><option>Informative</option><option>Storytelling</option><option>Calm and cinematic</option></select></div><button class="btn" id="makeScript">Build my outline</button><div class="output hidden" id="scriptOutput"></div><button class="btn secondary hidden" id="copyScript">Copy script</button> <button class="btn secondary" data-save-project="script">Save project</button></div></section>
@@ -143,6 +149,26 @@ renderProjects();
 
 const clipFiles=[];let activeClip=-1,renderLoop=0,recorder=null,recordedChunks=[];
 const editVideo=document.getElementById('editSource'),editCanvas=document.getElementById('editCanvas'),editCtx=editCanvas.getContext('2d');
+let trimStartSeconds=0,trimEndSeconds=0,exportingEdit=false;
+function setVideoFormat(){
+ const portrait=document.getElementById('videoFormat').value==='portrait';
+ editCanvas.width=portrait?720:1280;editCanvas.height=portrait?1280:720;
+ editCanvas.style.aspectRatio=portrait?'9 / 16':'16 / 9';
+ paintEdit();
+}
+document.getElementById('videoFormat').addEventListener('change',setVideoFormat);
+function updateTrimControls(){
+ const duration=editVideo.duration||0;
+ const start=document.getElementById('trimStart'),end=document.getElementById('trimEnd');
+ start.max=duration||100;end.max=duration||100;
+ trimStartSeconds=Math.min(Number(start.value)||0,Math.max(0,duration-0.1));
+ trimEndSeconds=Math.min(Number(end.value)||duration,duration);
+ if(trimEndSeconds<=trimStartSeconds)trimEndSeconds=Math.min(duration,trimStartSeconds+0.1);
+ document.getElementById('trimStartLabel').textContent=trimStartSeconds.toFixed(1)+'s';
+ document.getElementById('trimEndLabel').textContent=trimEndSeconds.toFixed(1)+'s';
+}
+document.getElementById('trimStart').addEventListener('input',()=>{updateTrimControls();if(editVideo.duration&&editVideo.currentTime<trimStartSeconds)editVideo.currentTime=trimStartSeconds});
+document.getElementById('trimEnd').addEventListener('input',updateTrimControls);
 const editSettings=()=>({title:document.getElementById('overlayText').value,subtitle:document.getElementById('subtitleText').value,color:document.getElementById('overlayColor').value,size:Number(document.getElementById('overlaySize').value),sticker:document.getElementById('sticker').value,effect:document.getElementById('videoEffect').value});
 function paintEdit(){
  const s=editSettings(),w=editCanvas.width,h=editCanvas.height;
@@ -162,7 +188,13 @@ document.getElementById('videoFiles').onchange=e=>{
  if(clipFiles.length)loadClip(clipFiles.length-1);
 };
 function loadClip(i){activeClip=i;const clip=clipFiles[i];editVideo.pause();editVideo.src=clip.url;editVideo.load();document.querySelectorAll('.clipchip').forEach((b,j)=>b.classList.toggle('active',j===i));document.getElementById('clipTime').textContent='Loading '+clip.file.name+'…';}
-editVideo.onloadedmetadata=()=>{document.getElementById('clipSeek').value=0;document.getElementById('clipTime').textContent='0.0s / '+editVideo.duration.toFixed(1)+'s';paintEdit()};
+editVideo.onloadedmetadata=()=>{
+ document.getElementById('clipSeek').value=0;
+ document.getElementById('trimStart').value=0;document.getElementById('trimEnd').value=editVideo.duration;
+ updateTrimControls();
+ document.getElementById('clipTime').textContent='0.0s / '+editVideo.duration.toFixed(1)+'s';
+ paintEdit()
+};
 document.getElementById('playEdit').onclick=()=>{if(activeClip<0){toast('Upload a clip first');return}editVideo.play()};
 document.getElementById('pauseEdit').onclick=()=>editVideo.pause();
 document.getElementById('restartEdit').onclick=()=>{editVideo.currentTime=0;editVideo.play()};
@@ -171,16 +203,21 @@ document.getElementById('clipSeek').oninput=e=>{if(editVideo.duration)editVideo.
 document.getElementById('exportEdit').onclick=async()=>{
  if(activeClip<0||!editVideo.duration){toast('Upload a clip first');return}
  if(!window.MediaRecorder||!editCanvas.captureStream){toast('Video export is not supported in this browser');return}
- editVideo.pause();editVideo.currentTime=0;await new Promise(resolve=>{if(editVideo.readyState>=2)resolve();else editVideo.onseeked=resolve});
+ updateTrimControls();
+ const exportStart=trimStartSeconds,exportEnd=trimEndSeconds;
+ if(exportEnd<=exportStart){toast('Choose a valid trim range');return}
+ editVideo.pause();editVideo.currentTime=exportStart;await new Promise(resolve=>{if(editVideo.readyState>=2&&Math.abs(editVideo.currentTime-exportStart)<0.15)resolve();else editVideo.onseeked=resolve});
  const canvasStream=editCanvas.captureStream(30);let tracks=[...canvasStream.getVideoTracks()];
  try{const sourceStream=editVideo.captureStream?editVideo.captureStream():editVideo.mozCaptureStream?.();if(sourceStream)tracks.push(...sourceStream.getAudioTracks())}catch(e){}
  const stream=new MediaStream(tracks);const mime=['video/webm;codecs=vp9,opus','video/webm;codecs=vp8,opus','video/webm'].find(x=>MediaRecorder.isTypeSupported(x));
  if(!mime){toast('This browser cannot export WebM');return}
  recordedChunks=[];recorder=new MediaRecorder(stream,{mimeType:mime});recorder.ondataavailable=e=>{if(e.data.size)recordedChunks.push(e.data)};
  recorder.onstop=()=>{const blob=new Blob(recordedChunks,{type:'video/webm'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='syntrix-edit.webm';a.click();setTimeout(()=>URL.revokeObjectURL(url),60000);toast('Export finished! Check your downloads.')};
- recorder.start(500);await editVideo.play();
- toast('Exporting your video…');
- editVideo.onended=()=>{if(recorder&&recorder.state!=='inactive')recorder.stop();editVideo.onended=null};
+ recorder.start(500);exportingEdit=true;await editVideo.play();
+ toast('Exporting selected section…');
+ const finishExport=()=>{if(!exportingEdit)return;exportingEdit=false;editVideo.pause();editVideo.ontimeupdate=null;if(recorder&&recorder.state!=='inactive')recorder.stop()};
+ editVideo.ontimeupdate=()=>{if(editVideo.currentTime>=exportEnd)finishExport()};
+ editVideo.onended=finishExport;
 };
 
 function loadVideoNotesForCurrentUser(){const saved=projectStorage().getItem('syntrix-video-notes');document.getElementById('videoNotes').value=saved||'';if(saved)document.getElementById('recentText').textContent='Saved video project notes are available in this session.'}
