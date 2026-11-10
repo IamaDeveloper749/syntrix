@@ -47,6 +47,11 @@
 <button class="nav" data-page="hub"><span class="ico">◎</span> Creator Hub</button>
 <button class="nav" data-page="projects"><span class="ico">▣</span> My Projects</button>
 <button class="nav" data-page="profile"><span class="ico">👤</span> My Profile</button>
+<button class="nav" data-page="contentcreator"><span class="ico">✍️</span> Content Creator</button>
+<button class="nav" data-page="creativestudio"><span class="ico">🎨</span> Creative Studio</button>
+<button class="nav" data-page="campaignplanner"><span class="ico">📅</span> Campaign Planner</button>
+<button class="nav" data-page="marketinganalytics"><span class="ico">📊</span> Marketing Analytics</button>
+<button class="nav" data-page="marketgrowth"><span class="ico">🚀</span> Marketing Growth</button>
 <div class="sidefoot">Made for creators. Built to create.</div></aside>
 <main class="main">
 <header class="top"><div><div class="eyebrow">YOUR CREATOR HQ</div><h1 id="pageTitle">Make something great.</h1><p class="sub" id="pageSub">Your ideas deserve to get out there. Let's make it happen.</p></div><div class="accountbar"><img id="accountAvatar" class="profile-mini" alt="Your avatar"><span id="accountStatus" class="pill">👤 Guest session</span><button class="btn secondary" id="openAuth">Sign in / account</button></div></header>
@@ -139,6 +144,58 @@
 <section id="scriptPage" class="hidden"><div class="panel"><h2>Script Writer</h2><p class="hint">Build a starter script structure from your topic.</p><div class="field"><label>Video topic</label><input id="scriptTopic" placeholder="e.g. I tried the hardest Roblox obby"></div><div class="field"><label>Style</label><select id="scriptStyle"><option>Funny and energetic</option><option>Informative</option><option>Storytelling</option><option>Calm and cinematic</option></select></div><button class="btn" id="makeScript">Build my outline</button><div class="output hidden" id="scriptOutput"></div><button class="btn secondary hidden" id="copyScript">Copy script</button> <button class="btn secondary" data-save-project="script">Save project</button></div></section>
 <section id="ideasPage" class="hidden"><div class="panel"><h2>Video Ideas</h2><p class="hint">Generate quick prompts to get your next upload moving.</p><div class="field"><label>Your content type</label><select id="ideaType"><option>Gaming</option><option>Music</option><option>Challenges</option><option>Tech</option><option>Education</option><option>Anything</option></select></div><button class="btn" id="makeIdeas">Give me ideas ✦</button> <button class="btn secondary" data-save-project="ideas">Save project</button><div class="output hidden" id="ideasOutput"></div></div></section>
 <section id="growthPage" class="hidden"><div class="panel"><h2>Growth Assistant</h2><p class="hint">A practical title and description helper. It gives suggestions, not guaranteed views.</p><div class="field"><label>What is your video about?</label><textarea id="growthTopic" placeholder="Describe the video in one or two sentences"></textarea></div><button class="btn" id="makeGrowth">Improve my packaging</button> <button class="btn secondary" data-save-project="growth">Save project</button><div class="output hidden" id="growthOutput"></div></div></section>
+<section id="contentcreatorPage" class="hidden">
+<div class="panel"><h2>✍️ Content Creator</h2><p class="hint">Create a marketing draft for SYNTRIX or another project. This version uses built-in templates—no AI service or paid credits.</p>
+<div class="field"><label for="ccBrand">Product or project</label><input id="ccBrand" maxlength="60" value="SYNTRIX"></div>
+<div class="field"><label for="ccAudience">Who is it for?</label><input id="ccAudience" maxlength="100" placeholder="e.g. small creators and gamers"></div>
+<div class="field"><label for="ccGoal">Main goal</label><select id="ccGoal"><option value="launch">Announce a launch</option><option value="feature">Show a feature</option><option value="signup">Get people interested</option><option value="community">Build a community</option></select></div>
+<div class="field"><label for="ccPlatform">Platform</label><select id="ccPlatform"><option>YouTube Shorts</option><option>Instagram Reels</option><option>TikTok</option><option>YouTube Community</option><option>General social post</option></select></div>
+<div class="field"><label for="ccTone">Tone</label><select id="ccTone"><option>Energetic</option><option>Friendly</option><option>Bold</option><option>Informative</option></select></div>
+<button class="btn" id="makeContent">Create marketing draft</button> <button class="btn secondary" id="copyContent">Copy draft</button>
+<div class="output hidden" id="contentOutput"></div>
+<p class="small">Review every claim before publishing. The draft will not claim features that have not been built.</p></div>
+</section>
+<section id="creativestudioPage" class="hidden">
+<div class="panel"><h2>🎨 Creative Studio</h2><p class="hint">Make a simple promotional graphic in your browser and download it as a PNG. No image-generation service required.</p>
+<div class="editorgrid"><div>
+<div class="field"><label for="creativeHeadline">Main headline</label><input id="creativeHeadline" maxlength="48" value="CREATE WITHOUT LIMITS"></div>
+<div class="field"><label for="creativeSub">Supporting line</label><input id="creativeSub" maxlength="90" value="Your ideas. Your tools. Your next big thing."></div>
+<div class="field"><label for="creativeLabel">Small label</label><input id="creativeLabel" maxlength="24" value="INTRODUCING SYNTRIX"></div>
+<div class="field"><label for="creativeColor">Accent colour</label><input id="creativeColor" type="color" value="#65e6ff"></div>
+<div class="actions"><button class="btn" id="drawCreative">Update graphic</button><button class="btn secondary" id="downloadCreative">Download PNG</button></div>
+<p class="small">Square 1080 × 1080 graphic. Text and shapes are editable; uploaded photos and AI image generation are not included in this version.</p>
+</div><div class="stage"><canvas id="creativeCanvas" width="1080" height="1080" style="aspect-ratio:1/1"></canvas></div></div>
+</div></section>
+<section id="campaignplannerPage" class="hidden">
+<div class="panel"><h2>📅 Campaign Planner</h2><p class="hint">Build a simple publishing plan. Campaigns are saved in this browser only; nothing is automatically posted.</p>
+<div class="field"><label for="campaignName">Post or campaign name</label><input id="campaignName" maxlength="80" placeholder="e.g. SYNTRIX introduction Short"></div>
+<div class="field"><label for="campaignDate">Planned date</label><input id="campaignDate" type="date"></div>
+<div class="field"><label for="campaignPlatform">Platform</label><select id="campaignPlatform"><option>YouTube Shorts</option><option>YouTube Community</option><option>Instagram</option><option>TikTok</option><option>Other</option></select></div>
+<div class="field"><label for="campaignNotes">Notes</label><textarea id="campaignNotes" maxlength="300" placeholder="What will this post show?"></textarea></div>
+<button class="btn" id="addCampaign">Add to plan</button>
+<div class="sectionhead"><div><h2>Your publishing plan</h2><p>Upcoming and completed ideas you have added.</p></div></div>
+<div id="campaignList" class="ops-task-list"></div><p id="campaignEmpty" class="small">No planned posts yet.</p></div>
+</section>
+<section id="marketinganalyticsPage" class="hidden">
+<div class="panel"><h2>📊 Marketing Analytics</h2><p class="hint">Enter real results to track your marketing. No YouTube or social account is connected, so these numbers are manual.</p>
+<div class="ops-kpis">
+<div class="field"><label for="maViews">Views / reach</label><input id="maViews" type="number" min="0" step="1" placeholder="0"></div>
+<div class="field"><label for="maClicks">Link clicks</label><input id="maClicks" type="number" min="0" step="1" placeholder="0"></div>
+<div class="field"><label for="maFollowers">New followers</label><input id="maFollowers" type="number" min="0" step="1" placeholder="0"></div>
+</div><div class="field"><label for="maNotes">What did you publish?</label><input id="maNotes" maxlength="100" placeholder="e.g. SYNTRIX introduction Short"></div>
+<button class="btn" id="saveMarketingStats">Save results</button>
+<div class="grid ops-metrics" style="margin-top:18px">
+<div class="tool"><p>Click-through rate</p><h3 id="maCtr">—</h3></div>
+<div class="tool"><p>Views / reach</p><h3 id="maViewsTotal">0</h3></div>
+<div class="tool"><p>New followers</p><h3 id="maFollowersTotal">0</h3></div>
+</div><p class="small" id="maSavedNote">Numbers are stored on this device.</p></div>
+</section>
+<section id="marketgrowthPage" class="hidden">
+<div class="panel"><h2>🚀 Marketing Growth</h2><p class="hint">Get practical next steps based on the numbers you entered in Marketing Analytics and the campaigns you planned.</p>
+<button class="btn" id="makeMarketingGrowth">Analyse my marketing</button>
+<div class="output hidden" id="marketingGrowthOutput"></div>
+<p class="small">Suggestions use your manually entered data. This is not connected to live social analytics and does not guarantee growth.</p></div>
+</section>
 <section id="projectsPage" class="hidden"><div class="panel"><h2>My Projects</h2><p class="hint">Guest projects last for this tab session. Google-account projects are saved on this device; cloud sync is not enabled yet.</p><div id="projectList" class="grid"></div><p id="emptyProjects" class="small">No projects saved yet. Open a tool and press Save project.</p></div></section>
 <section id="hubPage" class="hidden"><div class="panel"><h2>Creator Hub</h2><p class="hint">Small improvements that make a real difference.</p><div class="grid">
 <div class="tool"><div class="symbol">🎯</div><h3>One video, one promise</h3><p>Make it clear what viewers will get by watching.</p></div>
@@ -157,7 +214,7 @@ let syntrixAuthClient = null;
 const AUTH_CONFIG_KEY = 'syntrix-auth-config-v1';
 const SYNTRIX_SUPABASE_URL = 'https://akdvrpqgwsopplsibefn.supabase.co';
 const SYNTRIX_SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_jMKeDhWfdQinR4lFY4T5Mg_Nn7sG9ma';
-const pages=['home','control','video','thumb','script','ideas','growth','hub','projects','profile'];const titles={profile:['Your profile.','Your SYNTRIX identity.'],control:['Run the business.','NIKO’s SYNTRIX command centre.'],projects:['Your projects.','Your saved work, all in one place on this device.'],home:['Make something great.','Your ideas deserve to get out there. Let’s make it happen.'],video:['Build your next video.','Bring your clips and your plan together.'],thumb:['Make them stop scrolling.','Design a thumbnail that makes the idea clear.'],script:['Find the story.','Turn a topic into a strong video structure.'],ideas:['Never run out of ideas.','A little inspiration goes a long way.'],growth:['Make your video clearer.','Improve the way you present your content.'],hub:['Keep levelling up.','A few useful creator lessons.']};
+const pages=['home','control','video','thumb','script','ideas','growth','hub','projects','profile','contentcreator','creativestudio','campaignplanner','marketinganalytics','marketgrowth'];const titles={contentcreator:['Create your message.','Draft marketing content with simple built-in templates.'],creativestudio:['Design your promotion.','Create a downloadable graphic in your browser.'],campaignplanner:['Plan your next post.','Organise campaigns and publishing dates.'],marketinganalytics:['Track real results.','Your manually entered marketing numbers.'],marketgrowth:['Find your next move.','Turn your marketing results into practical next steps.'],profile:['Your profile.','Your SYNTRIX identity.'],control:['Run the business.','NIKO’s SYNTRIX command centre.'],projects:['Your projects.','Your saved work, all in one place on this device.'],home:['Make something great.','Your ideas deserve to get out there. Let’s make it happen.'],video:['Build your next video.','Bring your clips and your plan together.'],thumb:['Make them stop scrolling.','Design a thumbnail that makes the idea clear.'],script:['Find the story.','Turn a topic into a strong video structure.'],ideas:['Never run out of ideas.','A little inspiration goes a long way.'],growth:['Make your video clearer.','Improve the way you present your content.'],hub:['Keep levelling up.','A few useful creator lessons.']};
 function showPage(p){pages.forEach(x=>document.getElementById(x+'Page').classList.toggle('hidden',x!==p));document.querySelectorAll('.nav').forEach(b=>b.classList.toggle('active',b.dataset.page===p));document.getElementById('pageTitle').textContent=titles[p][0];document.getElementById('pageSub').textContent=titles[p][1];if(p==='profile')loadProfile();window.scrollTo(0,0)}
 document.querySelectorAll('[data-page]').forEach(b=>b.addEventListener('click',()=>showPage(b.dataset.page)));document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>showPage(b.dataset.go)));
 function toast(s){let t=document.getElementById('toast');t.textContent=s;t.style.display='block';setTimeout(()=>t.style.display='none',2200)}
@@ -170,6 +227,87 @@ document.getElementById('copyScript').onclick=()=>navigator.clipboard.writeText(
 const ideaBank={Gaming:['I let a random challenge decide how I play','Can I win using only the worst item?','I tried the game everyone says is impossible','Three beginner mistakes I finally stopped making','The most unexpected thing happened in one match'],Music:['I wrote a song using only three notes','Turning a random sound into a guitar riff','Learning a new riff in one practice session','Acoustic vs electric: same riff, different vibe','Building a song from a tiny melody'],Challenges:['Can I complete this with one rule?','I let a wheel choose every decision','A beginner tries the expert challenge','How much can I learn in 20 minutes?','The rematch: did I actually improve?'],Tech:['I tested a tool so you do not have to','Can a free app do this job?','My simple creator setup','One small tech trick that saves time','I compared two tools for one task'],Education:['Five things I wish I knew earlier','Explain this topic using everyday objects','The quick guide I needed as a beginner','Common mistakes and how to avoid them','Can I learn this in 15 minutes?'],Anything:['A tiny experiment with a surprising result','I tried something completely new','A beginner attempts an expert task','Three things I learned this week','The honest before-and-after']};
 document.getElementById('makeIdeas').onclick=()=>{let a=[...ideaBank[document.getElementById('ideaType').value]].sort(()=>Math.random()-.5);let o=document.getElementById('ideasOutput');o.textContent=a.map((x,i)=>(i+1)+'. '+x).join('\n\n');o.classList.remove('hidden')};
 document.getElementById('makeGrowth').onclick=()=>{let t=document.getElementById('growthTopic').value.trim();if(!t){toast('Describe your video first');return}let short=t.length>65?t.slice(0,62).trim()+'…':t;let o=document.getElementById('growthOutput');o.textContent='TITLE IDEAS\n• I Tried '+short+'\n• What Happens When You '+short+'?\n• The Result Surprised Me: '+short+'\n\nDESCRIPTION STARTER\nToday I’m '+t+'. Watch to see what happens, what I learned, and whether I’d try it again.\n\nHOOK IDEA\nStart with the most interesting result, then rewind and show how you got there.\n\nTIP\nChoose the title that accurately matches the video. Avoid promising something the video does not deliver.';o.classList.remove('hidden')};
+
+// --- SYNTRIX Marketing tools: local templates, graphics and tracking ---
+const campaignStoreKey='syntrix-marketing-campaigns-v1';
+const marketingStatsKey='syntrix-marketing-stats-v1';
+function readCampaigns(){try{return JSON.parse(localStorage.getItem(campaignStoreKey)||'[]')}catch(e){return []}}
+function saveCampaigns(items){localStorage.setItem(campaignStoreKey,JSON.stringify(items));renderCampaigns()}
+function renderCampaigns(){
+ const items=readCampaigns().sort((a,b)=>a.date.localeCompare(b.date));
+ const list=document.getElementById('campaignList'),empty=document.getElementById('campaignEmpty');list.innerHTML='';
+ empty.classList.toggle('hidden',items.length>0);
+ items.forEach((item,index)=>{
+  const row=document.createElement('div');row.className='ops-task';
+  const copy=document.createElement('span');copy.textContent=item.date+' · '+item.platform+' — '+item.name+(item.notes?' · '+item.notes:'');
+  const remove=document.createElement('button');remove.textContent='Remove';remove.onclick=()=>{const all=readCampaigns();all.splice(index,1);saveCampaigns(all)};
+  row.append(copy,remove);list.append(row);
+ });
+}
+function loadMarketingStats(){
+ let d={};try{d=JSON.parse(localStorage.getItem(marketingStatsKey)||'{}')}catch(e){}
+ document.getElementById('maViews').value=d.views??'';
+ document.getElementById('maClicks').value=d.clicks??'';
+ document.getElementById('maFollowers').value=d.followers??'';
+ document.getElementById('maNotes').value=d.notes||'';
+ document.getElementById('maViewsTotal').textContent=Number(d.views||0).toLocaleString();
+ document.getElementById('maFollowersTotal').textContent=Number(d.followers||0).toLocaleString();
+ document.getElementById('maCtr').textContent=Number(d.views)>0?(100*Number(d.clicks||0)/Number(d.views)).toFixed(1)+'%':'—';
+}
+document.getElementById('makeContent').onclick=()=>{
+ const brand=document.getElementById('ccBrand').value.trim()||'your project',audience=document.getElementById('ccAudience').value.trim()||'creators',goal=document.getElementById('ccGoal').value,platform=document.getElementById('ccPlatform').value,tone=document.getElementById('ccTone').value;
+ const hooks={launch:'Something new is taking shape.',feature:'Here is one thing you can do with '+brand+'.',signup:'Looking for a simpler way to bring your ideas together?',community:'Creators do better when they build together.'};
+ const goals={launch:'We are introducing '+brand+'—a creator project built to help turn ideas into finished work.',feature:brand+' includes tools designed to help '+audience+' create and organise their work.',signup:'Explore '+brand+' and see whether its creator tools fit the way you work.',community:'Follow along as '+brand+' grows, and share what tools would help you most.'};
+ const cta={launch:'Take a look and follow the journey.',feature:'See how the feature works and tell us what you think.',signup:'Find out more and decide if it is right for you.',community:'Join the conversation and share your ideas.'};
+ const out='PLATFORM: '+platform+'\nTONE: '+tone+'\n\nHOOK\n'+hooks[goal]+'\n\nMAIN MESSAGE\n'+goals[goal]+'\n\nCALL TO ACTION\n'+cta[goal]+'\n\nCAPTION\n'+brand+': made with '+audience+' in mind. Follow the journey as we build, test and improve.\n\nCHECK BEFORE POSTING\nReplace any wording that does not match the product as it works today. Do not promise features that are not live.';
+ const el=document.getElementById('contentOutput');el.textContent=out;el.classList.remove('hidden');
+};
+document.getElementById('copyContent').onclick=()=>{const t=document.getElementById('contentOutput').textContent;if(!t){toast('Create a draft first');return}navigator.clipboard.writeText(t).then(()=>toast('Draft copied!')).catch(()=>toast('Copy is unavailable in this browser'))};
+document.getElementById('addCampaign').onclick=()=>{
+ const name=document.getElementById('campaignName').value.trim(),date=document.getElementById('campaignDate').value;
+ if(!name||!date){toast('Add a name and date first');return}
+ const items=readCampaigns();items.push({name,date,platform:document.getElementById('campaignPlatform').value,notes:document.getElementById('campaignNotes').value.trim()});
+ saveCampaigns(items);document.getElementById('campaignName').value='';document.getElementById('campaignNotes').value='';toast('Added to your plan!');
+};
+document.getElementById('saveMarketingStats').onclick=()=>{
+ const d={views:Math.max(0,Number(document.getElementById('maViews').value)||0),clicks:Math.max(0,Number(document.getElementById('maClicks').value)||0),followers:Math.max(0,Number(document.getElementById('maFollowers').value)||0),notes:document.getElementById('maNotes').value.trim()};
+ localStorage.setItem(marketingStatsKey,JSON.stringify(d));loadMarketingStats();document.getElementById('maSavedNote').textContent='Saved on this device. Enter new numbers whenever you have an update.';toast('Marketing results saved!');
+};
+const creativeCanvas=document.getElementById('creativeCanvas'),creativeCtx=creativeCanvas.getContext('2d');
+function drawCreative(){
+ const w=creativeCanvas.width,h=creativeCanvas.height,accent=document.getElementById('creativeColor').value;
+ const grad=creativeCtx.createLinearGradient(0,0,w,h);grad.addColorStop(0,'#101a3b');grad.addColorStop(.6,'#171a38');grad.addColorStop(1,'#302052');
+ creativeCtx.fillStyle=grad;creativeCtx.fillRect(0,0,w,h);
+ creativeCtx.save();creativeCtx.strokeStyle=accent+'35';creativeCtx.lineWidth=3;
+ for(let i=0;i<9;i++){creativeCtx.beginPath();creativeCtx.arc(850,220,90+i*55,0,Math.PI*2);creativeCtx.stroke()}
+ creativeCtx.restore();
+ creativeCtx.fillStyle=accent;creativeCtx.fillRect(82,110,190,12);
+ creativeCtx.fillStyle='#c5d0ed';creativeCtx.font='800 28px Arial';creativeCtx.fillText((document.getElementById('creativeLabel').value||'SYNTRIX').toUpperCase(),85,180);
+ creativeCtx.fillStyle='#fff';creativeCtx.font='900 86px Arial';
+ const words=(document.getElementById('creativeHeadline').value||'YOUR HEADLINE').toUpperCase().split(' ');let line='',y=470;
+ for(const word of words){const test=line+word+' ';if(creativeCtx.measureText(test).width>900){creativeCtx.fillText(line,85,y);line=word+' ';y+=105}else line=test}
+ if(line)creativeCtx.fillText(line,85,y);
+ creativeCtx.fillStyle='#c5d0ed';creativeCtx.font='32px Arial';const sub=document.getElementById('creativeSub').value;creativeCtx.fillText(sub,88,850,900);
+ creativeCtx.fillStyle=accent;creativeCtx.fillRect(85,930,150,10);
+ creativeCtx.fillStyle='#aebbd9';creativeCtx.font='700 20px Arial';creativeCtx.fillText('SYNTRIX  /  THE CREATOR PLATFORM',85,990);
+}
+['creativeHeadline','creativeSub','creativeLabel','creativeColor'].forEach(id=>document.getElementById(id).addEventListener('input',drawCreative));
+document.getElementById('drawCreative').onclick=drawCreative;
+document.getElementById('downloadCreative').onclick=()=>{drawCreative();const a=document.createElement('a');a.download='syntrix-promo-graphic.png';a.href=creativeCanvas.toDataURL('image/png');a.click()};
+document.getElementById('makeMarketingGrowth').onclick=()=>{
+ const d=(()=>{try{return JSON.parse(localStorage.getItem(marketingStatsKey)||'{}')}catch(e){return {}}})();
+ const campaigns=readCampaigns(),views=Number(d.views)||0,clicks=Number(d.clicks)||0,followers=Number(d.followers)||0,ctr=views?100*clicks/views:0;
+ const tips=[];
+ if(!views)tips.push('Start by recording views or reach for your next post. You need a baseline before judging performance.');
+ else if(ctr<1)tips.push('Your click-through rate is below 1%. Try a clearer call to action and make the next step obvious.');
+ else tips.push('Your click-through rate is '+ctr.toFixed(1)+'%. Compare it with your next post to see whether the message is improving.');
+ if(views>0&&followers===0)tips.push('You have recorded views but no new followers. Test a simple reason to follow, such as a clear series or regular update.');
+ if(campaigns.length<2)tips.push('Plan a small sequence of at least two posts: an introduction, followed by a real feature demonstration.');
+ else tips.push('You have '+campaigns.length+' planned posts. Keep the schedule realistic and review the results after each one.');
+ if(clicks>views)tips.push('Your click count is higher than your views/reach entry. Check that both numbers cover the same period and source.');
+ const out=document.getElementById('marketingGrowthOutput');out.textContent='YOUR MARKETING SNAPSHOT\nViews / reach: '+views+'\nLink clicks: '+clicks+'\nClick-through rate: '+(views?ctr.toFixed(1)+'%':'Not available')+'\nNew followers: '+followers+'\nPlanned posts: '+campaigns.length+'\n\nSUGGESTED NEXT STEPS\n'+tips.map((x,i)=>(i+1)+'. '+x).join('\n\n');out.classList.remove('hidden');
+};
+renderCampaigns();loadMarketingStats();drawCreative();
 
 const PROJECT_KEY='syntrix-projects-v1';
 function getProjects(){try{return JSON.parse(localStorage.getItem(PROJECT_KEY)||'[]')}catch(e){return []}}
