@@ -212,7 +212,7 @@
 <div class="tool"><div class="symbol">🖼️</div><h3>Thumbnail at phone size</h3><p>If the main idea is hard to see when small, simplify it.</p></div>
 <div class="tool"><div class="symbol">📅</div><h3>Make a realistic schedule</h3><p>Consistency you can maintain beats a schedule you quit.</p></div>
 </div></div></section>
-</main></div><section id="onboardBackdrop" class="onboard-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="onboardTitle"><div class="onboard-card"><div class="onboard-top"><span>SYNTRIX · QUICK SETUP</span><span id="onboardStepLabel">STEP 1 OF 3</span></div><div class="onboard-progress"><span id="onboardProgress" style="width:33.33%"></span></div><h2 id="onboardTitle">What brings you to SYNTRIX?</h2><p id="onboardDesc" class="onboard-desc">Choose what you'd most like to do here.</p><div id="onboardOptions" class="onboard-options"></div><p id="onboardError" class="onboard-error" role="status"></p><div class="onboard-actions"><button id="onboardBack" class="btn secondary" type="button">Back</button><button id="onboardNext" class="btn" type="button">Continue →</button></div></div></section><div class="toast" id="toast"></div>
+</main></div><section id="onboardBackdrop" class="onboard-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="onboardTitle"><div class="onboard-card"><div class="onboard-top"><span>SYNTRIX · QUICK SETUP</span><span id="onboardStepLabel">STEP 1 OF 3</span></div><div class="onboard-progress"><span id="onboardProgress" style="width:33.33%"></span></div><h2 id="onboardTitle">What brings you to SYNTRIX?</h2><p id="onboardDesc" class="onboard-desc">Choose what you'd most like to do here.</p><div id="onboardOptions" class="onboard-options"></div><p id="onboardError" class="onboard-error" role="status"></p><div class="onboard-actions"><button id="onboardBack" class="btn secondary" type="button">Back</button><button id="onboardNext" class="btn" type="button">Continue →</button></div><button id="onboardSkip" class="btn secondary" type="button" style="width:100%;margin-top:12px">Skip for now - open my dashboard</button></div></section><div class="toast" id="toast"></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 let syntrixUser = null;
@@ -254,7 +254,8 @@ function maybeShowOnboarding(user){
  const provider=user.app_metadata?.provider;
  const providers=user.app_metadata?.providers||[];
  const isGoogle=provider==="google"||providers.includes("google");
- if(isGoogle&&!user.user_metadata?.syntrix_onboarding_completed)showOnboarding();
+ const skipped=localStorage.getItem("syntrix-onboarding-skipped-"+user.id)==="1";
+ if(isGoogle&&!user.user_metadata?.syntrix_onboarding_completed&&!skipped)showOnboarding();
  else hideOnboarding();
 }
 document.getElementById("onboardOptions").addEventListener("click",e=>{
@@ -265,6 +266,11 @@ document.getElementById("onboardOptions").addEventListener("click",e=>{
  document.getElementById("onboardError").textContent="";renderOnboarding();
 });
 document.getElementById("onboardBack").onclick=()=>{if(onboardingStep>0){onboardingStep--;renderOnboarding()}};
+document.getElementById("onboardSkip").onclick=()=>{
+ if(syntrixUser?.id)localStorage.setItem("syntrix-onboarding-skipped-"+syntrixUser.id,"1");
+ hideOnboarding();
+ toast("Setup skipped - your SYNTRIX dashboard is ready.");
+};
 document.getElementById("onboardNext").onclick=async()=>{
  if(onboardingSaving)return;
  const q=onboardingQuestions[onboardingStep],answer=onboardingAnswers[q.key];
