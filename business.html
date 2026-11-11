@@ -69,6 +69,10 @@ button{font:inherit;color:inherit;cursor:pointer}.shell{min-height:100vh;display
 .preview-line{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid #ffffff12;font-size:11px}
 .preview-line small{display:block;color:var(--muted);font-size:10px}
 .preview-ok{color:var(--green)}.preview-short{color:#ffbd83}
+
+#autoSavingsCard input:disabled,#autoSavingsCard select:disabled{opacity:.5;cursor:not-allowed}
+#autoSavingsCard input:not(:disabled),#autoSavingsCard select:not(:disabled){border-color:#56658c}
+.savings-preview{border:1px solid #526b99;background:#14223a;border-radius:12px;padding:11px;margin-top:10px}
 </style>
 </head>
 <body>
@@ -220,19 +224,50 @@ button{font:inherit;color:inherit;cursor:pointer}.shell{min-height:100vh;display
    </form>
   </article>
  </div>
+
+ <article class="card" id="autoSavingsCard" style="margin-top:15px">
+  <div class="cardtitle"><div><h3>3. Optional savings</h3><div class="muted">Set aside money only when you turn this on</div></div><span class="pill-demo">OFF BY DEFAULT</span></div>
+  <label style="display:flex;align-items:center;gap:10px;color:#f4f5ff;font-size:12px;margin:10px 0 15px">
+   <input id="autoSavingsEnabled" type="checkbox" style="accent-color:var(--blue);width:17px;height:17px">
+   Enable automatic savings allocation
+  </label>
+  <div class="finance-two" style="margin-top:0">
+   <div class="form-stack">
+    <label>How much should be saved?
+     <select id="autoSavingsMode"><option value="fixed">Fixed amount from each income</option><option value="percentage">Percentage of each income</option></select>
+    </label>
+    <label id="autoSavingsAmountLabel">Amount to save (zł)
+     <input id="autoSavingsAmount" type="number" min="0.01" step="0.01" placeholder="100" disabled>
+    </label>
+   </div>
+   <div class="form-stack">
+    <label>Where should savings go? (destination label only)
+     <input id="autoSavingsDestination" maxlength="80" placeholder="e.g. Business savings account" disabled>
+    </label>
+    <label>When should savings be allocated?
+     <select id="autoSavingsPriority" disabled>
+      <option value="after" selected>After regular bills (default)</option>
+      <option value="before">Before regular bills</option>
+     </select>
+    </label>
+   </div>
+  </div>
+  <div class="finance-note">Savings are optional, not a bill. By default, SYNTRIX plans regular bills first and only then allocates the chosen savings amount. If there is not enough left, it shows how much could actually be saved.</div>
+ </article>
+
  <article class="card" style="margin-top:15px">
-  <div class="cardtitle"><div><h3>3. Your payment rules</h3><div class="muted">Review recipients, destinations, amounts and due dates</div></div><span class="pill-demo" id="autoRuleCount">0 RULES</span></div>
+  <div class="cardtitle"><div><h3>4. Your payment rules</h3><div class="muted">Review recipients, destinations, amounts and due dates</div></div><span class="pill-demo" id="autoRuleCount">0 RULES</span></div>
   <div id="autoBillList" class="money-list"><div class="empty-ledger">No payment rules yet. Add a bill above.</div></div>
  </article>
  <div class="finance-two">
   <article class="card">
-   <div class="cardtitle"><div><h3>4. Save your plan</h3><div class="muted">Keep your rules with your SYNTRIX account</div></div><span class="pill-demo" id="autoCloudStatus">CHECKING ACCOUNT…</span></div>
+   <div class="cardtitle"><div><h3>5. Save your plan</h3><div class="muted">Keep your rules with your SYNTRIX account</div></div><span class="pill-demo" id="autoCloudStatus">CHECKING ACCOUNT…</span></div>
    <p class="muted">Signed-in users can save the schedule and bill rules to their SYNTRIX account. Guest plans stay in this browser. No bank details or card credentials are stored.</p>
    <button class="primary" id="saveAutomation" type="button">Save automation plan</button>
    <div id="autoSaveFeedback" class="muted" aria-live="polite" style="margin-top:10px"></div>
   </article>
   <article class="card">
-   <div class="cardtitle"><div><h3>5. Preview the next cycle</h3><div class="muted">See how the expected income would be allocated</div></div><span class="pill-demo">CALCULATION ONLY</span></div>
+   <div class="cardtitle"><div><h3>6. Preview the next cycle</h3><div class="muted">See how the expected income would be allocated</div></div><span class="pill-demo">CALCULATION ONLY</span></div>
    <button class="primary" id="previewAutomation" type="button">Preview next income cycle</button>
    <div id="autoPreview" class="muted" aria-live="polite" style="margin-top:12px">Your allocation preview will appear here.</div>
   </article>
@@ -366,6 +401,22 @@ function localDateString(date){const y=date.getFullYear();const m=String(date.ge
 function moneyLabel(value){return Number(value).toLocaleString('pl-PL',{minimumFractionDigits:2,maximumFractionDigits:2})+' zł'}
 function showCustomDays(){const field=document.getElementById('customDaysLabel');const freq=document.querySelector('#autoIncomeForm [name="frequency"]').value;field.style.display=freq==='custom'?'grid':'none'}
 document.querySelector('#autoIncomeForm [name="frequency"]').addEventListener('change',showCustomDays);
+function syncSavingsFields(){
+ const enabled=document.getElementById('autoSavingsEnabled').checked;
+ const mode=document.getElementById('autoSavingsMode');
+ const amount=document.getElementById('autoSavingsAmount');
+ const destination=document.getElementById('autoSavingsDestination');
+ const priority=document.getElementById('autoSavingsPriority');
+ [mode,amount,destination,priority].forEach(el=>el.disabled=!enabled);
+ amount.max=mode.value==='percentage'?'100':'';
+ document.getElementById('autoSavingsAmountLabel').firstChild.textContent=mode.value==='percentage'?'Percentage of income (%)':'Amount to save (zł)';
+ amount.required=enabled;destination.required=enabled;
+}
+document.getElementById('autoSavingsEnabled').addEventListener('change',syncSavingsFields);
+document.getElementById('autoSavingsMode').addEventListener('change',syncSavingsFields);
+document.getElementById('autoSavingsPriority').value='after';
+syncSavingsFields();
+
 function renderAutoBills(){
  const list=document.getElementById('autoBillList');list.replaceChildren();
  document.getElementById('autoRuleCount').textContent=autoBills.length+' RULE'+(autoBills.length===1?'':'S');
@@ -398,7 +449,17 @@ function readAutoPlan(){
  const frequency=String(f.get('frequency'));
  const customDays=Number(f.get('customDays'));
  if(frequency==='custom'&&(!Number.isInteger(customDays)||customDays<1||customDays>365))return null;
- return {income:{source:String(f.get('source')).trim(),frequency,amount,nextDate,customDays:frequency==='custom'?customDays:null},bills:autoBills};
+ const savingsEnabled=document.getElementById('autoSavingsEnabled').checked;
+ const savingsMode=document.getElementById('autoSavingsMode').value;
+ const savingsAmount=Number(document.getElementById('autoSavingsAmount').value);
+ const savingsDestination=document.getElementById('autoSavingsDestination').value.trim();
+ const savingsPriority=document.getElementById('autoSavingsPriority').value;
+ if(savingsEnabled&&(!Number.isFinite(savingsAmount)||savingsAmount<=0||(savingsMode==='percentage'&&savingsAmount>100)||!savingsDestination))return null;
+ return {
+  income:{source:String(f.get('source')).trim(),frequency,amount,nextDate,customDays:frequency==='custom'?customDays:null},
+  bills:autoBills,
+  savings:{enabled:savingsEnabled,mode:savingsMode,amount:savingsEnabled?savingsAmount:0,destination:savingsDestination,priority:savingsPriority}
+ };
 }
 const BUSINESS_SUPABASE_URL='https://akdvrpqgwsopplsibefn.supabase.co';
 const BUSINESS_SUPABASE_PUBLISHABLE_KEY='sb_publishable_jMKeDhWfdQinR4lFY4T5Mg_NnN7sG9ma';
@@ -410,6 +471,13 @@ function applyAutoPlanData(p){
  const f=document.getElementById('autoIncomeForm');
  ['source','frequency','amount','nextDate','customDays'].forEach(k=>{if(p.income[k]!==undefined&&f.elements[k])f.elements[k].value=p.income[k]});
  autoBills=p.bills.filter(b=>b&&typeof b.what==='string'&&typeof b.recipient==='string'&&typeof b.destination==='string'&&Number(b.amount)>0);
+ const savings=p.savings||{enabled:false,mode:'fixed',amount:0,destination:'',priority:'after'};
+ document.getElementById('autoSavingsEnabled').checked=!!savings.enabled;
+ document.getElementById('autoSavingsMode').value=savings.mode==='percentage'?'percentage':'fixed';
+ document.getElementById('autoSavingsAmount').value=savings.amount||'';
+ document.getElementById('autoSavingsDestination').value=savings.destination||'';
+ document.getElementById('autoSavingsPriority').value=savings.priority==='before'?'before':'after';
+ syncSavingsFields();
  showCustomDays();renderAutoBills();return true;
 }
 async function initBusinessCloud(){
@@ -498,9 +566,24 @@ function runAllocationPreview(){
  const nextIncome=parseLocalDate(plan.income.nextDate);if(!nextIncome){notify('Choose the next expected income date.');return}
  const today=parseLocalDate(localDateString(new Date()));
  const due=plan.bills.map(b=>({bill:b,date:nextBillDate(b,today)})).filter(x=>x.date&&x.date<=nextIncome).sort((a,b)=>a.bill.priority-b.bill.priority||a.date-b.date);
- let remaining=plan.income.amount;let allocated=0;
+ let remaining=plan.income.amount;let allocated=0;let savingsAllocated=0;
  const wrap=document.getElementById('autoPreview');wrap.replaceChildren();
- const intro=document.createElement('div');intro.className='finance-note';intro.textContent='Expected '+moneyLabel(plan.income.amount)+' from '+plan.income.source+' on '+plan.income.nextDate+'. '+(due.length?'Bills due by then are listed below in priority order.':'No saved bills are due before this income date.');wrap.append(intro);
+ const savings=plan.savings||{enabled:false,mode:'fixed',amount:0,destination:'',priority:'after'};
+ const savingsTarget=savings.enabled?(savings.mode==='percentage'?plan.income.amount*savings.amount/100:savings.amount):0;
+ const intro=document.createElement('div');intro.className='finance-note';intro.textContent='Expected '+moneyLabel(plan.income.amount)+' from '+plan.income.source+' on '+plan.income.nextDate+'. '+(due.length?'Bills due by then are listed in priority order.':'No saved bills are due before this income date.');wrap.append(intro);
+ function addSavingsLine(){
+  if(!savings.enabled)return;
+  const line=document.createElement('div');line.className='preview-line savings-preview';
+  const left=document.createElement('div');const title=document.createElement('b');title.textContent='Savings allocation';const note=document.createElement('small');note.textContent='Destination: '+savings.destination+' · '+(savings.mode==='percentage'?savings.amount+'% of income':'Fixed amount');left.append(title,note);
+  const right=document.createElement('div');right.style.textAlign='right';right.textContent=moneyLabel(savingsTarget);
+  const state=document.createElement('small');
+  const available=Math.max(0,remaining);savingsAllocated=Math.min(available,savingsTarget);remaining-=savingsAllocated;
+  if(savingsAllocated>=savingsTarget){state.className='preview-ok';state.textContent='Planned after bills'}
+  else if(savingsAllocated>0){state.className='preview-short';state.textContent='Partially funded — income is needed for bills first'}
+  else{state.className='preview-short';state.textContent='Not funded — bills use the available income'}
+  right.append(state);line.append(left,right);wrap.append(line);
+ }
+ if(savings.enabled&&savings.priority==='before')addSavingsLine();
  due.forEach(x=>{
   const line=document.createElement('div');line.className='preview-line';
   const left=document.createElement('div');const title=document.createElement('b');title.textContent=x.bill.what;const note=document.createElement('small');note.textContent='To: '+x.bill.recipient+' · '+x.bill.destination+' · Due '+localDateString(x.date);left.append(title,note);
@@ -510,17 +593,15 @@ function runAllocationPreview(){
   else{state.className='preview-short';state.textContent='Not enough planned income'}
   right.append(state);line.append(left,right);wrap.append(line);
  });
- const totals=document.createElement('div');totals.className='finance-note';totals.textContent='Planned bills: '+moneyLabel(allocated)+' · Left after planned bills: '+moneyLabel(remaining)+'. This is a forecast only; no payment is initiated.';wrap.append(totals);
+ if(savings.enabled&&savings.priority!=='before')addSavingsLine();
+ const totals=document.createElement('div');totals.className='finance-note';totals.textContent='Planned bills: '+moneyLabel(allocated)+' · Savings allocated: '+moneyLabel(savingsAllocated)+' · Left unallocated: '+moneyLabel(remaining)+'. This is a forecast only; no payment or savings transfer is initiated.';wrap.append(totals);
 }
 document.getElementById('previewAutomation').addEventListener('click',runAllocationPreview);
 function loadAutoPlan(){
  try{
   const raw=localStorage.getItem(AUTO_PLAN_KEY);if(!raw)return;
   const p=JSON.parse(raw);if(!p||!p.income||!Array.isArray(p.bills))return;
-  const f=document.getElementById('autoIncomeForm');
-  ['source','frequency','amount','nextDate','customDays'].forEach(k=>{if(p.income[k]!==undefined&&f.elements[k])f.elements[k].value=p.income[k]});
-  autoBills=p.bills.filter(b=>b&&typeof b.what==='string'&&typeof b.recipient==='string'&&typeof b.destination==='string'&&Number(b.amount)>0);
-  showCustomDays();renderAutoBills();
+  applyAutoPlanData(p);
   document.getElementById('autoSaveFeedback').textContent='Loaded the plan saved on this device. Review it before making changes.';
  }catch(err){document.getElementById('autoSaveFeedback').textContent='A saved plan could not be read in this browser.'}
 }
