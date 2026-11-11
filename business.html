@@ -211,7 +211,7 @@ button{font:inherit;color:inherit;cursor:pointer}.shell{min-height:100vh;display
     <label>What is the payment for?<input name="what" maxlength="70" placeholder="e.g. Website hosting" required></label>
     <label>How much must be paid? (zł)<input name="amount" type="number" min="0.01" step="0.01" placeholder="49" required></label>
     <label>Who should receive it?<input name="recipient" maxlength="80" placeholder="e.g. Hosting Company Ltd." required></label>
-    <label>Where should it go? (destination label only)<input name="destination" maxlength="80" placeholder="e.g. Saved business bank account" required></label>
+    <label>Where should it go? (use a label, never an account number)<input name="destination" maxlength="80" placeholder="e.g. Business bank account" required></label>
     <label>Payment route<select name="route"><option value="Bank transfer">Bank transfer</option><option value="Debit card">Debit card</option><option value="Payment provider">Payment provider</option></select></label>
     <label>How often is it due?<select name="frequency"><option value="once">One time</option><option value="weekly">Every week</option><option value="monthly" selected>Every month</option><option value="quarterly">Every 3 months</option><option value="yearly">Every year</option></select></label>
     <label>Next due date<input name="dueDate" type="date" required></label>
@@ -226,8 +226,8 @@ button{font:inherit;color:inherit;cursor:pointer}.shell{min-height:100vh;display
  </article>
  <div class="finance-two">
   <article class="card">
-   <div class="cardtitle"><div><h3>4. Save your plan</h3><div class="muted">Keep the rules on this device</div></div><span class="pill-demo">LOCAL DEMO</span></div>
-   <p class="muted">Saving keeps your income schedule and bill instructions in this browser. It does not connect to a bank, debit card or payment service.</p>
+   <div class="cardtitle"><div><h3>4. Save your plan</h3><div class="muted">Keep your rules with your SYNTRIX account</div></div><span class="pill-demo" id="autoCloudStatus">CHECKING ACCOUNT…</span></div>
+   <p class="muted">Signed-in users can save the schedule and bill rules to their SYNTRIX account. Guest plans stay in this browser. No bank details or card credentials are stored.</p>
    <button class="primary" id="saveAutomation" type="button">Save automation plan</button>
    <div id="autoSaveFeedback" class="muted" aria-live="polite" style="margin-top:10px"></div>
   </article>
@@ -237,7 +237,7 @@ button{font:inherit;color:inherit;cursor:pointer}.shell{min-height:100vh;display
    <div id="autoPreview" class="muted" aria-live="polite" style="margin-top:12px">Your allocation preview will appear here.</div>
   </article>
  </div>
- <div class="finance-note" style="margin-top:15px"><b>Important:</b> This prototype can save rules and calculate an allocation plan, but it cannot send money or initiate automatic transfers. A live version would need a regulated payment provider, a properly authorised account holder, secure account connections and explicit approval of real payments. Do not enter card numbers, PINs, CVVs, passwords or full bank-account details here.</div>
+ <div class="finance-note" style="margin-top:15px"><b>Important:</b> SYNTRIX can securely save your plan and calculate how expected income could be allocated to bills. This version does not monitor real deposits or send money. Real transfers require a regulated provider and an eligible, authorised account holder. Do not enter card numbers, PINs, CVVs, passwords or full bank-account details here.</div>
 </section>
 <section class="section" id="profile">
  <div class="welcome"><div class="eyebrow">YOUR SYNTRIX IDENTITY</div><h2>Profile and business details</h2><p>Keep the details that appear across your business workspace up to date.</p></div>
@@ -260,6 +260,7 @@ button{font:inherit;color:inherit;cursor:pointer}.shell{min-height:100vh;display
  </div>
 </section>
 </main></div><div class="toast" id="toast">Prototype interaction</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 const titles={overview:['Business overview','A clearer view of how your business is doing.'],analytics:['Analytics','Understand performance and spot opportunities.'],customers:['Customers','Keep customer relationships organised.'],services:['Services','Manage what your business offers.'],invoices:['Invoices','Keep payments and paperwork in order.'],team:['Team','Bring your people and work together.'],finance:['Money','Track income, expenses and planned payments.'],automation:['Money automation','Set an income schedule and organise upcoming bills.'],profile:['Profile','Manage your personal and business details.'],settings:['Settings','Control your business workspace.']};
 function go(page){document.querySelectorAll('.section').forEach(s=>s.classList.toggle('active',s.id===page));document.querySelectorAll('.navbtn').forEach(b=>b.classList.toggle('active',b.dataset.page===page));document.getElementById('pageTitle').textContent=titles[page][0];document.getElementById('pageSub').textContent=titles[page][1];}
@@ -399,13 +400,77 @@ function readAutoPlan(){
  if(frequency==='custom'&&(!Number.isInteger(customDays)||customDays<1||customDays>365))return null;
  return {income:{source:String(f.get('source')).trim(),frequency,amount,nextDate,customDays:frequency==='custom'?customDays:null},bills:autoBills};
 }
-function saveAutoPlan(showMessage=true){
+const BUSINESS_SUPABASE_URL='https://akdvrpqgwsopplsibefn.supabase.co';
+const BUSINESS_SUPABASE_PUBLISHABLE_KEY='sb_publishable_jMKeDhWfdQinR4lFY4T5Mg_NnN7sG9ma';
+const BUSINESS_AUTH_CONFIG_KEY='syntrix-auth-config-v1';
+let businessSupabase=null,businessUser=null,businessCloudInit=null;
+function setCloudStatus(message){const el=document.getElementById('autoCloudStatus');if(el)el.textContent=message}
+function applyAutoPlanData(p){
+ if(!p||!p.income||!Array.isArray(p.bills))return false;
+ const f=document.getElementById('autoIncomeForm');
+ ['source','frequency','amount','nextDate','customDays'].forEach(k=>{if(p.income[k]!==undefined&&f.elements[k])f.elements[k].value=p.income[k]});
+ autoBills=p.bills.filter(b=>b&&typeof b.what==='string'&&typeof b.recipient==='string'&&typeof b.destination==='string'&&Number(b.amount)>0);
+ showCustomDays();renderAutoBills();return true;
+}
+async function initBusinessCloud(){
+ try{
+  if(!window.supabase?.createClient){setCloudStatus('LOCAL ONLY');return}
+  let saved={};try{saved=JSON.parse(localStorage.getItem(BUSINESS_AUTH_CONFIG_KEY)||'{}')}catch(_){}
+  const url=saved.url||BUSINESS_SUPABASE_URL;
+  const key=saved.anon||BUSINESS_SUPABASE_PUBLISHABLE_KEY;
+  businessSupabase=window.supabase.createClient(url,key);
+  const {data,error}=await businessSupabase.auth.getSession();
+  if(error)throw error;
+  businessUser=data.session?.user||null;
+  if(!businessUser){setCloudStatus('LOCAL ONLY');document.getElementById('autoSaveFeedback').textContent='Guest mode: this plan can be saved in this browser. Sign in to SYNTRIX first to sync it to your account.';return}
+  setCloudStatus('ACCOUNT SYNC');
+  const result=await businessSupabase.from('business_automation_plans').select('plan,updated_at').eq('user_id',businessUser.id).maybeSingle();
+  if(result.error)throw result.error;
+  if(result.data?.plan){
+   applyAutoPlanData(result.data.plan);
+   try{localStorage.setItem(AUTO_PLAN_KEY,JSON.stringify(result.data.plan))}catch(_){}
+   document.getElementById('autoSaveFeedback').textContent='Your latest automation plan was loaded from your signed-in SYNTRIX account.';
+  }else{
+   document.getElementById('autoSaveFeedback').textContent='Signed in. Save your plan to sync it to your SYNTRIX account.';
+  }
+  setCloudStatus('CLOUD SYNC ON');
+ }catch(err){
+  businessUser=null;setCloudStatus('LOCAL ONLY');
+  document.getElementById('autoSaveFeedback').textContent='Account sync is unavailable right now. You can still save a local copy. '+(err?.message||'');
+ }
+}
+async function persistAutoPlan(plan){
+ if(!businessSupabase||!businessUser)return false;
+ const {error}=await businessSupabase.from('business_automation_plans').upsert(
+  {user_id:businessUser.id,plan,updated_at:new Date().toISOString()},
+  {onConflict:'user_id'}
+ );
+ if(error)throw error;
+ return true;
+}
+async function saveAutoPlan(showMessage=true){
  const form=document.getElementById('autoIncomeForm');
  if(!form.reportValidity())return null;
  const plan=readAutoPlan();if(!plan){notify('Check the income amount and schedule.');return null}
  if(!plan.bills.length){notify('Add at least one payment rule before saving.');return null}
- try{localStorage.setItem(AUTO_PLAN_KEY,JSON.stringify(plan));document.getElementById('autoSaveFeedback').textContent='Saved on this device. No bank connection or payment has been made.';if(showMessage)notify('Automation plan saved locally.');return plan}
- catch(err){document.getElementById('autoSaveFeedback').textContent='This browser could not save the plan. It remains only on this page.';return plan}
+ try{localStorage.setItem(AUTO_PLAN_KEY,JSON.stringify(plan))}catch(err){document.getElementById('autoSaveFeedback').textContent='This browser could not save a local copy.'}
+ document.getElementById('autoSaveFeedback').textContent='Saving your plan…';
+ if(businessCloudInit)await businessCloudInit;
+ try{
+  if(await persistAutoPlan(plan)){
+   setCloudStatus('CLOUD SYNC ON');
+   document.getElementById('autoSaveFeedback').textContent='Saved to your SYNTRIX account and this browser. This saves instructions only — no money was moved.';
+  }else{
+   setCloudStatus('LOCAL ONLY');
+   document.getElementById('autoSaveFeedback').textContent='Saved in this browser only. Sign in to SYNTRIX to sync across devices.';
+  }
+ }catch(err){
+  setCloudStatus('LOCAL COPY');
+  document.getElementById('autoSaveFeedback').textContent='Local copy saved, but cloud sync failed. '+(err?.message||'');
+ }
+ runAllocationPreview();
+ if(showMessage)notify('Automation plan saved. No payment was sent.');
+ return plan;
 }
 document.getElementById('saveAutomation').addEventListener('click',()=>saveAutoPlan(true));
 function parseLocalDate(value){const parts=String(value).split('-').map(Number);if(parts.length!==3||parts.some(n=>!n))return null;return new Date(parts[0],parts[1]-1,parts[2],12,0,0,0)}
@@ -460,4 +525,5 @@ function loadAutoPlan(){
  }catch(err){document.getElementById('autoSaveFeedback').textContent='A saved plan could not be read in this browser.'}
 }
 loadAutoPlan();showCustomDays();
+businessCloudInit=initBusinessCloud();
 </script></body></html>
