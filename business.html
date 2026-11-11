@@ -701,6 +701,7 @@ async function initBusinessCloud(){
   const {data,error}=await businessSupabase.auth.getUser();
   if(error)throw error;
   businessUser=data.user||null;
+  if(new URLSearchParams(window.location.search).get('recovery')==='1'&&businessUser)showRecoveryPasswordForm();
   document.getElementById('securityAccountEmail').textContent=businessUser?.email||'Not signed in';
   document.getElementById('sendPasswordLink').disabled=!businessUser?.email;
   if(!businessUser){
@@ -854,7 +855,7 @@ document.getElementById('sendPasswordLink').addEventListener('click',async()=>{
  const button=document.getElementById('sendPasswordLink');button.disabled=true;
  setSecurityFeedback('passwordLinkFeedback','Sending a secure verification email…');
  try{
-  const redirectTo=window.location.origin+window.location.pathname+'?recovery=1';
+  const redirectTo=window.location.origin+'/';
   const {error}=await businessSupabase.auth.resetPasswordForEmail(businessUser.email,{redirectTo});
   if(error)throw error;
   setSecurityFeedback('passwordLinkFeedback','Email sent. Open the link in your inbox on this device to set or change your password.');
@@ -868,7 +869,7 @@ document.getElementById('accountRecoveryForm').addEventListener('submit',async e
  const button=event.currentTarget.querySelector('button[type="submit"]');button.disabled=true;
  setSecurityFeedback('recoveryFeedback','Sending recovery email…');
  try{
-  const redirectTo=window.location.origin+window.location.pathname+'?recovery=1';
+  const redirectTo=window.location.origin+'/';
   const {error}=await businessSupabase.auth.resetPasswordForEmail(email,{redirectTo});
   if(error)throw error;
   setSecurityFeedback('recoveryFeedback','If that email is connected to a SYNTRIX account, a recovery link will arrive shortly. Check your inbox and spam folder.');
