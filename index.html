@@ -97,7 +97,7 @@
  <div class="tool"><div class="symbol">📈</div><h3>Analytics engine</h3><p>Real channel and product data, trends and useful reports.</p></div>
 </div></div>
 </section>
-<section id="proPage" class="hidden"><div class="panel"><h2>⭐ SYNTRIX Pro</h2><p class="hint">Earn a one-month Pro demo by publishing 20 videos successfully through SYNTRIX.</p><div class="panel" style="background:#0b1224;margin:16px 0"><h3 id="proRewardHeading">Your creator reward progress</h3><p class="small" id="proRewardCount">0 / 20 verified videos</p><div style="height:12px;background:#25304b;border-radius:99px;overflow:hidden"><div id="proRewardBar" style="height:100%;width:0%;background:linear-gradient(90deg,#65e6ff,#9c7bff);border-radius:99px"></div></div><p class="small" id="proRewardStatus">Sign in and publish through SYNTRIX to start earning your Pro demo.</p></div><p class="small">Only completed YouTube uploads verified by SYNTRIX count. The reward is one month per account, and it cannot be claimed again after it has been awarded.</p></div></section><section id="profilePage" class="hidden">
+<section id="proPage" class="hidden"><div class="panel"><h2>⭐ SYNTRIX Pro</h2><p class="hint">Get 21 days of Pro free. Your trial starts automatically when you create a SYNTRIX account.</p><div class="panel" style="background:#0b1224;margin:16px 0"><h3 id="proTrialHeading">Your 21-day Pro trial</h3><p id="proTrialStatus">Sign in or create a free SYNTRIX account to activate your trial.</p><p class="small" id="proTrialDates"></p></div><p class="small">Your Pro access ends automatically after 21 days. No payment or subscription is set up in this version.</p></div></section><section id="profilePage" class="hidden">
 <div class="panel"><h2>👤 My Profile</h2><p class="hint">Make your SYNTRIX account yours. Upload a picture and choose the name people see.</p>
 <div class="profile-layout">
  <div class="profile-preview"><img id="profileAvatarPreview" class="profile-avatar" alt="Profile avatar" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Crect width='120' height='120' rx='60' fill='%23202a47'/%3E%3Ctext x='60' y='77' font-size='54' text-anchor='middle' fill='%2365e6ff'%3E%3F%3C/text%3E%3C/svg%3E"><strong id="profilePreviewName">Your profile</strong><span class="small">Profile picture</span></div>
@@ -213,30 +213,46 @@ const SYNTRIX_SUPABASE_URL = 'https://akdvrpqgwsopplsibefn.supabase.co';
 const SYNTRIX_SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_jMKeDhWfdQinR4lFY4T5Mg_Nn7sG9ma';
 const navItems=[['home','⌂','Home'],['control','◈','NIKO Control'],['video','▶','Video Studio'],['thumb','▧','Thumbnail Lab'],['script','✎','Script Writer'],['ideas','✦','Video Ideas'],['growth','↗','Growth Assistant'],['hub','◎','Creator Hub'],['projects','▣','My Projects'],['profile','👤','My Profile'],['contentcreator','✍️','Content Creator'],['creativestudio','🎨','Creative Studio'],['campaignplanner','📅','Campaign Planner'],['marketinganalytics','📊','Marketing Analytics'],['marketgrowth','🚀','Marketing Growth'],['pro','⭐','Pro']];document.getElementById('navItems').innerHTML=navItems.map(([page,icon,label])=>'<button class="nav'+(page==='home'?' active':'')+'" data-page="'+page+'"'+(['control','growth','marketinganalytics','marketgrowth'].includes(page)?' data-pro="true"':'')+'><span class="ico">'+icon+'</span> '+label+'</button>').join('');
 const pages=['home','control','video','thumb','script','ideas','growth','hub','projects','profile','contentcreator','creativestudio','campaignplanner','marketinganalytics','marketgrowth','pro'];const titles={contentcreator:['Create your message.','Draft marketing content with simple built-in templates.'],creativestudio:['Design your promotion.','Create a downloadable graphic in your browser.'],campaignplanner:['Plan your next post.','Organise campaigns and publishing dates.'],marketinganalytics:['Track real results.','Your manually entered marketing numbers.'],marketgrowth:['Find your next move.','Turn your marketing results into practical next steps.'],pro:['SYNTRIX Pro.','Your creator rewards and Pro access.'],profile:['Your profile.','Your SYNTRIX identity.'],control:['Run the business.','NIKO’s SYNTRIX command centre.'],projects:['Your projects.','Your saved work, all in one place on this device.'],home:['Make something great.','Your ideas deserve to get out there. Let’s make it happen.'],video:['Build your next video.','Bring your clips and your plan together.'],thumb:['Make them stop scrolling.','Design a thumbnail that makes the idea clear.'],script:['Find the story.','Turn a topic into a strong video structure.'],ideas:['Never run out of ideas.','A little inspiration goes a long way.'],growth:['Make your video clearer.','Improve the way you present your content.'],hub:['Keep levelling up.','A few useful creator lessons.']};
-let syntrixProActive=false,syntrixProExpiresAt=null,syntrixVerifiedVideoCount=0;
+let syntrixProActive=false,syntrixProExpiresAt=null,syntrixProStartedAt=null;
 function applyProAccess(){
  document.querySelectorAll('[data-page],[data-go]').forEach(el=>{
   const target=el.dataset.page||el.dataset.go;
   const locked=['control','growth','marketinganalytics','marketgrowth'].includes(target);
   el.style.display=locked&&!syntrixProActive?'none':'';
  });
- const count=document.getElementById('proRewardCount'),bar=document.getElementById('proRewardBar'),status=document.getElementById('proRewardStatus'),heading=document.getElementById('proRewardHeading');
- if(count)count.textContent=Math.min(syntrixVerifiedVideoCount,20)+' / 20 verified videos';
- if(bar)bar.style.width=Math.min(100,syntrixVerifiedVideoCount/20*100)+'%';
- if(syntrixProActive){heading.textContent='🎉 Your one-month Pro demo is active';status.textContent='Pro access expires '+new Date(syntrixProExpiresAt).toLocaleString()+'.'}
- else if(syntrixProExpiresAt){heading.textContent='Your Pro demo has ended';status.textContent='Your one-month reward was already used. Thanks for creating with SYNTRIX.'}
- else{heading.textContent='Your creator reward progress';status.textContent=syntrixUser?'Publish 20 verified videos through SYNTRIX to unlock one month of Pro.':'Sign in and publish through SYNTRIX to start earning your Pro demo.'}
+ const heading=document.getElementById('proTrialHeading');
+ const status=document.getElementById('proTrialStatus');
+ const dates=document.getElementById('proTrialDates');
+ if(!heading||!status||!dates)return;
+ if(syntrixProActive){
+  const remaining=Math.max(1,Math.ceil((new Date(syntrixProExpiresAt).getTime()-Date.now())/86400000));
+  heading.textContent='🎉 Your 21-day Pro trial is active!';
+  status.textContent='You have '+remaining+' day'+(remaining===1?'':'s')+' of Pro left. Enjoy the full toolkit!';
+  dates.textContent='Started '+new Date(syntrixProStartedAt).toLocaleDateString()+' · Ends '+new Date(syntrixProExpiresAt).toLocaleDateString();
+ }else if(syntrixProExpiresAt){
+  heading.textContent='Your Pro trial has ended';
+  status.textContent='Your 21 free days are up. Your account and saved projects are still here.';
+  dates.textContent='Trial ended '+new Date(syntrixProExpiresAt).toLocaleDateString()+'.';
+ }else if(syntrixUser){
+  heading.textContent='Setting up your Pro trial…';
+  status.textContent='Your account is signed in. Reload SYNTRIX if your trial does not appear shortly.';
+  dates.textContent='';
+ }else{
+  heading.textContent='Your 21-day Pro trial is waiting';
+  status.textContent='Sign in or create a free SYNTRIX account to activate your trial.';
+  dates.textContent='Guest sessions do not include Pro access.';
+ }
 }
 async function refreshProStatus(){
- syntrixProActive=false;syntrixProExpiresAt=null;syntrixVerifiedVideoCount=0;
+ syntrixProActive=false;syntrixProExpiresAt=null;syntrixProStartedAt=null;
  if(syntrixUser&&syntrixAuthClient){
   try{
-   const [posts,trial]=await Promise.all([
-    syntrixAuthClient.from('youtube_video_posts').select('id',{count:'exact',head:true}).eq('user_id',syntrixUser.id),
-    syntrixAuthClient.from('creator_pro_trials').select('expires_at').eq('user_id',syntrixUser.id).maybeSingle()
-   ]);
-   if(!posts.error)syntrixVerifiedVideoCount=posts.count||0;
-   if(!trial.error&&trial.data?.expires_at){syntrixProExpiresAt=trial.data.expires_at;syntrixProActive=new Date(trial.data.expires_at).getTime()>Date.now()}
+   const {data,error}=await syntrixAuthClient.from('creator_pro_trials').select('started_at,expires_at').eq('user_id',syntrixUser.id).maybeSingle();
+   if(!error&&data?.expires_at){
+    syntrixProStartedAt=data.started_at;
+    syntrixProExpiresAt=data.expires_at;
+    syntrixProActive=new Date(data.expires_at).getTime()>Date.now();
+   }
   }catch(e){}
  }
  applyProAccess();
@@ -668,7 +684,7 @@ document.getElementById('exportEdit').onclick=async()=>{
 async function connectYouTubeForUpload(){
  if(!initSupabaseClient())throw new Error('SYNTRIX sign-in is not configured yet.');
  const {data}=await syntrixAuthClient.auth.getSession();
- if(!data.session?.user)throw new Error('Sign in to your SYNTRIX account first. Guest sessions cannot earn the Pro demo.');
+ if(!data.session?.user)throw new Error('Sign in to your SYNTRIX account first. Guest sessions cannot use Pro features.');
  const token=data.session.provider_token;
  if(token)return token;
  await syntrixAuthClient.auth.signInWithOAuth({provider:'google',options:{redirectTo:window.location.origin+window.location.pathname,scopes:'https://www.googleapis.com/auth/youtube.upload',queryParams:{access_type:'offline',prompt:'consent'}}});
@@ -694,14 +710,7 @@ document.getElementById('youtubePublishBtn').onclick=async()=>{
   const accessToken=await connectYouTubeForUpload();
   status.textContent='Uploading to YouTube. Keep this tab open…';
   const video=await uploadVideoToYouTube(blob,accessToken,title,document.getElementById('ytDescription').value,document.getElementById('ytPrivacy').value);
-  status.textContent='YouTube confirmed the upload. Verifying it for your SYNTRIX creator rewards…';
-  const {data:sessionData}=await syntrixAuthClient.auth.getSession();
-  const cfg=authConfig();
-  const verify=await fetch(cfg.url+'/functions/v1/record-youtube-upload',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+sessionData.session.access_token,'apikey':cfg.anon},body:JSON.stringify({videoId:video.id,youtubeAccessToken:accessToken})});
-  const reward=await verify.json().catch(()=>({}));
-  if(!verify.ok)throw new Error(reward.error||'The video is on YouTube, but SYNTRIX could not verify the reward record yet.');
-  const count=reward.verifiedVideoCount||0;await refreshProStatus();
-  status.textContent='Published! '+count+'/20 verified SYNTRIX videos.'+(reward.proExpiresAt?' Your one-month Pro demo is active until '+new Date(reward.proExpiresAt).toLocaleDateString()+'.':'');
+  status.textContent='Published to YouTube successfully! Your 21-day Pro trial is managed separately from publishing.';
   toast('Published to YouTube! 🎉');
  }catch(error){status.textContent=error.message||'Publishing could not be completed.'}
  finally{button.disabled=false}
@@ -739,7 +748,7 @@ async function refreshSyntrixAuth(){
   updateAuthUI();maybeShowOnboarding(syntrixUser);renderProjects();loadVideoNotesForCurrentUser();refreshProStatus();
   syntrixAuthClient.auth.onAuthStateChange((_event,session)=>{
    syntrixUser=session?.user||null;syntrixGuest=!syntrixUser;
-   updateAuthUI();maybeShowOnboarding(syntrixUser);renderProjects();loadVideoNotesForCurrentUser();
+   updateAuthUI();maybeShowOnboarding(syntrixUser);renderProjects();loadVideoNotesForCurrentUser();refreshProStatus();
   });
  }catch(e){syntrixUser=null;syntrixGuest=true;updateAuthUI();setAuthMessage('Auth connection needs checking: '+(e.message||'unknown error'));renderProjects()}
 }
