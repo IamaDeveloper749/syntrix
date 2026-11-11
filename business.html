@@ -22,6 +22,27 @@ button{font:inherit;color:inherit;cursor:pointer}.shell{min-height:100vh;display
 .rail.expanded{width:205px;align-items:stretch;padding:17px 12px}.rail.expanded .logo{width:100%;display:flex;justify-content:flex-start;padding-left:13px;gap:10px}.logo-word{display:none;font-size:13px;letter-spacing:1.7px;color:#e9edff}.rail.expanded .logo-word{display:inline}.rail.expanded .railnav{align-items:stretch}.rail.expanded .navbtn{width:100%;display:flex;justify-content:flex-start;gap:13px;padding:0 13px;font-size:14px}.navlabel{display:none}.rail.expanded .navlabel{display:block;color:#687394;font-size:9px;letter-spacing:1.7px;padding:9px 12px 2px}.navtext{display:none}.rail.expanded .navtext{display:inline}.shell.expanded{grid-template-columns:205px minmax(0,1fr)}
 @media(max-width:900px){.metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.contentgrid{grid-template-columns:1fr}.bottomgrid{grid-template-columns:1fr}}
 @media(max-width:560px){.shell{grid-template-columns:60px minmax(0,1fr)}.rail{padding:12px 6px}.logo{width:40px;height:40px}.navbtn,.railbottom button{width:42px;height:42px}.main{padding:22px 13px 40px}.top{align-items:flex-start}.topright{gap:6px}.range{font-size:10px;padding:8px}.avatar{width:33px;height:33px}.metrics{gap:8px}.card{padding:13px}.metric-value{font-size:24px}.welcome{padding:19px}.welcome h2{font-size:20px}.bottomgrid{gap:10px}}
+
+.finance-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px;margin:16px 0}
+.finance-two{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-top:15px}
+.finance-stat{font-size:25px;font-weight:800;letter-spacing:-.7px;margin:10px 0 2px}
+.account-row{display:flex;align-items:center;gap:12px;padding:13px 0;border-top:1px solid #ffffff12}
+.account-row:first-of-type{border-top:0}
+.account-symbol{width:38px;height:38px;border-radius:13px;background:#4b8fff20;color:#9bdfff;display:grid;place-items:center;font-size:18px}
+.account-copy{flex:1;min-width:0}.account-copy b{display:block;font-size:12px}.account-copy small{color:var(--muted);font-size:10px}
+.pill-demo{font-size:10px;padding:4px 8px;border:1px solid #68708a55;border-radius:30px;color:#b0b8d2}
+.form-stack{display:grid;gap:10px}.form-stack label{display:grid;gap:5px;color:#aeb7d3;font-size:11px}
+.form-stack input,.form-stack select{width:100%;background:#0d1224;border:1px solid #343a5c;color:#f4f5ff;border-radius:10px;padding:10px;font:inherit}
+.form-stack button{justify-self:start}
+.finance-note{border:1px solid #8a79ff45;background:#8a79ff10;border-radius:13px;padding:13px;color:#c7c9e9;font-size:11px;margin-top:12px}
+.rule-row{display:flex;gap:10px;align-items:flex-start;padding:12px 0;border-top:1px solid #ffffff12}.rule-row:first-of-type{border-top:0}
+.rule-dot{width:28px;height:28px;flex:0 0 28px;border-radius:9px;background:#4bcfa51a;color:#76e6bd;display:grid;place-items:center}
+.rule-row b{display:block;font-size:12px}.rule-row small{color:var(--muted);font-size:10px}
+.profile-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(250px,.7fr);gap:15px}
+.profile-avatar{width:66px;height:66px;border-radius:22px;display:grid;place-items:center;font-size:27px;font-weight:850;background:linear-gradient(135deg,#2d9cce,#8b67d9);margin-bottom:12px}
+.mini-kv{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-top:1px solid #ffffff12;font-size:11px}.mini-kv span{color:var(--muted)}
+@media(max-width:900px){.finance-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.profile-grid{grid-template-columns:1fr}}
+@media(max-width:560px){.finance-two{grid-template-columns:1fr}.finance-grid{gap:8px}.finance-stat{font-size:21px}}
 </style>
 </head>
 <body>
@@ -37,6 +58,8 @@ button{font:inherit;color:inherit;cursor:pointer}.shell{min-height:100vh;display
   <button class="navbtn" data-page="invoices" title="Invoices"><span>▤</span><span class="navtext">Invoices</span></button>
   <div class="navlabel">MANAGE</div>
   <button class="navbtn" data-page="team" title="Team"><span>♧</span><span class="navtext">Team</span></button>
+  <button class="navbtn" data-page="finance" title="Money"><span>↕</span><span class="navtext">Money</span></button>
+  <button class="navbtn" data-page="profile" title="Profile"><span>◉</span><span class="navtext">Profile</span></button>
   <button class="navbtn" data-page="settings" title="Settings"><span>⚙</span><span class="navtext">Settings</span></button>
  </nav>
  <div class="railbottom"><button id="help" title="Help">?</button></div>
@@ -88,9 +111,77 @@ button{font:inherit;color:inherit;cursor:pointer}.shell{min-height:100vh;display
 <section class="section" id="invoices"><div class="card section-placeholder"><div class="big">▤</div><h2>Invoices</h2><p>Keep invoices and payment statuses organised in one place.</p><button class="primary" data-back>Back to overview</button></div></section>
 <section class="section" id="team"><div class="card section-placeholder"><div class="big">♧</div><h2>Team</h2><p>Team roles and shared business access can live here.</p><button class="primary" data-back>Back to overview</button></div></section>
 <section class="section" id="settings"><div class="card section-placeholder"><div class="big">⚙</div><h2>Settings</h2><p>Business profile, preferences and connected services.</p><button class="primary" data-back>Back to overview</button></div></section>
+
+<section class="section" id="finance">
+ <div class="welcome"><div class="eyebrow">MONEY WORKSPACE · DEMO MODE</div><h2>Know what comes in and what goes out.</h2><p>Plan income, expenses and rules in one place. <strong>No bank or card is connected</strong> in this prototype.</p></div>
+ <div class="finance-grid">
+  <article class="card"><div class="metric-head">Income received <span class="metric-icon">↗</span></div><div class="finance-stat" id="incomeTotal">8,500 zł</div><div class="muted">Example data</div></article>
+  <article class="card"><div class="metric-head">Expenses recorded <span class="metric-icon">↘</span></div><div class="finance-stat" id="expenseTotal">2,300 zł</div><div class="muted">Example data</div></article>
+  <article class="card"><div class="metric-head">Reserved for bills <span class="metric-icon">▣</span></div><div class="finance-stat" id="reservedTotal">1,450 zł</div><div class="muted">User-defined plan</div></article>
+  <article class="card"><div class="metric-head">Unallocated balance <span class="metric-icon">◎</span></div><div class="finance-stat" id="availableTotal">4,750 zł</div><div class="muted">Illustrative calculation</div></article>
+ </div>
+ <div class="finance-two">
+  <article class="card"><div class="cardtitle"><div><h3>Connected accounts</h3><div class="muted">Bank accounts and debit cards</div></div><span class="pill-demo">NOT CONNECTED</span></div>
+   <div class="account-row"><div class="account-symbol">▤</div><div class="account-copy"><b>Bank account</b><small>Connect through a secure banking provider</small></div><button class="primary" data-connect="bank">Connect</button></div>
+   <div class="account-row"><div class="account-symbol">▣</div><div class="account-copy"><b>Debit card</b><small>Connect through a secure payment provider</small></div><button class="primary" data-connect="card">Connect</button></div>
+   <div class="finance-note">Security design: SYNTRIX will not ask for or store your card number, PIN, CVV or online-banking password. A regulated provider must handle account authorisation.</div>
+  </article>
+  <article class="card"><div class="cardtitle"><div><h3>Money rules</h3><div class="muted">Rules chosen by the account user</div></div><span class="pill-demo">USER CONTROLLED</span></div>
+   <div class="rule-row"><div class="rule-dot">✓</div><div><b>Set aside 500 zł from each income</b><small>Reserve for bills · Example rule</small></div></div>
+   <div class="rule-row"><div class="rule-dot">↗</div><div><b>Prepare the monthly service bill</b><small>Present it for approval · Example rule</small></div></div>
+   <form class="form-stack" id="ruleForm">
+    <label>Rule name<input name="ruleName" placeholder="e.g. Set aside rent money" required maxlength="60"></label>
+    <label>Amount (zł)<input name="ruleAmount" type="number" min="1" step="0.01" placeholder="500" required></label>
+    <label>When income arrives<select name="ruleType"><option value="reserve">Reserve this amount</option><option value="prepare">Prepare an expense for approval</option></select></label>
+    <button class="primary" type="submit">Add my rule</button>
+   </form>
+   <div class="muted" id="ruleFeedback" aria-live="polite"></div>
+  </article>
+ </div>
+ <div class="finance-two">
+  <article class="card"><div class="cardtitle"><h3>Add income</h3><span class="muted">MANUAL DEMO ENTRY</span></div>
+   <form class="form-stack" id="incomeForm">
+    <label>Income source<input name="source" placeholder="e.g. Client project" required maxlength="60"></label>
+    <label>Amount (zł)<input name="amount" type="number" min="0.01" step="0.01" placeholder="850" required></label>
+    <button class="primary" type="submit">Record income</button>
+   </form><div class="muted" id="incomeFeedback" aria-live="polite"></div>
+  </article>
+  <article class="card"><div class="cardtitle"><h3>Add expense</h3><span class="muted">MANUAL DEMO ENTRY</span></div>
+   <form class="form-stack" id="expenseForm">
+    <label>Expense name<input name="source" placeholder="e.g. Software subscription" required maxlength="60"></label>
+    <label>Amount (zł)<input name="amount" type="number" min="0.01" step="0.01" placeholder="49" required></label>
+    <button class="primary" type="submit">Record expense</button>
+   </form><div class="muted" id="expenseFeedback" aria-live="polite"></div>
+  </article>
+ </div>
+ <article class="card" style="margin-top:15px"><div class="cardtitle"><div><h3>Payment approval</h3><div class="muted">Prepared expenses wait for the account user's approval</div></div><span class="pill-demo">NO AUTO-PAYMENTS</span></div>
+  <p class="muted">SYNTRIX can organise income, calculate what is available and prepare payments based on rules you set. It will not send money on its own. Before any real payment, the authorised account user must review the amount, recipient and source account, then explicitly approve it with the banking or payment provider.</p>
+  <button class="primary" type="button" data-approval>Review demo approval flow</button>
+ </article>
+</section>
+<section class="section" id="profile">
+ <div class="welcome"><div class="eyebrow">YOUR SYNTRIX IDENTITY</div><h2>Profile and business details</h2><p>Keep the details that appear across your business workspace up to date.</p></div>
+ <div class="profile-grid">
+  <article class="card"><div class="profile-avatar">S</div><h3 style="margin:0 0 5px">Your profile</h3><p class="muted" style="margin:0 0 18px">Demo profile · Changes are not saved to a live account.</p>
+   <form class="form-stack" id="profileForm">
+    <label>Display name<input name="displayName" placeholder="Your display name" maxlength="60"></label>
+    <label>Business name<input name="businessName" placeholder="Your business name" maxlength="80"></label>
+    <label>Business email<input name="businessEmail" type="email" placeholder="you@example.com" maxlength="120"></label>
+    <label>Business type<select name="businessType"><option>Creator / freelancer</option><option>Online services</option><option>Retail</option><option>Other</option></select></label>
+    <button class="primary" type="submit">Save demo profile</button>
+   </form><div class="muted" id="profileFeedback" aria-live="polite"></div>
+  </article>
+  <article class="card"><h3 style="margin-top:0">Account security</h3><p class="muted">Security controls planned for the live SYNTRIX account.</p>
+   <div class="mini-kv"><b>Sign-in</b><span>Provider-managed</span></div>
+   <div class="mini-kv"><b>Extra verification</b><span>To be configured</span></div>
+   <div class="mini-kv"><b>Connected financial data</b><span>None</span></div>
+   <div class="finance-note">For a live launch, account access and financial connections need server-side checks, encrypted tokens, secure provider authorisation and clear permission controls.</div>
+  </article>
+ </div>
+</section>
 </main></div><div class="toast" id="toast">Prototype interaction</div>
 <script>
-const titles={overview:['Business overview','A clearer view of how your business is doing.'],analytics:['Analytics','Understand performance and spot opportunities.'],customers:['Customers','Keep customer relationships organised.'],services:['Services','Manage what your business offers.'],invoices:['Invoices','Keep payments and paperwork in order.'],team:['Team','Bring your people and work together.'],settings:['Settings','Control your business workspace.']};
+const titles={overview:['Business overview','A clearer view of how your business is doing.'],analytics:['Analytics','Understand performance and spot opportunities.'],customers:['Customers','Keep customer relationships organised.'],services:['Services','Manage what your business offers.'],invoices:['Invoices','Keep payments and paperwork in order.'],team:['Team','Bring your people and work together.'],finance:['Money','Track income, expenses and planned payments.'],profile:['Profile','Manage your personal and business details.'],settings:['Settings','Control your business workspace.']};
 function go(page){document.querySelectorAll('.section').forEach(s=>s.classList.toggle('active',s.id===page));document.querySelectorAll('.navbtn').forEach(b=>b.classList.toggle('active',b.dataset.page===page));document.getElementById('pageTitle').textContent=titles[page][0];document.getElementById('pageSub').textContent=titles[page][1];}
 document.querySelectorAll('.navbtn').forEach(b=>b.addEventListener('click',()=>go(b.dataset.page)));
 document.querySelectorAll('[data-jump]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.jump)));
@@ -99,4 +190,14 @@ document.getElementById('expand').addEventListener('click',()=>{document.getElem
 document.getElementById('help').addEventListener('click',()=>{const t=document.getElementById('toast');t.textContent='This is a visual prototype — no real business data is connected yet.';t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2600)});
 document.getElementById('range').addEventListener('change',e=>{const t=document.getElementById('toast');t.textContent='Demo view: '+e.target.value;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800)});
 document.querySelectorAll('.task input').forEach(c=>c.addEventListener('change',()=>c.closest('.task').classList.toggle('done',c.checked)));
+
+function notify(message){const t=document.getElementById('toast');t.textContent=message;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2800)}
+document.querySelector('.avatar').addEventListener('click',()=>go('profile'));
+document.querySelectorAll('[data-connect]').forEach(b=>b.addEventListener('click',()=>notify('Demo only: secure provider connection is not active yet. No account details were collected.')));
+document.querySelector('[data-approval]').addEventListener('click',()=>notify('Demo only: nothing was paid or transferred. A real payment must be reviewed and approved by the account user.'));
+document.getElementById('profileForm').addEventListener('submit',e=>{e.preventDefault();document.getElementById('profileFeedback').textContent='Demo profile updated in this page only. It is not saved to a live account.'});
+document.getElementById('ruleForm').addEventListener('submit',e=>{e.preventDefault();const f=new FormData(e.currentTarget);const item=document.createElement('div');item.className='rule-row';const dot=document.createElement('div');dot.className='rule-dot';dot.textContent='✓';const copy=document.createElement('div');const b=document.createElement('b');b.textContent=String(f.get('ruleName'));const small=document.createElement('small');small.textContent=(f.get('ruleType')==='reserve'?'Reserve ':'Prepare for approval ')+Number(f.get('ruleAmount')).toFixed(2)+' zł';copy.append(b,small);item.append(dot,copy);document.getElementById('ruleForm').before(item);document.getElementById('ruleFeedback').textContent='Rule added to this demo page. No real payment will be made.';e.currentTarget.reset()});
+function updateMoney(kind,amount,source){const total=document.getElementById(kind==='income'?'incomeTotal':'expenseTotal');const parsed=Number(amount);const current=Number(total.dataset.amount||(kind==='income'?8500:2300));const updated=current+parsed;total.dataset.amount=String(updated);total.textContent=updated.toLocaleString('pl-PL',{maximumFractionDigits:2})+' zł';const row=document.createElement('div');row.className='activityrow';const icon=document.createElement('div');icon.className='activityicon';icon.textContent=kind==='income'?'↗':'↘';const copy=document.createElement('div');copy.className='activitycopy';const b=document.createElement('b');b.textContent=source;const small=document.createElement('small');small.textContent=(kind==='income'?'Income added: ':'Expense recorded: ')+parsed.toFixed(2)+' zł';copy.append(b,small);row.append(icon,copy);document.getElementById(kind+'Feedback').textContent='Added to this demo only. No bank transaction occurred.'}
+document.getElementById('incomeForm').addEventListener('submit',e=>{e.preventDefault();const f=new FormData(e.currentTarget);updateMoney('income',f.get('amount'),String(f.get('source')));e.currentTarget.reset()});
+document.getElementById('expenseForm').addEventListener('submit',e=>{e.preventDefault();const f=new FormData(e.currentTarget);updateMoney('expense',f.get('amount'),String(f.get('source')));e.currentTarget.reset()});
 </script></body></html>
