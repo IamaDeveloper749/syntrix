@@ -849,6 +849,10 @@ async function refreshSyntrixAuth(){
   if(error)throw error;
   await processAuthSession(data.session?.user||null,true);
   syntrixAuthClient.auth.onAuthStateChange((event,session)=>{
+   if(event==='PASSWORD_RECOVERY'){
+    window.location.replace(window.location.origin+'/business.html?recovery=1');
+    return;
+   }
    processAuthSession(session?.user||null,event==='SIGNED_IN');
   });
  }catch(e){
