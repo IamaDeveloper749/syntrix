@@ -136,7 +136,7 @@
 </div><div class="controlbox"><h3>✍️ Text & subtitles</h3><div class="field"><label>Main text overlay</label><input id="overlayText" maxlength="70" placeholder="Your video title..."></div><div class="field"><label>Subtitle line</label><textarea id="subtitleText" maxlength="150" placeholder="Type what is being said..."></textarea></div><div class="field"><label>Text colour</label><input id="overlayColor" type="color" value="#ffffff"></div><div class="field"><label>Text size</label><input id="overlaySize" type="range" min="24" max="100" value="58"></div>
 <h3>✨ Stickers & effects</h3><div class="field"><label>Sticker</label><select id="sticker"><option value="">No sticker</option><option>⭐</option><option>🔥</option><option>😂</option><option>💯</option><option>🎮</option><option>❤️</option><option>⚡</option><option>👀</option></select></div><div class="field"><label>Visual effect</label><select id="videoEffect"><option value="none">Normal</option><option value="contrast(1.25) saturate(1.35)">Vibrant</option><option value="grayscale(1)">Black & white</option><option value="sepia(.8)">Vintage</option><option value="brightness(1.18) saturate(.8)">Bright</option><option value="hue-rotate(65deg) saturate(1.3)">Colour shift</option></select></div>
 <h3>🏷️ Watermark</h3><div class="field"><label for="watermarkText">Watermark text</label><input id="watermarkText" maxlength="24" value="SYNTRIX" placeholder="Your channel or brand"></div><div class="field"><label for="watermarkOpacity">Watermark opacity</label><input id="watermarkOpacity" class="range" type="range" min="10" max="100" value="72"></div><div class="field"><label for="watermarkPosition">Watermark position</label><select id="watermarkPosition"><option value="bottom-right">Bottom right</option><option value="bottom-left">Bottom left</option><option value="top-right">Top right</option><option value="top-left">Top left</option></select></div><div class="field"><label><input id="watermarkEnabled" type="checkbox" checked> Show watermark on video</label></div><div class="editoractions"><button class="btn" id="exportEdit">Export video</button><button class="btn secondary" data-save-project="video">Save project</button></div><p class="exportnote">Exports every clip in your timeline, in order, as one WebM video. Each clip uses its own trim range. Switch between landscape and portrait before exporting. Keep this tab open while exporting.</p></div></div>
-<div class="field"><label>Project notes</label><textarea id="videoNotes" placeholder="Intro, best moments, ending..."></textarea></div><button class="btn secondary" id="saveVideo">Save project notes</button></div></section>
+<section class="panel" id="youtubePublishPanel" style="margin-top:18px"><h2>📤 Publish to YouTube</h2><p class="hint">Upload your finished Video Studio export directly to your YouTube channel. You choose the title, description and visibility before anything is published.</p><div class="field"><label for="ytTitle">Video title</label><input id="ytTitle" maxlength="100" placeholder="Give your video a title"></div><div class="field"><label for="ytDescription">Description</label><textarea id="ytDescription" rows="4" maxlength="5000" placeholder="Tell viewers what your video is about"></textarea></div><div class="field"><label for="ytPrivacy">Visibility</label><select id="ytPrivacy"><option value="private">Private</option><option value="unlisted">Unlisted</option><option value="public">Public</option></select></div><div class="actions"><button class="btn" id="youtubePublishBtn">Connect YouTube &amp; publish</button><span class="small" id="youtubePublishStatus">Export a video first. Sign in with Google to connect your channel.</span></div><p class="small">SYNTRIX only requests YouTube upload permission. Your video is counted toward the 20-video Pro demo after YouTube confirms the upload and SYNTRIX verifies the video.</p></section><div class="field"><label>Project notes</label><textarea id="videoNotes" placeholder="Intro, best moments, ending..."></textarea></div><button class="btn secondary" id="saveVideo">Save project notes</button></div></section>
 <section id="thumbPage" class="hidden"><div class="panel"><h2>Thumbnail Lab</h2><p class="hint">Create a simple downloadable thumbnail layout. No AI image generation in this version.</p><div class="field"><label>Thumbnail headline</label><input id="thumbTitle" maxlength="55" value="THIS CHANGED EVERYTHING"></div><div class="field"><label>Small label</label><input id="thumbLabel" maxlength="28" value="NEW VIDEO"></div><div class="field"><label>Background colour</label><input id="thumbColor" type="color" value="#222c70"></div><div class="actions"><button class="btn" id="drawThumb">Update thumbnail</button><button class="btn secondary" id="downloadThumb">Download PNG</button><button class="btn secondary" data-save-project="thumb">Save project</button></div><canvas id="thumbCanvas" class="thumbcanvas" width="1280" height="720"></canvas></div></section>
 <section id="scriptPage" class="hidden"><div class="panel"><h2>Script Writer</h2><p class="hint">Build a starter script structure from your topic.</p><div class="field"><label>Video topic</label><input id="scriptTopic" placeholder="e.g. I tried the hardest Roblox obby"></div><div class="field"><label>Style</label><select id="scriptStyle"><option>Funny and energetic</option><option>Informative</option><option>Storytelling</option><option>Calm and cinematic</option></select></div><button class="btn" id="makeScript">Build my outline</button><div class="output hidden" id="scriptOutput"></div><button class="btn secondary hidden" id="copyScript">Copy script</button> <button class="btn secondary" data-save-project="script">Save project</button></div></section>
 <section id="ideasPage" class="hidden"><div class="panel"><h2>Video Ideas</h2><p class="hint">Generate quick prompts to get your next upload moving.</p><div class="field"><label>Your content type</label><select id="ideaType"><option>Gaming</option><option>Music</option><option>Challenges</option><option>Tech</option><option>Education</option><option>Anything</option></select></div><button class="btn" id="makeIdeas">Give me ideas ✦</button> <button class="btn secondary" data-save-project="ideas">Save project</button><div class="output hidden" id="ideasOutput"></div></div></section>
@@ -601,7 +601,7 @@ document.getElementById('exportEdit').onclick=async()=>{
   recorder=new MediaRecorder(recorderStream,{mimeType:mime});
   recorder.ondataavailable=e=>{if(e.data.size)recordedChunks.push(e.data)};
   recorder.onstop=()=>{
-   const blob=new Blob(recordedChunks,{type:'video/webm'});const url=URL.createObjectURL(blob);
+   const blob=new Blob(recordedChunks,{type:'video/webm'});window.syntrixLastExportedBlob=blob;document.getElementById('youtubePublishStatus').textContent='Export ready. Add your title and choose Connect YouTube & publish.';const url=URL.createObjectURL(blob);
    const a=document.createElement('a');a.href=url;a.download='syntrix-timeline.webm';a.click();
    setTimeout(()=>URL.revokeObjectURL(url),60000);toast('Your combined video is ready! Check downloads.');
   };
@@ -633,6 +633,50 @@ document.getElementById('exportEdit').onclick=async()=>{
  }finally{
   if(editAudioSource)editAudioSource.disconnect();
  }
+};
+
+
+// --- YouTube direct publishing (Google OAuth + YouTube Data API) ---
+async function connectYouTubeForUpload(){
+ if(!initSupabaseClient())throw new Error('SYNTRIX sign-in is not configured yet.');
+ const {data}=await syntrixAuthClient.auth.getSession();
+ if(!data.session?.user)throw new Error('Sign in to your SYNTRIX account first. Guest sessions cannot earn the Pro demo.');
+ const token=data.session.provider_token;
+ if(token)return token;
+ await syntrixAuthClient.auth.signInWithOAuth({provider:'google',options:{redirectTo:window.location.origin+window.location.pathname,scopes:'https://www.googleapis.com/auth/youtube.upload',queryParams:{access_type:'offline',prompt:'consent'}}});
+ throw new Error('Google is opening so you can approve YouTube upload access. After returning, press Publish again.');
+}
+async function uploadVideoToYouTube(blob,accessToken,title,description,privacy){
+ const metadata={snippet:{title,description,categoryId:'22'},status:{privacyStatus:privacy}};
+ const start=await fetch('https://www.googleapis.com/upload/youtube/v3/videos?uploadType=resumable&part=snippet,status',{method:'POST',headers:{Authorization:'Bearer '+accessToken,'Content-Type':'application/json; charset=UTF-8','X-Upload-Content-Length':String(blob.size),'X-Upload-Content-Type':blob.type||'video/webm'},body:JSON.stringify(metadata)});
+ if(!start.ok)throw new Error('YouTube could not start the upload ('+start.status+'). Check the channel permissions and API setup.');
+ const uploadUrl=start.headers.get('Location');if(!uploadUrl)throw new Error('YouTube did not return an upload address.');
+ const uploaded=await fetch(uploadUrl,{method:'PUT',headers:{Authorization:'Bearer '+accessToken,'Content-Type':blob.type||'video/webm'},body:blob});
+ const result=await uploaded.json().catch(()=>({}));
+ if(!uploaded.ok||!result.id)throw new Error(result.error?.message||'YouTube upload did not complete.');
+ return result;
+}
+document.getElementById('youtubePublishBtn').onclick=async()=>{
+ const status=document.getElementById('youtubePublishStatus'),button=document.getElementById('youtubePublishBtn');
+ const blob=window.syntrixLastExportedBlob,title=document.getElementById('ytTitle').value.trim();
+ if(!blob){status.textContent='Export your video in Video Studio first.';return}
+ if(!title){status.textContent='Add a video title first.';document.getElementById('ytTitle').focus();return}
+ button.disabled=true;status.textContent='Connecting securely to Google…';
+ try{
+  const accessToken=await connectYouTubeForUpload();
+  status.textContent='Uploading to YouTube. Keep this tab open…';
+  const video=await uploadVideoToYouTube(blob,accessToken,title,document.getElementById('ytDescription').value,document.getElementById('ytPrivacy').value);
+  status.textContent='YouTube confirmed the upload. Verifying it for your SYNTRIX creator rewards…';
+  const {data:sessionData}=await syntrixAuthClient.auth.getSession();
+  const cfg=authConfig();
+  const verify=await fetch(cfg.url+'/functions/v1/record-youtube-upload',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+sessionData.session.access_token,'apikey':cfg.anon},body:JSON.stringify({videoId:video.id,youtubeAccessToken:accessToken})});
+  const reward=await verify.json().catch(()=>({}));
+  if(!verify.ok)throw new Error(reward.error||'The video is on YouTube, but SYNTRIX could not verify the reward record yet.');
+  const count=reward.verifiedVideoCount||0;
+  status.textContent='Published! '+count+'/20 verified SYNTRIX videos.'+(reward.proExpiresAt?' Your one-month Pro demo is active until '+new Date(reward.proExpiresAt).toLocaleDateString()+'.':'');
+  toast('Published to YouTube! 🎉');
+ }catch(error){status.textContent=error.message||'Publishing could not be completed.'}
+ finally{button.disabled=false}
 };
 
 function loadVideoNotesForCurrentUser(){const saved=projectStorage().getItem('syntrix-video-notes');document.getElementById('videoNotes').value=saved||'';if(saved)document.getElementById('recentText').textContent='Saved video project notes are available in this session.'}
@@ -693,7 +737,7 @@ document.getElementById('googleLogin').onclick=async()=>{
   toast('One-time Google login setup needed 🔧');return;
  }
  try{
-  const {error}=await syntrixAuthClient.auth.signInWithOAuth({provider:'google',options:{redirectTo:window.location.origin+window.location.pathname}});
+  const {error}=await syntrixAuthClient.auth.signInWithOAuth({provider:'google',options:{redirectTo:window.location.origin+window.location.pathname,scopes:'https://www.googleapis.com/auth/youtube.upload'}});
   if(error)throw error;
  }catch(e){setAuthMessage('Google sign-in could not start: '+(e.message||'check your Supabase Google provider settings'));toast('Google sign-in needs setup')}
 };
