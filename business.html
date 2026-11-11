@@ -137,6 +137,7 @@ button{font:inherit;color:inherit;cursor:pointer}.shell{min-height:100vh;display
   <button class="navbtn" data-page="finance" title="Money"><span>↕</span><span class="navtext">Money</span></button>
   <button class="navbtn" data-page="automation" title="Automation"><span>⟳</span><span class="navtext">Automation</span></button>
   <button class="navbtn" data-page="profile" title="Profile"><span>◉</span><span class="navtext">Profile</span></button>
+  <button class="navbtn" data-page="security" title="Security"><span>🔒</span><span class="navtext">Security</span></button>
   <button class="navbtn" data-page="settings" title="Settings"><span>⚙</span><span class="navtext">Settings</span></button>
  </nav>
  <div class="railbottom"><button id="help" title="Help">?</button></div>
@@ -215,6 +216,39 @@ button{font:inherit;color:inherit;cursor:pointer}.shell{min-height:100vh;display
 <section class="section" id="services"><div class="card section-placeholder"><div class="big">◇</div><h2>Services</h2><p>Manage the services your business offers, pricing and availability.</p><button class="primary" data-back>Back to overview</button></div></section>
 <section class="section" id="invoices"><div class="card section-placeholder"><div class="big">▤</div><h2>Invoices</h2><p>Keep invoices and payment statuses organised in one place.</p><button class="primary" data-back>Back to overview</button></div></section>
 <section class="section" id="team"><div class="card section-placeholder"><div class="big">♧</div><h2>Team</h2><p>Team roles and shared business access can live here.</p><button class="primary" data-back>Back to overview</button></div></section>
+<section class="section" id="security">
+ <div class="welcome"><div class="eyebrow">ACCOUNT SECURITY</div><h2>Your password. Your account.</h2><p>Set a password for your SYNTRIX account, change it after verifying your email, or recover access if you forget it.</p></div>
+ <div class="finance-two">
+  <article class="card">
+   <div class="cardtitle"><h3>Set or change your password</h3><span class="private-pill">🔒 VERIFIED BY EMAIL</span></div>
+   <p class="muted">We will send a secure link to the email address on your signed-in account. Open it to set a new password. This also lets Google sign-in users add a password.</p>
+   <div class="mini-kv"><b>Signed-in account</b><span id="securityAccountEmail">Checking…</span></div>
+   <button class="primary" id="sendPasswordLink" type="button" disabled>Email me a verification link</button>
+   <p class="customer-feedback" id="passwordLinkFeedback" role="status">Checking your account…</p>
+  </article>
+  <article class="card">
+   <div class="cardtitle"><h3>Account recovery</h3><span class="muted">EMAIL RESET</span></div>
+   <p class="muted">Forgot your password? Enter the email address connected to your SYNTRIX account. We will send a recovery link if an account can receive it.</p>
+   <form class="form-stack" id="accountRecoveryForm">
+    <label>Account email<input id="recoveryEmail" type="email" autocomplete="email" maxlength="254" placeholder="you@example.com" required></label>
+    <button class="secondary" type="submit">Send recovery email</button>
+   </form>
+   <p class="customer-feedback" id="recoveryFeedback" role="status"></p>
+  </article>
+ </div>
+ <article class="card" id="recoveryPasswordPanel" hidden style="margin-top:15px">
+  <div class="cardtitle"><h3>Choose your new password</h3><span class="private-pill">EMAIL VERIFIED</span></div>
+  <p class="muted">Your email link verified access to this account. Choose a strong password, or generate one.</p>
+  <form class="form-stack" id="newPasswordForm">
+   <label>New password<input id="newPassword" type="password" autocomplete="new-password" minlength="12" maxlength="128" required placeholder="At least 12 characters"></label>
+   <label>Confirm new password<input id="confirmNewPassword" type="password" autocomplete="new-password" minlength="12" maxlength="128" required placeholder="Type it again"></label>
+   <div class="customer-form-actions"><button class="secondary" id="generatePassword" type="button">Generate strong password</button><button class="primary" type="submit">Save password</button></div>
+  </form>
+  <p class="customer-feedback" id="newPasswordFeedback" role="status"></p>
+  <p class="security-footnote">Generated passwords are created on this device and are not saved by SYNTRIX. Store yours somewhere safe before closing this page.</p>
+ </article>
+ <p class="security-footnote">SYNTRIX never stores your password in its customer tables. Supabase Authentication securely manages password verification and storage.</p>
+</section>
 <section class="section" id="settings"><div class="card section-placeholder"><div class="big">⚙</div><h2>Settings</h2><p>Business profile, preferences and connected services.</p><button class="primary" data-back>Back to overview</button></div></section>
 
 <section class="section" id="finance">
@@ -371,7 +405,7 @@ button{font:inherit;color:inherit;cursor:pointer}.shell{min-height:100vh;display
 </main></div><div class="toast" id="toast">Prototype interaction</div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const titles={overview:['SYNTRIX Business','Business management and cash-flow planning for creators and small teams.'],analytics:['Analytics','Understand performance and spot opportunities.'],customers:['Customer HQ','Manage customers and private internal notes.'],services:['Services','Manage what your business offers.'],invoices:['Invoices','Keep payments and paperwork in order.'],team:['Team','Bring your people and work together.'],finance:['Money','Track income, expenses and planned payments.'],automation:['Money automation','Set an income schedule and organise upcoming bills.'],profile:['Profile','Manage your personal and business details.'],settings:['Settings','Control your business workspace.']};
+const titles={overview:['SYNTRIX Business','Business management and cash-flow planning for creators and small teams.'],analytics:['Analytics','Understand performance and spot opportunities.'],customers:['Customer HQ','Manage customers and private internal notes.'],services:['Services','Manage what your business offers.'],invoices:['Invoices','Keep payments and paperwork in order.'],team:['Team','Bring your people and work together.'],finance:['Money','Track income, expenses and planned payments.'],automation:['Money automation','Set an income schedule and organise upcoming bills.'],profile:['Profile','Manage your personal and business details.'],security:['Account security','Protect your SYNTRIX account and password.'],settings:['Settings','Control your business workspace.']};
 function go(page){document.querySelectorAll('.section').forEach(s=>s.classList.toggle('active',s.id===page));document.querySelectorAll('.navbtn').forEach(b=>b.classList.toggle('active',b.dataset.page===page));document.getElementById('pageTitle').textContent=titles[page][0];document.getElementById('pageSub').textContent=titles[page][1];}
 document.querySelectorAll('.navbtn').forEach(b=>b.addEventListener('click',()=>go(b.dataset.page)));
 document.querySelectorAll('[data-jump]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.jump)));
@@ -661,9 +695,14 @@ async function initBusinessCloud(){
   const url=saved.url||BUSINESS_SUPABASE_URL;
   const key=saved.anon||BUSINESS_SUPABASE_PUBLISHABLE_KEY;
   businessSupabase=window.supabase.createClient(url,key);
+  businessSupabase.auth.onAuthStateChange((event,session)=>{
+   if(event==='PASSWORD_RECOVERY'){businessUser=session?.user||null;showRecoveryPasswordForm()}
+  });
   const {data,error}=await businessSupabase.auth.getUser();
   if(error)throw error;
   businessUser=data.user||null;
+  document.getElementById('securityAccountEmail').textContent=businessUser?.email||'Not signed in';
+  document.getElementById('sendPasswordLink').disabled=!businessUser?.email;
   if(!businessUser){
    setCloudStatus('LOCAL ONLY');
    document.getElementById('autoSaveFeedback').textContent='Guest mode: this plan can be saved in this browser. Sign in to SYNTRIX first to sync it to your account.';
@@ -785,6 +824,82 @@ function loadAutoPlan(){
   document.getElementById('autoSaveFeedback').textContent='Loaded the plan saved on this device. Review it before making changes.';
  }catch(err){document.getElementById('autoSaveFeedback').textContent='A saved plan could not be read in this browser.'}
 }
+
+// Account security: passwords and recovery links are managed by Supabase Auth.
+function setSecurityFeedback(id,message){const el=document.getElementById(id);if(el)el.textContent=message}
+function generateSecurePassword(){
+ const groups=['ABCDEFGHJKLMNPQRSTUVWXYZ','abcdefghijkmnopqrstuvwxyz','23456789','!@#$%^&*()-_=+'];
+ const all=groups.join('');
+ const bytes=new Uint32Array(24);crypto.getRandomValues(bytes);
+ const chars=groups.map((g,i)=>g[bytes[i]%g.length]);
+ for(let i=groups.length;i<24;i++)chars.push(all[bytes[i]%all.length]);
+ for(let i=chars.length-1;i>0;i--){const j=bytes[(i+4)%bytes.length]%(i+1);[chars[i],chars[j]]=[chars[j],chars[i]]}
+ return chars.join('');
+}
+function showRecoveryPasswordForm(){
+ document.getElementById('recoveryPasswordPanel').hidden=false;
+ go('security');
+ setSecurityFeedback('newPasswordFeedback','Email verified. You can now set your password.');
+}
+document.getElementById('generatePassword').addEventListener('click',()=>{
+ const password=generateSecurePassword();
+ document.getElementById('newPassword').value=password;
+ document.getElementById('confirmNewPassword').value=password;
+ document.getElementById('newPassword').type='text';
+ document.getElementById('confirmNewPassword').type='text';
+ setSecurityFeedback('newPasswordFeedback','Generated a strong password. Save it somewhere safe before submitting.');
+});
+document.getElementById('sendPasswordLink').addEventListener('click',async()=>{
+ if(!businessSupabase||!businessUser?.email){setSecurityFeedback('passwordLinkFeedback','Sign in to your SYNTRIX account first.');return}
+ const button=document.getElementById('sendPasswordLink');button.disabled=true;
+ setSecurityFeedback('passwordLinkFeedback','Sending a secure verification email…');
+ try{
+  const redirectTo=window.location.origin+window.location.pathname+'?recovery=1';
+  const {error}=await businessSupabase.auth.resetPasswordForEmail(businessUser.email,{redirectTo});
+  if(error)throw error;
+  setSecurityFeedback('passwordLinkFeedback','Email sent. Open the link in your inbox on this device to set or change your password.');
+ }catch(error){setSecurityFeedback('passwordLinkFeedback','Could not send the email. Check the account email and email settings, then try again.')}
+ finally{button.disabled=false}
+});
+document.getElementById('accountRecoveryForm').addEventListener('submit',async event=>{
+ event.preventDefault();
+ const email=document.getElementById('recoveryEmail').value.trim();
+ if(!businessSupabase){setSecurityFeedback('recoveryFeedback','Account security is temporarily unavailable. Refresh and try again.');return}
+ const button=event.currentTarget.querySelector('button[type="submit"]');button.disabled=true;
+ setSecurityFeedback('recoveryFeedback','Sending recovery email…');
+ try{
+  const redirectTo=window.location.origin+window.location.pathname+'?recovery=1';
+  const {error}=await businessSupabase.auth.resetPasswordForEmail(email,{redirectTo});
+  if(error)throw error;
+  setSecurityFeedback('recoveryFeedback','If that email is connected to a SYNTRIX account, a recovery link will arrive shortly. Check your inbox and spam folder.');
+ }catch(error){setSecurityFeedback('recoveryFeedback','We could not send the email right now. Check the address and try again later.')}
+ finally{button.disabled=false}
+});
+document.getElementById('newPasswordForm').addEventListener('submit',async event=>{
+ event.preventDefault();
+ const password=document.getElementById('newPassword').value;
+ const confirm=document.getElementById('confirmNewPassword').value;
+ if(password.length<12){setSecurityFeedback('newPasswordFeedback','Use at least 12 characters.');return}
+ if(password!==confirm){setSecurityFeedback('newPasswordFeedback','Those passwords do not match.');return}
+ if(!businessSupabase){setSecurityFeedback('newPasswordFeedback','Account security is temporarily unavailable. Refresh and try again.');return}
+ const button=event.currentTarget.querySelector('button[type="submit"]');button.disabled=true;
+ setSecurityFeedback('newPasswordFeedback','Updating your password securely…');
+ try{
+  const {error}=await businessSupabase.auth.updateUser({password});
+  if(error)throw error;
+  document.getElementById('newPasswordForm').reset();
+  document.getElementById('newPassword').type='password';
+  document.getElementById('confirmNewPassword').type='password';
+  document.getElementById('recoveryPasswordPanel').hidden=true;
+  const cleanUrl=window.location.origin+window.location.pathname;
+  window.history.replaceState({},document.title,cleanUrl);
+  setSecurityFeedback('passwordLinkFeedback','Password updated successfully. Your account is now protected by the new password.');
+  notify('SYNTRIX password updated.');
+ }catch(error){setSecurityFeedback('newPasswordFeedback','Could not update the password. The link may have expired; request a new verification email and try again.')}
+ finally{button.disabled=false}
+});
+
 loadAutoPlan();showCustomDays();
+if(new URLSearchParams(window.location.search).get('recovery')==='1')go('security');
 businessCloudInit=initBusinessCloud();
 </script></body></html>
