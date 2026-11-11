@@ -2,7 +2,30 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#080914"><title>SYNTRIX Business — Prototype</title>
+<meta name="theme-color" content="#080914">
+<title>SYNTRIX Business | Business Management for Creators &amp; Small Teams</title>
+<meta name="description" content="SYNTRIX Business is a business management workspace for creators and small teams. Organise business activity and plan income, expenses, bill deadlines and optional savings.">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://syntrix-iota.vercel.app/business.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SYNTRIX">
+<meta property="og:title" content="SYNTRIX Business | Business Management Workspace">
+<meta property="og:description" content="A business management workspace for creators and small teams, with business dashboards and cash-flow planning.">
+<meta property="og:url" content="https://syntrix-iota.vercel.app/business.html">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SYNTRIX Business | Business Management Workspace">
+<meta name="twitter:description" content="Organise business activity and plan income, expenses, bill deadlines and optional savings with SYNTRIX Business.">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "SYNTRIX Business",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Web",
+  "url": "https://syntrix-iota.vercel.app/business.html",
+  "description": "A business management workspace for creators and small teams. The current prototype includes an overview dashboard and planning tools for income, expenses, bill deadlines and optional savings. Live bank connections and money transfers are not enabled."
+}
+</script>
 <style>
 :root{color-scheme:dark;--bg:#080914;--surface:#101326;--surface2:#151a31;--line:#282d4b;--text:#f4f5ff;--muted:#969dbb;--blue:#48c7ff;--purple:#9b79ff;--green:#65e6b0}
 *{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 70% -10%,#282052 0,transparent 36%),radial-gradient(ellipse at 100% 65%,#102c4a 0,transparent 32%),var(--bg);color:var(--text);font:14px/1.5 Inter,system-ui,Segoe UI,sans-serif;min-height:100vh}
@@ -96,9 +119,9 @@ button{font:inherit;color:inherit;cursor:pointer}.shell{min-height:100vh;display
  <div class="railbottom"><button id="help" title="Help">?</button></div>
 </aside>
 <main class="main">
-<header class="top"><div><div class="crumb">SYNTRIX / BUSINESS</div><h1 id="pageTitle">Business overview</h1><p class="subtitle" id="pageSub">A clearer view of how your business is doing.</p></div><div class="topright"><select class="range" aria-label="Date range" id="range"><option>Last 30 days</option><option>Last 7 days</option><option>This year</option></select><div class="avatar" title="Demo account">S</div></div></header>
+<header class="top"><div><div class="crumb">SYNTRIX / BUSINESS</div><h1 id="pageTitle">SYNTRIX Business</h1><p class="subtitle" id="pageSub">Business management and cash-flow planning for creators and small teams.</p></div><div class="topright"><select class="range" aria-label="Date range" id="range"><option>Last 30 days</option><option>Last 7 days</option><option>This year</option></select><div class="avatar" title="Demo account">S</div></div></header>
 <section class="section active" id="overview">
- <div class="welcome"><div class="eyebrow">YOUR BUSINESS, IN FOCUS</div><h2>Good evening. Let's make progress.</h2><p>Here is your business snapshot. <strong>These are sample figures</strong> for the prototype, not live customer or financial data.</p></div>
+ <div class="welcome"><div class="eyebrow">THE BUSINESS MANAGEMENT WORKSPACE</div><h2>One workspace for your business.</h2><p>SYNTRIX Business is designed for creators, freelancers and small teams. Organise business activity and plan income, expenses, bill deadlines and optional savings. <strong>This is an early prototype: the figures are samples and live bank connections or transfers are not enabled.</strong></p></div>
  <div class="metrics">
   <article class="card"><div class="metric-head">Total revenue <span class="metric-icon">↗</span></div><div class="metric-value">12,840 zł</div><div class="trend">↗ 12.8% <span>vs previous period</span></div></article>
   <article class="card"><div class="metric-head">Customers <span class="metric-icon">♙</span></div><div class="metric-value">284</div><div class="trend">↗ 8.2% <span>vs previous period</span></div></article>
@@ -136,6 +159,13 @@ button{font:inherit;color:inherit;cursor:pointer}.shell{min-height:100vh;display
   </div></article>
  </div>
 </section>
+
+ <article class="card" aria-labelledby="aboutSyntrixBusiness" style="margin-top:15px">
+  <h2 id="aboutSyntrixBusiness" style="font-size:17px;margin:0 0 8px">About SYNTRIX Business</h2>
+  <p class="muted">SYNTRIX Business is a business management workspace being developed for independent creators, freelancers and small teams. It is part of the SYNTRIX platform.</p>
+  <p class="muted">The workspace brings business overview tools together with planning for expected income, expenses, bill due dates and optional savings allocations. Cashflow planning is designed to help users compare expected money coming in with payments due and spot possible shortfalls before a deadline.</p>
+  <p class="muted">The current release is a prototype. Some business tools are still being developed, and live bank-account connections, real deposit detection and money transfers are not available.</p>
+ </article>
 <section class="section" id="analytics"><div class="card section-placeholder"><div class="big">◫</div><h2>Analytics</h2><p>Your future analytics workspace. The overview currently shows illustrative sample data; real integrations can be connected in a later build.</p><button class="primary" data-back>Back to overview</button></div></section>
 <section class="section" id="customers"><div class="card section-placeholder"><div class="big">♙</div><h2>Customers</h2><p>A dedicated place for customer profiles, contact history and relationship notes.</p><button class="primary" data-back>Back to overview</button></div></section>
 <section class="section" id="services"><div class="card section-placeholder"><div class="big">◇</div><h2>Services</h2><p>Manage the services your business offers, pricing and availability.</p><button class="primary" data-back>Back to overview</button></div></section>
@@ -297,7 +327,7 @@ button{font:inherit;color:inherit;cursor:pointer}.shell{min-height:100vh;display
 </main></div><div class="toast" id="toast">Prototype interaction</div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const titles={overview:['Business overview','A clearer view of how your business is doing.'],analytics:['Analytics','Understand performance and spot opportunities.'],customers:['Customers','Keep customer relationships organised.'],services:['Services','Manage what your business offers.'],invoices:['Invoices','Keep payments and paperwork in order.'],team:['Team','Bring your people and work together.'],finance:['Money','Track income, expenses and planned payments.'],automation:['Money automation','Set an income schedule and organise upcoming bills.'],profile:['Profile','Manage your personal and business details.'],settings:['Settings','Control your business workspace.']};
+const titles={overview:['SYNTRIX Business','Business management and cash-flow planning for creators and small teams.'],analytics:['Analytics','Understand performance and spot opportunities.'],customers:['Customers','Keep customer relationships organised.'],services:['Services','Manage what your business offers.'],invoices:['Invoices','Keep payments and paperwork in order.'],team:['Team','Bring your people and work together.'],finance:['Money','Track income, expenses and planned payments.'],automation:['Money automation','Set an income schedule and organise upcoming bills.'],profile:['Profile','Manage your personal and business details.'],settings:['Settings','Control your business workspace.']};
 function go(page){document.querySelectorAll('.section').forEach(s=>s.classList.toggle('active',s.id===page));document.querySelectorAll('.navbtn').forEach(b=>b.classList.toggle('active',b.dataset.page===page));document.getElementById('pageTitle').textContent=titles[page][0];document.getElementById('pageSub').textContent=titles[page][1];}
 document.querySelectorAll('.navbtn').forEach(b=>b.addEventListener('click',()=>go(b.dataset.page)));
 document.querySelectorAll('[data-jump]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.jump)));
