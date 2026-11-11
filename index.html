@@ -40,6 +40,10 @@
 
 /* Keep the complete navigation accessible on tablet-sized screens too. */
 @media(min-width:701px) and (max-width:900px){.app{grid-template-columns:245px minmax(0,1fr)}.side{display:flex;flex-direction:column;align-items:stretch;position:sticky;top:0;height:100vh;max-height:none;overflow-y:auto;overflow-x:hidden;padding:26px 16px}.tag,.navlabel{display:block}.sidefoot{display:block;margin-top:auto}.nav{display:flex;width:100%;white-space:normal;padding:12px;margin:3px 0}.nav .ico{display:inline-block}.main{padding-top:28px}}
+
+/* Keep every navigation item reachable: let the document scroll instead of trapping the sidebar. */
+.side{position:relative!important;top:auto!important;height:auto!important;max-height:none!important;overflow:visible!important;align-self:stretch!important}
+.sidefoot{position:static!important;margin-top:24px!important}
 </style></head>
 <body><div class="app">
 <aside class="side"><div><div class="brand">SYN<span>TRIX</span></div><p class="tag">THE CREATOR PLATFORM</p></div>
