@@ -48,21 +48,7 @@
 <body><div class="app">
 <aside class="side"><div><div class="brand">SYN<span>TRIX</span></div><p class="tag">THE CREATOR PLATFORM</p></div>
 <div class="navlabel">WORKSPACE</div>
-<button class="nav active" data-page="home"><span class="ico">⌂</span> Home</button>
-<button class="nav" data-page="control"><span class="ico">◈</span> NIKO Control</button>
-<button class="nav" data-page="video"><span class="ico">▶</span> Video Studio</button>
-<button class="nav" data-page="thumb"><span class="ico">▧</span> Thumbnail Lab</button>
-<button class="nav" data-page="script"><span class="ico">✎</span> Script Writer</button>
-<button class="nav" data-page="ideas"><span class="ico">✦</span> Video Ideas</button>
-<button class="nav" data-page="growth"><span class="ico">↗</span> Growth Assistant</button>
-<button class="nav" data-page="hub"><span class="ico">◎</span> Creator Hub</button>
-<button class="nav" data-page="projects"><span class="ico">▣</span> My Projects</button>
-<button class="nav" data-page="profile"><span class="ico">👤</span> My Profile</button>
-<button class="nav" data-page="contentcreator"><span class="ico">✍️</span> Content Creator</button>
-<button class="nav" data-page="creativestudio"><span class="ico">🎨</span> Creative Studio</button>
-<button class="nav" data-page="campaignplanner"><span class="ico">📅</span> Campaign Planner</button>
-<button class="nav" data-page="marketinganalytics"><span class="ico">📊</span> Marketing Analytics</button>
-<button class="nav" data-page="marketgrowth"><span class="ico">🚀</span> Marketing Growth</button>
+<div id="navItems"></div>
 <div class="sidefoot">Made for creators. Built to create.</div></aside>
 <main class="main">
 <header class="top"><div><div class="eyebrow">YOUR CREATOR HQ</div><h1 id="pageTitle">Make something great.</h1><p class="sub" id="pageSub">Your ideas deserve to get out there. Let's make it happen.</p></div><div class="accountbar"><img id="accountAvatar" class="profile-mini" alt="Your avatar"><span id="accountStatus" class="pill">👤 Guest session</span><button class="btn secondary" id="openAuth">Sign in / account</button></div></header>
@@ -225,6 +211,7 @@ let syntrixAuthClient = null;
 const AUTH_CONFIG_KEY = 'syntrix-auth-config-v1';
 const SYNTRIX_SUPABASE_URL = 'https://akdvrpqgwsopplsibefn.supabase.co';
 const SYNTRIX_SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_jMKeDhWfdQinR4lFY4T5Mg_Nn7sG9ma';
+const navItems=[['home','⌂','Home'],['control','◈','NIKO Control'],['video','▶','Video Studio'],['thumb','▧','Thumbnail Lab'],['script','✎','Script Writer'],['ideas','✦','Video Ideas'],['growth','↗','Growth Assistant'],['hub','◎','Creator Hub'],['projects','▣','My Projects'],['profile','👤','My Profile'],['contentcreator','✍️','Content Creator'],['creativestudio','🎨','Creative Studio'],['campaignplanner','📅','Campaign Planner'],['marketinganalytics','📊','Marketing Analytics'],['marketgrowth','🚀','Marketing Growth']];document.getElementById('navItems').innerHTML=navItems.map(([page,icon,label])=>'<button class="nav'+(page==='home'?' active':'')+'" data-page="'+page+'"><span class="ico">'+icon+'</span> '+label+'</button>').join('');
 const pages=['home','control','video','thumb','script','ideas','growth','hub','projects','profile','contentcreator','creativestudio','campaignplanner','marketinganalytics','marketgrowth'];const titles={contentcreator:['Create your message.','Draft marketing content with simple built-in templates.'],creativestudio:['Design your promotion.','Create a downloadable graphic in your browser.'],campaignplanner:['Plan your next post.','Organise campaigns and publishing dates.'],marketinganalytics:['Track real results.','Your manually entered marketing numbers.'],marketgrowth:['Find your next move.','Turn your marketing results into practical next steps.'],profile:['Your profile.','Your SYNTRIX identity.'],control:['Run the business.','NIKO’s SYNTRIX command centre.'],projects:['Your projects.','Your saved work, all in one place on this device.'],home:['Make something great.','Your ideas deserve to get out there. Let’s make it happen.'],video:['Build your next video.','Bring your clips and your plan together.'],thumb:['Make them stop scrolling.','Design a thumbnail that makes the idea clear.'],script:['Find the story.','Turn a topic into a strong video structure.'],ideas:['Never run out of ideas.','A little inspiration goes a long way.'],growth:['Make your video clearer.','Improve the way you present your content.'],hub:['Keep levelling up.','A few useful creator lessons.']};
 function showPage(p){pages.forEach(x=>document.getElementById(x+'Page').classList.toggle('hidden',x!==p));document.querySelectorAll('.nav').forEach(b=>b.classList.toggle('active',b.dataset.page===p));document.getElementById('pageTitle').textContent=titles[p][0];document.getElementById('pageSub').textContent=titles[p][1];if(p==='profile')loadProfile();window.scrollTo(0,0)}
 document.querySelectorAll('[data-page]').forEach(b=>b.addEventListener('click',()=>showPage(b.dataset.page)));document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>showPage(b.dataset.go)));
