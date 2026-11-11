@@ -58,6 +58,17 @@ button{font:inherit;color:inherit;cursor:pointer}.shell{min-height:100vh;display
 .cover-btn{margin-top:5px;background:#1b3650;border:1px solid #3a7193;color:#bdeaff;padding:6px 9px;border-radius:9px;font-size:10px}
 .cover-btn:disabled{opacity:.45;cursor:not-allowed}
 .empty-ledger{font-size:11px;color:var(--muted);padding:15px 0}
+
+.auto-rule{display:flex;align-items:flex-start;gap:12px;padding:13px 0;border-top:1px solid #ffffff12}
+.auto-rule:first-child{border-top:0}
+.auto-rule-main{flex:1;min-width:0}
+.auto-rule-main b{display:block;font-size:12px}
+.auto-rule-main small{display:block;color:var(--muted);font-size:10px;line-height:1.6;overflow-wrap:anywhere}
+.auto-rule-amount{font-weight:750;white-space:nowrap;font-size:12px}
+.remove-rule{border:1px solid #65465b;background:#291925;color:#ffc0ce;border-radius:8px;padding:5px 8px;font-size:10px}
+.preview-line{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid #ffffff12;font-size:11px}
+.preview-line small{display:block;color:var(--muted);font-size:10px}
+.preview-ok{color:var(--green)}.preview-short{color:#ffbd83}
 </style>
 </head>
 <body>
@@ -74,6 +85,7 @@ button{font:inherit;color:inherit;cursor:pointer}.shell{min-height:100vh;display
   <div class="navlabel">MANAGE</div>
   <button class="navbtn" data-page="team" title="Team"><span>♧</span><span class="navtext">Team</span></button>
   <button class="navbtn" data-page="finance" title="Money"><span>↕</span><span class="navtext">Money</span></button>
+  <button class="navbtn" data-page="automation" title="Automation"><span>⟳</span><span class="navtext">Automation</span></button>
   <button class="navbtn" data-page="profile" title="Profile"><span>◉</span><span class="navtext">Profile</span></button>
   <button class="navbtn" data-page="settings" title="Settings"><span>⚙</span><span class="navtext">Settings</span></button>
  </nav>
@@ -181,6 +193,52 @@ button{font:inherit;color:inherit;cursor:pointer}.shell{min-height:100vh;display
   <button class="primary" type="button" data-approval>Review demo approval flow</button>
  </article>
 </section>
+
+<section class="section" id="automation">
+ <div class="welcome"><div class="eyebrow">AUTOMATION PLANNER · DEMO MODE</div><h2>Set the rules once. See what each income payment can cover.</h2><p>Tell SYNTRIX when income is expected, then list the bills it should plan for. Save your plan and preview each cycle.</p></div>
+ <div class="finance-two">
+  <article class="card"><div class="cardtitle"><div><h3>1. Incoming money</h3><div class="muted">Your expected income schedule</div></div><span class="pill-demo">INCOME RULE</span></div>
+   <form class="form-stack" id="autoIncomeForm">
+    <label>Where does the income come from?<input name="source" maxlength="60" placeholder="e.g. Client payments" required></label>
+    <label>How often do you receive it?<select name="frequency"><option value="daily">Every day</option><option value="weekly">Every week</option><option value="fortnightly">Every 2 weeks</option><option value="monthly" selected>Every month</option><option value="quarterly">Every 3 months</option><option value="custom">Every set number of days</option></select></label>
+    <label>How much arrives each time? (zł)<input name="amount" type="number" min="0.01" step="0.01" placeholder="3000" required></label>
+    <label>Next expected income date<input name="nextDate" type="date" required></label>
+    <label id="customDaysLabel" style="display:none">Custom interval (days)<input name="customDays" type="number" min="1" max="365" step="1" value="30"></label>
+   </form>
+  </article>
+  <article class="card"><div class="cardtitle"><div><h3>2. Payments to cover</h3><div class="muted">Add each bill or regular payment</div></div><span class="pill-demo">PAYMENT RULE</span></div>
+   <form class="form-stack" id="autoBillForm">
+    <label>What is the payment for?<input name="what" maxlength="70" placeholder="e.g. Website hosting" required></label>
+    <label>How much must be paid? (zł)<input name="amount" type="number" min="0.01" step="0.01" placeholder="49" required></label>
+    <label>Who should receive it?<input name="recipient" maxlength="80" placeholder="e.g. Hosting Company Ltd." required></label>
+    <label>Where should it go? (destination label only)<input name="destination" maxlength="80" placeholder="e.g. Saved business bank account" required></label>
+    <label>Payment route<select name="route"><option value="Bank transfer">Bank transfer</option><option value="Debit card">Debit card</option><option value="Payment provider">Payment provider</option></select></label>
+    <label>How often is it due?<select name="frequency"><option value="once">One time</option><option value="weekly">Every week</option><option value="monthly" selected>Every month</option><option value="quarterly">Every 3 months</option><option value="yearly">Every year</option></select></label>
+    <label>Next due date<input name="dueDate" type="date" required></label>
+    <label>Payment priority<select name="priority"><option value="1">1 — Highest</option><option value="2" selected>2 — Normal</option><option value="3">3 — Lowest</option></select></label>
+    <button class="primary" type="submit">＋ Add payment rule</button>
+   </form>
+  </article>
+ </div>
+ <article class="card" style="margin-top:15px">
+  <div class="cardtitle"><div><h3>3. Your payment rules</h3><div class="muted">Review recipients, destinations, amounts and due dates</div></div><span class="pill-demo" id="autoRuleCount">0 RULES</span></div>
+  <div id="autoBillList" class="money-list"><div class="empty-ledger">No payment rules yet. Add a bill above.</div></div>
+ </article>
+ <div class="finance-two">
+  <article class="card">
+   <div class="cardtitle"><div><h3>4. Save your plan</h3><div class="muted">Keep the rules on this device</div></div><span class="pill-demo">LOCAL DEMO</span></div>
+   <p class="muted">Saving keeps your income schedule and bill instructions in this browser. It does not connect to a bank, debit card or payment service.</p>
+   <button class="primary" id="saveAutomation" type="button">Save automation plan</button>
+   <div id="autoSaveFeedback" class="muted" aria-live="polite" style="margin-top:10px"></div>
+  </article>
+  <article class="card">
+   <div class="cardtitle"><div><h3>5. Preview the next cycle</h3><div class="muted">See how the expected income would be allocated</div></div><span class="pill-demo">CALCULATION ONLY</span></div>
+   <button class="primary" id="previewAutomation" type="button">Preview next income cycle</button>
+   <div id="autoPreview" class="muted" aria-live="polite" style="margin-top:12px">Your allocation preview will appear here.</div>
+  </article>
+ </div>
+ <div class="finance-note" style="margin-top:15px"><b>Important:</b> This prototype can save rules and calculate an allocation plan, but it cannot send money or initiate automatic transfers. A live version would need a regulated payment provider, a properly authorised account holder, secure account connections and explicit approval of real payments. Do not enter card numbers, PINs, CVVs, passwords or full bank-account details here.</div>
+</section>
 <section class="section" id="profile">
  <div class="welcome"><div class="eyebrow">YOUR SYNTRIX IDENTITY</div><h2>Profile and business details</h2><p>Keep the details that appear across your business workspace up to date.</p></div>
  <div class="profile-grid">
@@ -203,7 +261,7 @@ button{font:inherit;color:inherit;cursor:pointer}.shell{min-height:100vh;display
 </section>
 </main></div><div class="toast" id="toast">Prototype interaction</div>
 <script>
-const titles={overview:['Business overview','A clearer view of how your business is doing.'],analytics:['Analytics','Understand performance and spot opportunities.'],customers:['Customers','Keep customer relationships organised.'],services:['Services','Manage what your business offers.'],invoices:['Invoices','Keep payments and paperwork in order.'],team:['Team','Bring your people and work together.'],finance:['Money','Track income, expenses and planned payments.'],profile:['Profile','Manage your personal and business details.'],settings:['Settings','Control your business workspace.']};
+const titles={overview:['Business overview','A clearer view of how your business is doing.'],analytics:['Analytics','Understand performance and spot opportunities.'],customers:['Customers','Keep customer relationships organised.'],services:['Services','Manage what your business offers.'],invoices:['Invoices','Keep payments and paperwork in order.'],team:['Team','Bring your people and work together.'],finance:['Money','Track income, expenses and planned payments.'],automation:['Money automation','Set an income schedule and organise upcoming bills.'],profile:['Profile','Manage your personal and business details.'],settings:['Settings','Control your business workspace.']};
 function go(page){document.querySelectorAll('.section').forEach(s=>s.classList.toggle('active',s.id===page));document.querySelectorAll('.navbtn').forEach(b=>b.classList.toggle('active',b.dataset.page===page));document.getElementById('pageTitle').textContent=titles[page][0];document.getElementById('pageSub').textContent=titles[page][1];}
 document.querySelectorAll('.navbtn').forEach(b=>b.addEventListener('click',()=>go(b.dataset.page)));
 document.querySelectorAll('[data-jump]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.jump)));
@@ -300,4 +358,106 @@ document.getElementById('expenseList').addEventListener('click',e=>{
 });
 refreshMoney();
 
+
+const AUTO_PLAN_KEY='syntrix_business_auto_plan_demo_v1';
+let autoBills=[];
+function localDateString(date){const y=date.getFullYear();const m=String(date.getMonth()+1).padStart(2,'0');const d=String(date.getDate()).padStart(2,'0');return y+'-'+m+'-'+d}
+function moneyLabel(value){return Number(value).toLocaleString('pl-PL',{minimumFractionDigits:2,maximumFractionDigits:2})+' zł'}
+function showCustomDays(){const field=document.getElementById('customDaysLabel');const freq=document.querySelector('#autoIncomeForm [name="frequency"]').value;field.style.display=freq==='custom'?'grid':'none'}
+document.querySelector('#autoIncomeForm [name="frequency"]').addEventListener('change',showCustomDays);
+function renderAutoBills(){
+ const list=document.getElementById('autoBillList');list.replaceChildren();
+ document.getElementById('autoRuleCount').textContent=autoBills.length+' RULE'+(autoBills.length===1?'':'S');
+ if(!autoBills.length){const empty=document.createElement('div');empty.className='empty-ledger';empty.textContent='No payment rules yet. Add a bill above.';list.append(empty);return}
+ autoBills.forEach((bill,index)=>{
+  const row=document.createElement('div');row.className='auto-rule';
+  const main=document.createElement('div');main.className='auto-rule-main';
+  const title=document.createElement('b');title.textContent=bill.what;
+  const detail=document.createElement('small');detail.textContent='Who: '+bill.recipient+' · Where: '+bill.destination+' · Route: '+bill.route+' · Due: '+bill.frequency+' from '+bill.dueDate+' · Priority '+bill.priority;
+  main.append(title,detail);
+  const amount=document.createElement('div');amount.className='auto-rule-amount';amount.textContent=moneyLabel(bill.amount);
+  const remove=document.createElement('button');remove.type='button';remove.className='remove-rule';remove.dataset.removeRule=String(index);remove.textContent='Remove';
+  row.append(main,amount,remove);list.append(row);
+ });
+}
+document.getElementById('autoBillForm').addEventListener('submit',e=>{
+ e.preventDefault();const f=new FormData(e.currentTarget);const amount=Number(f.get('amount'));
+ if(!Number.isFinite(amount)||amount<=0)return;
+ autoBills.push({what:String(f.get('what')).trim(),amount,recipient:String(f.get('recipient')).trim(),destination:String(f.get('destination')).trim(),route:String(f.get('route')),frequency:String(f.get('frequency')),dueDate:String(f.get('dueDate')),priority:Number(f.get('priority'))});
+ renderAutoBills();e.currentTarget.reset();
+});
+document.getElementById('autoBillList').addEventListener('click',e=>{
+ const b=e.target.closest('[data-remove-rule]');if(!b)return;
+ autoBills.splice(Number(b.dataset.removeRule),1);renderAutoBills();
+});
+function readAutoPlan(){
+ const f=new FormData(document.getElementById('autoIncomeForm'));
+ const amount=Number(f.get('amount'));const nextDate=String(f.get('nextDate')||'');
+ if(!String(f.get('source')||'').trim()||!Number.isFinite(amount)||amount<=0||!nextDate)return null;
+ const frequency=String(f.get('frequency'));
+ const customDays=Number(f.get('customDays'));
+ if(frequency==='custom'&&(!Number.isInteger(customDays)||customDays<1||customDays>365))return null;
+ return {income:{source:String(f.get('source')).trim(),frequency,amount,nextDate,customDays:frequency==='custom'?customDays:null},bills:autoBills};
+}
+function saveAutoPlan(showMessage=true){
+ const form=document.getElementById('autoIncomeForm');
+ if(!form.reportValidity())return null;
+ const plan=readAutoPlan();if(!plan){notify('Check the income amount and schedule.');return null}
+ if(!plan.bills.length){notify('Add at least one payment rule before saving.');return null}
+ try{localStorage.setItem(AUTO_PLAN_KEY,JSON.stringify(plan));document.getElementById('autoSaveFeedback').textContent='Saved on this device. No bank connection or payment has been made.';if(showMessage)notify('Automation plan saved locally.');return plan}
+ catch(err){document.getElementById('autoSaveFeedback').textContent='This browser could not save the plan. It remains only on this page.';return plan}
+}
+document.getElementById('saveAutomation').addEventListener('click',()=>saveAutoPlan(true));
+function parseLocalDate(value){const parts=String(value).split('-').map(Number);if(parts.length!==3||parts.some(n=>!n))return null;return new Date(parts[0],parts[1]-1,parts[2],12,0,0,0)}
+function addCycle(date,frequency,customDays){
+ const d=new Date(date);
+ if(frequency==='daily')d.setDate(d.getDate()+1);
+ else if(frequency==='weekly')d.setDate(d.getDate()+7);
+ else if(frequency==='fortnightly')d.setDate(d.getDate()+14);
+ else if(frequency==='monthly')d.setMonth(d.getMonth()+1);
+ else if(frequency==='quarterly')d.setMonth(d.getMonth()+3);
+ else if(frequency==='yearly')d.setFullYear(d.getFullYear()+1);
+ else if(frequency==='custom')d.setDate(d.getDate()+Number(customDays||30));
+ return d;
+}
+function nextBillDate(bill,today){
+ let due=parseLocalDate(bill.dueDate);if(!due)return null;
+ if(bill.frequency==='once')return due;
+ let loops=0;
+ while(due<today&&loops<240){due=addCycle(due,bill.frequency);loops++}
+ return due;
+}
+function runAllocationPreview(){
+ const plan=readAutoPlan();if(!plan){document.getElementById('autoIncomeForm').reportValidity();notify('Complete the income schedule first.');return}
+ if(!plan.bills.length){notify('Add at least one bill to preview.');return}
+ const nextIncome=parseLocalDate(plan.income.nextDate);if(!nextIncome){notify('Choose the next expected income date.');return}
+ const today=parseLocalDate(localDateString(new Date()));
+ const due=plan.bills.map(b=>({bill:b,date:nextBillDate(b,today)})).filter(x=>x.date&&x.date<=nextIncome).sort((a,b)=>a.bill.priority-b.bill.priority||a.date-b.date);
+ let remaining=plan.income.amount;let allocated=0;
+ const wrap=document.getElementById('autoPreview');wrap.replaceChildren();
+ const intro=document.createElement('div');intro.className='finance-note';intro.textContent='Expected '+moneyLabel(plan.income.amount)+' from '+plan.income.source+' on '+plan.income.nextDate+'. '+(due.length?'Bills due by then are listed below in priority order.':'No saved bills are due before this income date.');wrap.append(intro);
+ due.forEach(x=>{
+  const line=document.createElement('div');line.className='preview-line';
+  const left=document.createElement('div');const title=document.createElement('b');title.textContent=x.bill.what;const note=document.createElement('small');note.textContent='To: '+x.bill.recipient+' · '+x.bill.destination+' · Due '+localDateString(x.date);left.append(title,note);
+  const right=document.createElement('div');right.style.textAlign='right';right.textContent=moneyLabel(x.bill.amount);
+  const state=document.createElement('small');
+  if(remaining>=x.bill.amount){remaining-=x.bill.amount;allocated+=x.bill.amount;state.className='preview-ok';state.textContent='Planned from this income'}
+  else{state.className='preview-short';state.textContent='Not enough planned income'}
+  right.append(state);line.append(left,right);wrap.append(line);
+ });
+ const totals=document.createElement('div');totals.className='finance-note';totals.textContent='Planned bills: '+moneyLabel(allocated)+' · Left after planned bills: '+moneyLabel(remaining)+'. This is a forecast only; no payment is initiated.';wrap.append(totals);
+}
+document.getElementById('previewAutomation').addEventListener('click',runAllocationPreview);
+function loadAutoPlan(){
+ try{
+  const raw=localStorage.getItem(AUTO_PLAN_KEY);if(!raw)return;
+  const p=JSON.parse(raw);if(!p||!p.income||!Array.isArray(p.bills))return;
+  const f=document.getElementById('autoIncomeForm');
+  ['source','frequency','amount','nextDate','customDays'].forEach(k=>{if(p.income[k]!==undefined&&f.elements[k])f.elements[k].value=p.income[k]});
+  autoBills=p.bills.filter(b=>b&&typeof b.what==='string'&&typeof b.recipient==='string'&&typeof b.destination==='string'&&Number(b.amount)>0);
+  showCustomDays();renderAutoBills();
+  document.getElementById('autoSaveFeedback').textContent='Loaded the plan saved on this device. Review it before making changes.';
+ }catch(err){document.getElementById('autoSaveFeedback').textContent='A saved plan could not be read in this browser.'}
+}
+loadAutoPlan();showCustomDays();
 </script></body></html>
