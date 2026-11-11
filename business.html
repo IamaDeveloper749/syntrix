@@ -96,6 +96,29 @@ button{font:inherit;color:inherit;cursor:pointer}.shell{min-height:100vh;display
 #autoSavingsCard input:disabled,#autoSavingsCard select:disabled{opacity:.5;cursor:not-allowed}
 #autoSavingsCard input:not(:disabled),#autoSavingsCard select:not(:disabled){border-color:#56658c}
 .savings-preview{border:1px solid #526b99;background:#14223a;border-radius:12px;padding:11px;margin-top:10px}
+.customers-grid{display:grid;grid-template-columns:minmax(280px,.85fr) minmax(0,1.15fr);gap:15px;align-items:start}
+.form-stack textarea{width:100%;min-height:112px;resize:vertical;background:#0d1224;border:1px solid #343a5c;color:#f4f5ff;border-radius:10px;padding:10px;font:inherit;line-height:1.5}
+.form-stack input:disabled,.form-stack select:disabled,.form-stack textarea:disabled,.customer-search:disabled{opacity:.48;cursor:not-allowed}
+.private-pill{font-size:10px;color:#a9dfff;background:#48c7ff14;border:1px solid #48c7ff44;padding:5px 9px;border-radius:20px;white-space:nowrap}
+.customer-form-actions{display:flex;gap:9px;align-items:center;flex-wrap:wrap}
+.secondary{border:1px solid #414968;background:#171d34;color:#dce5ff;border-radius:11px;padding:10px 14px;font-weight:700}
+.customer-feedback{font-size:11px;color:#aeb7d3;min-height:18px;margin:12px 0 0}
+.customer-search{width:100%;background:#0d1224;border:1px solid #343a5c;color:#f4f5ff;border-radius:10px;padding:11px 12px;font:inherit;margin-bottom:12px}
+.customer-list{display:grid;gap:10px}
+.customer-entry{border:1px solid #343a5c;background:#ffffff05;border-radius:14px;padding:13px}
+.customer-entry-head{display:flex;justify-content:space-between;gap:10px;align-items:center}
+.customer-entry-head strong{font-size:13px;overflow-wrap:anywhere}
+.customer-status{font-size:10px;padding:4px 8px;border-radius:20px;background:#48c7ff16;color:#a9dfff;text-transform:capitalize}
+.customer-status.inactive{background:#ffffff0c;color:#aeb7d3}
+.customer-status.new{background:#9b79ff1c;color:#c7b8ff}
+.customer-note{white-space:pre-wrap;overflow-wrap:anywhere;color:#d5dbef;font-size:12px;margin:10px 0}
+.customer-meta{font-size:10px;color:#8d96b4}
+.customer-actions{display:flex;gap:8px;margin-top:11px}
+.customer-actions button{border:1px solid #414968;background:#171d34;color:#dce5ff;border-radius:8px;padding:6px 9px;font-size:10px}
+.customer-actions .delete-customer{border-color:#65465b;background:#291925;color:#ffc0ce}
+.security-footnote{font-size:10px;color:#8f98b6;margin:13px 2px}
+@media(max-width:900px){.customers-grid{grid-template-columns:1fr}}
+
 </style>
 </head>
 <body>
@@ -167,7 +190,28 @@ button{font:inherit;color:inherit;cursor:pointer}.shell{min-height:100vh;display
   <p class="muted">The current release is a prototype. Some business tools are still being developed, and live bank-account connections, real deposit detection and money transfers are not available.</p>
  </article>
 <section class="section" id="analytics"><div class="card section-placeholder"><div class="big">◫</div><h2>Analytics</h2><p>Your future analytics workspace. The overview currently shows illustrative sample data; real integrations can be connected in a later build.</p><button class="primary" data-back>Back to overview</button></div></section>
-<section class="section" id="customers"><div class="card section-placeholder"><div class="big">♙</div><h2>Customers</h2><p>A dedicated place for customer profiles, contact history and relationship notes.</p><button class="primary" data-back>Back to overview</button></div></section>
+<section class="section" id="customers">
+ <div class="welcome"><div class="eyebrow">CUSTOMER HQ · PRIVATE NOTES</div><h2>Keep track of the people you work with.</h2><p>Add a customer and keep an internal note, such as preferences or follow-up details. <strong>These records are private to your signed-in account.</strong></p></div>
+ <div class="customers-grid">
+  <article class="card">
+   <div class="cardtitle"><h3 id="customerFormTitle">Add a customer</h3><span class="private-pill">🔒 PRIVATE</span></div>
+   <form id="customerForm" class="form-stack">
+    <label>Customer name<input id="customerName" maxlength="100" autocomplete="off" placeholder="e.g. Bob" required disabled></label>
+    <label>Status<select id="customerStatus" disabled><option value="new">New</option><option value="active" selected>Active</option><option value="inactive">Inactive</option></select></label>
+    <label>Private internal note<textarea id="customerNote" maxlength="1000" rows="5" placeholder="e.g. Prefers email. Follow up next week." disabled></textarea></label>
+    <div class="muted">Maximum 1,000 characters. Only your signed-in account can read or change these notes.</div>
+    <div class="customer-form-actions"><button class="primary" id="customerSubmit" type="submit" disabled>Add customer</button><button class="secondary" id="customerCancel" type="button" hidden>Cancel edit</button></div>
+   </form>
+   <p class="customer-feedback" id="customerFeedback" role="status">Checking your SYNTRIX account…</p>
+  </article>
+  <article class="card">
+   <div class="cardtitle"><div><h3>Your customers</h3><div class="muted">Private to this account</div></div><span class="private-pill" id="customerCount">0 saved</span></div>
+   <input class="customer-search" id="customerSearch" type="search" maxlength="100" placeholder="Search customers…" aria-label="Search customers" disabled>
+   <div class="customer-list" id="customerList"><p class="empty-ledger">Sign in to load your private customer list.</p></div>
+  </article>
+ </div>
+ <p class="security-footnote">Security tip: don't put passwords, payment-card details or other highly sensitive information in customer notes.</p>
+</section>
 <section class="section" id="services"><div class="card section-placeholder"><div class="big">◇</div><h2>Services</h2><p>Manage the services your business offers, pricing and availability.</p><button class="primary" data-back>Back to overview</button></div></section>
 <section class="section" id="invoices"><div class="card section-placeholder"><div class="big">▤</div><h2>Invoices</h2><p>Keep invoices and payment statuses organised in one place.</p><button class="primary" data-back>Back to overview</button></div></section>
 <section class="section" id="team"><div class="card section-placeholder"><div class="big">♧</div><h2>Team</h2><p>Team roles and shared business access can live here.</p><button class="primary" data-back>Back to overview</button></div></section>
@@ -327,7 +371,7 @@ button{font:inherit;color:inherit;cursor:pointer}.shell{min-height:100vh;display
 </main></div><div class="toast" id="toast">Prototype interaction</div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const titles={overview:['SYNTRIX Business','Business management and cash-flow planning for creators and small teams.'],analytics:['Analytics','Understand performance and spot opportunities.'],customers:['Customers','Keep customer relationships organised.'],services:['Services','Manage what your business offers.'],invoices:['Invoices','Keep payments and paperwork in order.'],team:['Team','Bring your people and work together.'],finance:['Money','Track income, expenses and planned payments.'],automation:['Money automation','Set an income schedule and organise upcoming bills.'],profile:['Profile','Manage your personal and business details.'],settings:['Settings','Control your business workspace.']};
+const titles={overview:['SYNTRIX Business','Business management and cash-flow planning for creators and small teams.'],analytics:['Analytics','Understand performance and spot opportunities.'],customers:['Customer HQ','Manage customers and private internal notes.'],services:['Services','Manage what your business offers.'],invoices:['Invoices','Keep payments and paperwork in order.'],team:['Team','Bring your people and work together.'],finance:['Money','Track income, expenses and planned payments.'],automation:['Money automation','Set an income schedule and organise upcoming bills.'],profile:['Profile','Manage your personal and business details.'],settings:['Settings','Control your business workspace.']};
 function go(page){document.querySelectorAll('.section').forEach(s=>s.classList.toggle('active',s.id===page));document.querySelectorAll('.navbtn').forEach(b=>b.classList.toggle('active',b.dataset.page===page));document.getElementById('pageTitle').textContent=titles[page][0];document.getElementById('pageSub').textContent=titles[page][1];}
 document.querySelectorAll('.navbtn').forEach(b=>b.addEventListener('click',()=>go(b.dataset.page)));
 document.querySelectorAll('[data-jump]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.jump)));
@@ -338,6 +382,106 @@ document.getElementById('range').addEventListener('change',e=>{const t=document.
 document.querySelectorAll('.task input').forEach(c=>c.addEventListener('change',()=>c.closest('.task').classList.toggle('done',c.checked)));
 
 function notify(message){const t=document.getElementById('toast');t.textContent=message;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2800)}
+let customerRecords=[];
+let editingCustomerId=null;
+function setCustomerFormEnabled(enabled){
+ ['customerName','customerStatus','customerNote','customerSubmit','customerSearch'].forEach(id=>{const el=document.getElementById(id);if(el)el.disabled=!enabled});
+}
+function resetCustomerForm(){
+ editingCustomerId=null;
+ document.getElementById('customerForm').reset();
+ document.getElementById('customerFormTitle').textContent='Add a customer';
+ document.getElementById('customerSubmit').textContent='Add customer';
+ document.getElementById('customerCancel').hidden=true;
+}
+function renderCustomers(){
+ const list=document.getElementById('customerList');
+ const query=document.getElementById('customerSearch').value.trim().toLowerCase();
+ const filtered=customerRecords.filter(c=>String(c.name||'').toLowerCase().includes(query)||String(c.note||'').toLowerCase().includes(query));
+ document.getElementById('customerCount').textContent=customerRecords.length+' saved';
+ list.replaceChildren();
+ if(!filtered.length){
+  const empty=document.createElement('p');empty.className='empty-ledger';
+  empty.textContent=query?'No customers match that search.':'No customers yet. Add your first one using the form.';
+  list.append(empty);return;
+ }
+ filtered.forEach(customer=>{
+  const card=document.createElement('article');card.className='customer-entry';
+  const head=document.createElement('div');head.className='customer-entry-head';
+  const name=document.createElement('strong');name.textContent=customer.name;
+  const status=document.createElement('span');status.className='customer-status '+customer.status;status.textContent=customer.status;
+  head.append(name,status);
+  const note=document.createElement('p');note.className='customer-note';note.textContent=customer.note||'No internal note added.';
+  const meta=document.createElement('div');meta.className='customer-meta';
+  const updated=customer.updated_at?new Date(customer.updated_at):null;
+  meta.textContent='Updated '+(updated&&!Number.isNaN(updated.getTime())?updated.toLocaleString():'recently');
+  const actions=document.createElement('div');actions.className='customer-actions';
+  const edit=document.createElement('button');edit.type='button';edit.textContent='Edit';
+  edit.addEventListener('click',()=>{
+   editingCustomerId=customer.id;
+   document.getElementById('customerName').value=customer.name;
+   document.getElementById('customerStatus').value=customer.status;
+   document.getElementById('customerNote').value=customer.note||'';
+   document.getElementById('customerFormTitle').textContent='Edit customer';
+   document.getElementById('customerSubmit').textContent='Save changes';
+   document.getElementById('customerCancel').hidden=false;
+   document.getElementById('customerFeedback').textContent='Editing '+customer.name+'. Only this account can save the changes.';
+   document.getElementById('customerName').focus();
+  });
+  const remove=document.createElement('button');remove.type='button';remove.className='delete-customer';remove.textContent='Delete';
+  remove.addEventListener('click',async()=>{
+   if(!businessSupabase||!businessUser)return;
+   if(!window.confirm('Delete '+customer.name+' and its private note?'))return;
+   remove.disabled=true;
+   const {error}=await businessSupabase.from('business_customers').delete().eq('id',customer.id);
+   if(error){remove.disabled=false;document.getElementById('customerFeedback').textContent='Could not delete this customer. Please try again.';return}
+   customerRecords=customerRecords.filter(c=>c.id!==customer.id);
+   if(editingCustomerId===customer.id)resetCustomerForm();
+   renderCustomers();document.getElementById('customerFeedback').textContent='Customer deleted from this account.';
+  });
+  actions.append(edit,remove);card.append(head,note,meta,actions);list.append(card);
+ });
+}
+async function loadCustomers(){
+ const feedback=document.getElementById('customerFeedback');
+ if(!businessSupabase||!businessUser){feedback.textContent='Sign in to your SYNTRIX account to use private customer notes.';return}
+ feedback.textContent='Loading your private customers…';
+ const {data,error}=await businessSupabase.from('business_customers')
+  .select('id,name,note,status,created_at,updated_at')
+  .order('updated_at',{ascending:false}).limit(100);
+ if(error){feedback.textContent='Could not load customer notes. Please sign in again and refresh.';return}
+ customerRecords=data||[];
+ setCustomerFormEnabled(true);
+ renderCustomers();
+ feedback.textContent='Private account storage is on. Only your account can access these records.';
+}
+document.getElementById('customerForm').addEventListener('submit',async event=>{
+ event.preventDefault();
+ if(!businessSupabase||!businessUser){document.getElementById('customerFeedback').textContent='Sign in first. Guest mode cannot save private notes.';return}
+ const name=document.getElementById('customerName').value.trim();
+ const note=document.getElementById('customerNote').value.trim();
+ const status=document.getElementById('customerStatus').value;
+ if(!name||name.length>100||note.length>1000||!['new','active','inactive'].includes(status))return;
+ const submit=document.getElementById('customerSubmit');submit.disabled=true;
+ document.getElementById('customerFeedback').textContent='Saving securely…';
+ const payload={name,note,status};
+ const result=editingCustomerId
+  ? await businessSupabase.from('business_customers').update(payload).eq('id',editingCustomerId).select('id,name,note,status,created_at,updated_at').single()
+  : await businessSupabase.from('business_customers').insert(payload).select('id,name,note,status,created_at,updated_at').single();
+ submit.disabled=false;
+ if(result.error||!result.data){
+  document.getElementById('customerFeedback').textContent='Could not save this customer. Check your connection and sign-in, then try again.';
+  return;
+ }
+ const saved=result.data;
+ customerRecords=customerRecords.filter(c=>c.id!==saved.id);
+ customerRecords.unshift(saved);
+ resetCustomerForm();renderCustomers();
+ document.getElementById('customerFeedback').textContent='Saved. This note is private to your SYNTRIX account.';
+});
+document.getElementById('customerCancel').addEventListener('click',resetCustomerForm);
+document.getElementById('customerSearch').addEventListener('input',renderCustomers);
+
 document.querySelector('.avatar').addEventListener('click',()=>go('profile'));
 document.querySelectorAll('[data-connect]').forEach(b=>b.addEventListener('click',()=>notify('Demo only: secure provider connection is not active yet. No account details were collected.')));
 document.querySelector('[data-approval]').addEventListener('click',()=>notify('Demo only: nothing was paid or transferred. A real payment must be reviewed and approved by the account user.'));
@@ -517,10 +661,15 @@ async function initBusinessCloud(){
   const url=saved.url||BUSINESS_SUPABASE_URL;
   const key=saved.anon||BUSINESS_SUPABASE_PUBLISHABLE_KEY;
   businessSupabase=window.supabase.createClient(url,key);
-  const {data,error}=await businessSupabase.auth.getSession();
+  const {data,error}=await businessSupabase.auth.getUser();
   if(error)throw error;
-  businessUser=data.session?.user||null;
-  if(!businessUser){setCloudStatus('LOCAL ONLY');document.getElementById('autoSaveFeedback').textContent='Guest mode: this plan can be saved in this browser. Sign in to SYNTRIX first to sync it to your account.';return}
+  businessUser=data.user||null;
+  if(!businessUser){
+   setCloudStatus('LOCAL ONLY');
+   document.getElementById('autoSaveFeedback').textContent='Guest mode: this plan can be saved in this browser. Sign in to SYNTRIX first to sync it to your account.';
+   document.getElementById('customerFeedback').textContent='Sign in to your SYNTRIX account to use private customer notes. Guest mode cannot save or view them.';
+   return;
+  }
   setCloudStatus('ACCOUNT SYNC');
   const result=await businessSupabase.from('business_automation_plans').select('plan,updated_at').eq('user_id',businessUser.id).maybeSingle();
   if(result.error)throw result.error;
@@ -531,6 +680,7 @@ async function initBusinessCloud(){
   }else{
    document.getElementById('autoSaveFeedback').textContent='Signed in. Save your plan to sync it to your SYNTRIX account.';
   }
+  await loadCustomers();
   setCloudStatus('CLOUD SYNC ON');
  }catch(err){
   businessUser=null;setCloudStatus('LOCAL ONLY');
