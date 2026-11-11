@@ -2,7 +2,25 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#080b18"><title>SYNTRIX — Creator Studio</title>
+<meta name="theme-color" content="#080b18">
+<title>SYNTRIX Creator Studio | Tools for Digital Creators</title>
+<meta name="description" content="SYNTRIX is a creator platform with tools for video planning and production. Explore SYNTRIX Business, a separate business management workspace for creators and small teams.">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://syntrix-iota.vercel.app/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SYNTRIX">
+<meta property="og:title" content="SYNTRIX Creator Studio">
+<meta property="og:description" content="Creator tools and the SYNTRIX Business management workspace.">
+<meta property="og:url" content="https://syntrix-iota.vercel.app/">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "SYNTRIX",
+  "url": "https://syntrix-iota.vercel.app/",
+  "description": "SYNTRIX creator tools and the SYNTRIX Business management workspace."
+}
+</script>
 <style>
 body.owner-checking .app{visibility:hidden}.owner-gate{position:fixed;inset:0;z-index:100;background:#050816f2;backdrop-filter:blur(14px);display:grid;place-items:center;padding:18px}.owner-gate-card{width:min(100%,520px);padding:clamp(22px,4vw,34px);border:1px solid #52648f;border-radius:22px;background:linear-gradient(145deg,#172342,#101629);box-shadow:0 24px 90px #000b}.owner-gate-card h2{font-size:clamp(24px,4vw,32px);margin:12px 0 8px}.owner-gate-card p{color:#b9c6e2}.owner-gate-card .field{margin:16px 0}.owner-gate-card .actions{margin-top:18px}.owner-gate-label{font-size:11px;letter-spacing:2px;color:var(--cyan);font-weight:800}
 :root{color-scheme:dark;--bg:#080b18;--panel:#11172a;--panel2:#171f36;--line:#27314e;--muted:#9aa6c5;--text:#f4f6ff;--cyan:#65e6ff;--purple:#9c7bff;--green:#8cf0bd}
@@ -203,7 +221,11 @@ body.owner-checking .app{visibility:hidden}.owner-gate{position:fixed;inset:0;z-
 <div class="tool"><div class="symbol">🖼️</div><h3>Thumbnail at phone size</h3><p>If the main idea is hard to see when small, simplify it.</p></div>
 <div class="tool"><div class="symbol">📅</div><h3>Make a realistic schedule</h3><p>Consistency you can maintain beats a schedule you quit.</p></div>
 </div></div></section>
-</main></div><section id="onboardBackdrop" class="onboard-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="onboardTitle"><div class="onboard-card"><div class="onboard-top"><span>SYNTRIX · QUICK SETUP</span><span id="onboardStepLabel">STEP 1 OF 3</span></div><div class="onboard-progress"><span id="onboardProgress" style="width:33.33%"></span></div><h2 id="onboardTitle">What brings you to SYNTRIX?</h2><p id="onboardDesc" class="onboard-desc">Choose what you'd most like to do here.</p><div id="onboardOptions" class="onboard-options"></div><p id="onboardError" class="onboard-error" role="status"></p><div class="onboard-actions"><button id="onboardBack" class="btn secondary" type="button">Back</button><button id="onboardNext" class="btn" type="button">Continue →</button></div><button id="onboardSkip" class="btn secondary" type="button" style="width:100%;margin-top:12px">Skip for now - open my dashboard</button></div></section><div id="ownerGate" class="owner-gate hidden" role="dialog" aria-modal="true" aria-labelledby="ownerGateTitle"><div class="owner-gate-card"><div class="owner-gate-label">SYNTRIX · OWNER SECURITY</div><h2 id="ownerGateTitle">One more step.</h2><p id="ownerGateDesc">Set your private owner password.</p><div id="ownerGateSetup" class="hidden"><div class="field"><label for="ownerNewPassword">Create password (12+ characters)</label><input id="ownerNewPassword" type="password" minlength="12" maxlength="72" autocomplete="new-password" placeholder="Create your owner password"></div><div class="field"><label for="ownerConfirmPassword">Confirm password</label><input id="ownerConfirmPassword" type="password" minlength="12" maxlength="72" autocomplete="new-password" placeholder="Enter it again"></div><button class="btn" id="ownerSavePassword">Save password & unlock SYNTRIX</button></div><div id="ownerGateVerify" class="hidden"><div class="field"><label for="ownerLoginPassword">Owner password</label><input id="ownerLoginPassword" type="password" maxlength="128" autocomplete="current-password" placeholder="Enter your owner password"></div><button class="btn" id="ownerUnlockButton">Unlock SYNTRIX</button></div><p id="ownerGateMessage" class="small" role="status"></p></div></div><div class="toast" id="toast"></div>
+</main>
+<div class="main" style="padding-top:0">
+ <p class="small" style="text-align:center;padding:12px 0 26px">Looking for business tools? <a href="/business.html" style="color:#65e6ff;font-weight:800">Explore SYNTRIX Business — business management and cash-flow planning</a>.</p>
+</div>
+</div><section id="onboardBackdrop" class="onboard-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="onboardTitle"><div class="onboard-card"><div class="onboard-top"><span>SYNTRIX · QUICK SETUP</span><span id="onboardStepLabel">STEP 1 OF 3</span></div><div class="onboard-progress"><span id="onboardProgress" style="width:33.33%"></span></div><h2 id="onboardTitle">What brings you to SYNTRIX?</h2><p id="onboardDesc" class="onboard-desc">Choose what you'd most like to do here.</p><div id="onboardOptions" class="onboard-options"></div><p id="onboardError" class="onboard-error" role="status"></p><div class="onboard-actions"><button id="onboardBack" class="btn secondary" type="button">Back</button><button id="onboardNext" class="btn" type="button">Continue →</button></div><button id="onboardSkip" class="btn secondary" type="button" style="width:100%;margin-top:12px">Skip for now - open my dashboard</button></div></section><div id="ownerGate" class="owner-gate hidden" role="dialog" aria-modal="true" aria-labelledby="ownerGateTitle"><div class="owner-gate-card"><div class="owner-gate-label">SYNTRIX · OWNER SECURITY</div><h2 id="ownerGateTitle">One more step.</h2><p id="ownerGateDesc">Set your private owner password.</p><div id="ownerGateSetup" class="hidden"><div class="field"><label for="ownerNewPassword">Create password (12+ characters)</label><input id="ownerNewPassword" type="password" minlength="12" maxlength="72" autocomplete="new-password" placeholder="Create your owner password"></div><div class="field"><label for="ownerConfirmPassword">Confirm password</label><input id="ownerConfirmPassword" type="password" minlength="12" maxlength="72" autocomplete="new-password" placeholder="Enter it again"></div><button class="btn" id="ownerSavePassword">Save password & unlock SYNTRIX</button></div><div id="ownerGateVerify" class="hidden"><div class="field"><label for="ownerLoginPassword">Owner password</label><input id="ownerLoginPassword" type="password" maxlength="128" autocomplete="current-password" placeholder="Enter your owner password"></div><button class="btn" id="ownerUnlockButton">Unlock SYNTRIX</button></div><p id="ownerGateMessage" class="small" role="status"></p></div></div><div class="toast" id="toast"></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 let syntrixUser = null;
