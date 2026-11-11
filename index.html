@@ -46,7 +46,7 @@ body.owner-checking .app{visibility:hidden}.owner-gate{position:fixed;inset:0;z-
 .side{position:relative!important;top:auto!important;height:auto!important;max-height:none!important;overflow:visible!important;align-self:stretch!important}
 .sidefoot{position:static!important;margin-top:24px!important}
 </style></head>
-<body class="owner-checking"><div class="app">
+<body class="owner-checking"><div class="app" inert>
 <aside class="side"><div><div class="brand">SYN<span>TRIX</span></div><p class="tag">THE CREATOR PLATFORM</p></div>
 <div class="navlabel">WORKSPACE</div>
 <div id="navItems"></div>
@@ -203,7 +203,7 @@ body.owner-checking .app{visibility:hidden}.owner-gate{position:fixed;inset:0;z-
 <div class="tool"><div class="symbol">🖼️</div><h3>Thumbnail at phone size</h3><p>If the main idea is hard to see when small, simplify it.</p></div>
 <div class="tool"><div class="symbol">📅</div><h3>Make a realistic schedule</h3><p>Consistency you can maintain beats a schedule you quit.</p></div>
 </div></div></section>
-</main></div><section id="onboardBackdrop" class="onboard-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="onboardTitle"><div class="onboard-card"><div class="onboard-top"><span>SYNTRIX · QUICK SETUP</span><span id="onboardStepLabel">STEP 1 OF 3</span></div><div class="onboard-progress"><span id="onboardProgress" style="width:33.33%"></span></div><h2 id="onboardTitle">What brings you to SYNTRIX?</h2><p id="onboardDesc" class="onboard-desc">Choose what you'd most like to do here.</p><div id="onboardOptions" class="onboard-options"></div><p id="onboardError" class="onboard-error" role="status"></p><div class="onboard-actions"><button id="onboardBack" class="btn secondary" type="button">Back</button><button id="onboardNext" class="btn" type="button">Continue →</button></div><button id="onboardSkip" class="btn secondary" type="button" style="width:100%;margin-top:12px">Skip for now - open my dashboard</button></div></section><div id="ownerGate" class="owner-gate hidden" role="dialog" aria-modal="true" aria-labelledby="ownerGateTitle"><div class="owner-gate-card"><div class="owner-gate-label">SYNTRIX · OWNER SECURITY</div><h2 id="ownerGateTitle">One more step.</h2><p id="ownerGateDesc">Set your private owner password.</p><div id="ownerGateSetup" class="hidden"><div class="field"><label for="ownerNewPassword">Create password (12+ characters)</label><input id="ownerNewPassword" type="password" minlength="12" maxlength="128" autocomplete="new-password" placeholder="Create your owner password"></div><div class="field"><label for="ownerConfirmPassword">Confirm password</label><input id="ownerConfirmPassword" type="password" minlength="12" maxlength="128" autocomplete="new-password" placeholder="Enter it again"></div><button class="btn" id="ownerSavePassword">Save password & unlock SYNTRIX</button></div><div id="ownerGateVerify" class="hidden"><div class="field"><label for="ownerLoginPassword">Owner password</label><input id="ownerLoginPassword" type="password" maxlength="128" autocomplete="current-password" placeholder="Enter your owner password"></div><button class="btn" id="ownerUnlockButton">Unlock SYNTRIX</button></div><p id="ownerGateMessage" class="small" role="status"></p></div></div><div class="toast" id="toast"></div>
+</main></div><section id="onboardBackdrop" class="onboard-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="onboardTitle"><div class="onboard-card"><div class="onboard-top"><span>SYNTRIX · QUICK SETUP</span><span id="onboardStepLabel">STEP 1 OF 3</span></div><div class="onboard-progress"><span id="onboardProgress" style="width:33.33%"></span></div><h2 id="onboardTitle">What brings you to SYNTRIX?</h2><p id="onboardDesc" class="onboard-desc">Choose what you'd most like to do here.</p><div id="onboardOptions" class="onboard-options"></div><p id="onboardError" class="onboard-error" role="status"></p><div class="onboard-actions"><button id="onboardBack" class="btn secondary" type="button">Back</button><button id="onboardNext" class="btn" type="button">Continue →</button></div><button id="onboardSkip" class="btn secondary" type="button" style="width:100%;margin-top:12px">Skip for now - open my dashboard</button></div></section><div id="ownerGate" class="owner-gate hidden" role="dialog" aria-modal="true" aria-labelledby="ownerGateTitle"><div class="owner-gate-card"><div class="owner-gate-label">SYNTRIX · OWNER SECURITY</div><h2 id="ownerGateTitle">One more step.</h2><p id="ownerGateDesc">Set your private owner password.</p><div id="ownerGateSetup" class="hidden"><div class="field"><label for="ownerNewPassword">Create password (12+ characters)</label><input id="ownerNewPassword" type="password" minlength="12" maxlength="72" autocomplete="new-password" placeholder="Create your owner password"></div><div class="field"><label for="ownerConfirmPassword">Confirm password</label><input id="ownerConfirmPassword" type="password" minlength="12" maxlength="128" autocomplete="new-password" placeholder="Enter it again"></div><button class="btn" id="ownerSavePassword">Save password & unlock SYNTRIX</button></div><div id="ownerGateVerify" class="hidden"><div class="field"><label for="ownerLoginPassword">Owner password</label><input id="ownerLoginPassword" type="password" maxlength="128" autocomplete="current-password" placeholder="Enter your owner password"></div><button class="btn" id="ownerUnlockButton">Unlock SYNTRIX</button></div><p id="ownerGateMessage" class="small" role="status"></p></div></div><div class="toast" id="toast"></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 let syntrixUser = null;
@@ -743,7 +743,7 @@ function updateAuthUI(){
 }
 function setGuestMode(){
  syntrixUser=null;syntrixGuest=true;syntrixOwnerAccount=false;syntrixOwnerPasswordSet=false;syntrixOwnerUnlocked=false;syntrixOwnerReady=false;
- document.getElementById('ownerGate').classList.add('hidden');document.body.classList.remove('owner-checking');applyOwnerSecurityUI();hideOnboarding();
+ document.getElementById('ownerGate').classList.add('hidden');document.body.classList.remove('owner-checking');document.querySelector('.app').inert=false;applyOwnerSecurityUI();hideOnboarding();
  updateAuthUI();renderProjects();
  toast('Guest mode ready — create away! ✨');
 }
@@ -761,8 +761,8 @@ function applyOwnerSecurityUI(){
 }
 function renderOwnerGate(message=''){
  const gate=document.getElementById('ownerGate');
- if(!syntrixUser||!syntrixOwnerAccount||syntrixOwnerUnlocked){gate.classList.add('hidden');document.body.classList.remove('owner-checking');return}
- gate.classList.remove('hidden');
+ if(!syntrixUser||!syntrixOwnerAccount||syntrixOwnerUnlocked){gate.classList.add('hidden');document.body.classList.remove('owner-checking');document.querySelector('.app').inert=false;return}
+ gate.classList.remove('hidden');document.querySelector('.app').inert=true;
  const setup=document.getElementById('ownerGateSetup'),verify=document.getElementById('ownerGateVerify');
  const title=document.getElementById('ownerGateTitle'),desc=document.getElementById('ownerGateDesc');
  if(!syntrixOwnerReady){
@@ -785,10 +785,10 @@ async function processAuthSession(user,forceLock=false){
  syntrixUser=user||null;syntrixGuest=!syntrixUser;
  if(!syntrixUser){
   syntrixOwnerAccount=false;syntrixOwnerPasswordSet=false;syntrixOwnerUnlocked=false;syntrixOwnerReady=false;
-  document.getElementById('ownerGate').classList.add('hidden');
+  document.getElementById('ownerGate').classList.add('hidden');document.querySelector('.app').inert=false;
   document.body.classList.remove('owner-checking');
  }else if(String(syntrixUser.email||'').toLowerCase()===SYNTRIX_OWNER_EMAIL){
-  syntrixOwnerAccount=true;
+  syntrixOwnerAccount=true;document.querySelector('.app').inert=true;
   if(forceLock||previousId!==syntrixUser.id)syntrixOwnerUnlocked=false;
   document.body.classList.add('owner-checking');
   try{
@@ -813,7 +813,7 @@ async function processAuthSession(user,forceLock=false){
   }
  }else{
   syntrixOwnerAccount=false;syntrixOwnerPasswordSet=false;syntrixOwnerUnlocked=false;syntrixOwnerReady=false;
-  document.getElementById('ownerGate').classList.add('hidden');
+  document.getElementById('ownerGate').classList.add('hidden');document.querySelector('.app').inert=false;
   document.body.classList.remove('owner-checking');
  }
  updateAuthUI();applyOwnerSecurityUI();
@@ -831,7 +831,7 @@ async function refreshSyntrixAuth(){
   });
  }catch(e){
   syntrixUser=null;syntrixGuest=true;syntrixOwnerAccount=false;syntrixOwnerUnlocked=false;
-  document.body.classList.remove('owner-checking');updateAuthUI();setAuthMessage('Auth connection needs checking: '+(e.message||'unknown error'));renderProjects();
+  document.body.classList.remove('owner-checking');document.querySelector('.app').inert=false;updateAuthUI();setAuthMessage('Auth connection needs checking: '+(e.message||'unknown error'));renderProjects();
  }
 }
 document.getElementById('openAuth').onclick=()=>document.getElementById('authPanel').classList.toggle('hidden');
@@ -852,6 +852,7 @@ document.getElementById('ownerSavePassword').onclick=async()=>{
  const password=document.getElementById('ownerNewPassword').value;
  const confirm=document.getElementById('ownerConfirmPassword').value;
  if(password.length<12){renderOwnerGate('Use at least 12 characters for your owner password.');return}
+ if(new TextEncoder().encode(password).length>72){renderOwnerGate('Use a password no longer than 72 UTF-8 bytes.');return}
  if(password!==confirm){renderOwnerGate('Those passwords do not match. Try again.');return}
  const button=document.getElementById('ownerSavePassword');button.disabled=true;button.textContent='Saving securely…';
  try{
