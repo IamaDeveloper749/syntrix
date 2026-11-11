@@ -213,7 +213,7 @@ const SYNTRIX_SUPABASE_URL = 'https://akdvrpqgwsopplsibefn.supabase.co';
 const SYNTRIX_SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_jMKeDhWfdQinR4lFY4T5Mg_Nn7sG9ma';
 const navItems=[['home','⌂','Home'],['control','◈','NIKO Control'],['video','▶','Video Studio'],['thumb','▧','Thumbnail Lab'],['script','✎','Script Writer'],['ideas','✦','Video Ideas'],['growth','↗','Growth Assistant'],['hub','◎','Creator Hub'],['projects','▣','My Projects'],['profile','👤','My Profile'],['contentcreator','✍️','Content Creator'],['creativestudio','🎨','Creative Studio'],['campaignplanner','📅','Campaign Planner'],['marketinganalytics','📊','Marketing Analytics'],['marketgrowth','🚀','Marketing Growth'],['pro','⭐','Pro']];document.getElementById('navItems').innerHTML=navItems.map(([page,icon,label])=>'<button class="nav'+(page==='home'?' active':'')+'" data-page="'+page+'"'+(['control','growth','marketinganalytics','marketgrowth'].includes(page)?' data-pro="true"':'')+'><span class="ico">'+icon+'</span> '+label+'</button>').join('');
 const pages=['home','control','video','thumb','script','ideas','growth','hub','projects','profile','contentcreator','creativestudio','campaignplanner','marketinganalytics','marketgrowth','pro'];const titles={contentcreator:['Create your message.','Draft marketing content with simple built-in templates.'],creativestudio:['Design your promotion.','Create a downloadable graphic in your browser.'],campaignplanner:['Plan your next post.','Organise campaigns and publishing dates.'],marketinganalytics:['Track real results.','Your manually entered marketing numbers.'],marketgrowth:['Find your next move.','Turn your marketing results into practical next steps.'],pro:['SYNTRIX Pro.','Your creator rewards and Pro access.'],profile:['Your profile.','Your SYNTRIX identity.'],control:['Run the business.','NIKO’s SYNTRIX command centre.'],projects:['Your projects.','Your saved work, all in one place on this device.'],home:['Make something great.','Your ideas deserve to get out there. Let’s make it happen.'],video:['Build your next video.','Bring your clips and your plan together.'],thumb:['Make them stop scrolling.','Design a thumbnail that makes the idea clear.'],script:['Find the story.','Turn a topic into a strong video structure.'],ideas:['Never run out of ideas.','A little inspiration goes a long way.'],growth:['Make your video clearer.','Improve the way you present your content.'],hub:['Keep levelling up.','A few useful creator lessons.']};
-let syntrixProActive=false,syntrixProExpiresAt=null,syntrixProStartedAt=null;
+let syntrixProActive=false,syntrixProOwner=false,syntrixProExpiresAt=null,syntrixProStartedAt=null;
 function applyProAccess(){
  document.querySelectorAll('[data-page],[data-go]').forEach(el=>{
   const target=el.dataset.page||el.dataset.go;
@@ -224,7 +224,11 @@ function applyProAccess(){
  const status=document.getElementById('proTrialStatus');
  const dates=document.getElementById('proTrialDates');
  if(!heading||!status||!dates)return;
- if(syntrixProActive){
+ if(syntrixProOwner){
+  heading.textContent='👑 Permanent owner Pro is active!';
+  status.textContent='This account has lifetime SYNTRIX Pro access. No trial countdown and no payment.';
+  dates.textContent='Owner access is permanently attached to this Google account.';
+ }else if(syntrixProActive){
   const remaining=Math.max(1,Math.ceil((new Date(syntrixProExpiresAt).getTime()-Date.now())/86400000));
   heading.textContent='🎉 Your 21-day Pro trial is active!';
   status.textContent='You have '+remaining+' day'+(remaining===1?'':'s')+' of Pro left. Enjoy the full toolkit!';
@@ -244,14 +248,19 @@ function applyProAccess(){
  }
 }
 async function refreshProStatus(){
- syntrixProActive=false;syntrixProExpiresAt=null;syntrixProStartedAt=null;
+ syntrixProActive=false;syntrixProOwner=false;syntrixProExpiresAt=null;syntrixProStartedAt=null;
  if(syntrixUser&&syntrixAuthClient){
   try{
-   const {data,error}=await syntrixAuthClient.from('creator_pro_trials').select('started_at,expires_at').eq('user_id',syntrixUser.id).maybeSingle();
-   if(!error&&data?.expires_at){
-    syntrixProStartedAt=data.started_at;
-    syntrixProExpiresAt=data.expires_at;
-    syntrixProActive=new Date(data.expires_at).getTime()>Date.now();
+   const ownerResult=await syntrixAuthClient.from('creator_owner_pro_access').select('user_id').eq('user_id',syntrixUser.id).maybeSingle();
+   if(!ownerResult.error&&ownerResult.data?.user_id){
+    syntrixProOwner=true;syntrixProActive=true;
+   }else{
+    const {data,error}=await syntrixAuthClient.from('creator_pro_trials').select('started_at,expires_at').eq('user_id',syntrixUser.id).maybeSingle();
+    if(!error&&data?.expires_at){
+     syntrixProStartedAt=data.started_at;
+     syntrixProExpiresAt=data.expires_at;
+     syntrixProActive=new Date(data.expires_at).getTime()>Date.now();
+    }
    }
   }catch(e){}
  }
