@@ -43,6 +43,21 @@ button{font:inherit;color:inherit;cursor:pointer}.shell{min-height:100vh;display
 .mini-kv{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-top:1px solid #ffffff12;font-size:11px}.mini-kv span{color:var(--muted)}
 @media(max-width:900px){.finance-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.profile-grid{grid-template-columns:1fr}}
 @media(max-width:560px){.finance-two{grid-template-columns:1fr}.finance-grid{gap:8px}.finance-stat{font-size:21px}}
+
+.money-list{display:flex;flex-direction:column;gap:9px}
+.money-entry{display:flex;align-items:center;gap:10px;padding:11px 0;border-top:1px solid #ffffff12}
+.money-entry:first-child{border-top:0}
+.money-entry-copy{flex:1;min-width:0}
+.money-entry-copy b{display:block;font-size:12px;overflow-wrap:anywhere}
+.money-entry-copy small{display:block;color:var(--muted);font-size:10px;overflow-wrap:anywhere}
+.money-entry-side{text-align:right;white-space:nowrap}
+.money-entry-side strong{display:block;font-size:12px}
+.money-entry-side small{display:block;color:var(--muted);font-size:10px}
+.money-status{font-size:10px;color:#f0c983}
+.money-status.paid{color:var(--green)}
+.cover-btn{margin-top:5px;background:#1b3650;border:1px solid #3a7193;color:#bdeaff;padding:6px 9px;border-radius:9px;font-size:10px}
+.cover-btn:disabled{opacity:.45;cursor:not-allowed}
+.empty-ledger{font-size:11px;color:var(--muted);padding:15px 0}
 </style>
 </head>
 <body>
@@ -141,21 +156,28 @@ button{font:inherit;color:inherit;cursor:pointer}.shell{min-height:100vh;display
  <div class="finance-two">
   <article class="card"><div class="cardtitle"><h3>Add income</h3><span class="muted">MANUAL DEMO ENTRY</span></div>
    <form class="form-stack" id="incomeForm">
-    <label>Income source<input name="source" placeholder="e.g. Client project" required maxlength="60"></label>
-    <label>Amount (zł)<input name="amount" type="number" min="0.01" step="0.01" placeholder="850" required></label>
-    <button class="primary" type="submit">Record income</button>
+    <label>Income from (who or where?)<input name="source" placeholder="e.g. Client project" required maxlength="60"></label>
+    <label>How much? (zł)<input name="amount" type="number" min="0.01" step="0.01" placeholder="850" required></label>
+    <label>Date received<input name="date" type="date"></label>
+    <button class="primary" type="submit">Add income</button>
    </form><div class="muted" id="incomeFeedback" aria-live="polite"></div>
   </article>
-  <article class="card"><div class="cardtitle"><h3>Add expense</h3><span class="muted">MANUAL DEMO ENTRY</span></div>
+  <article class="card"><div class="cardtitle"><h3>Add an expense</h3><span class="muted">MANUAL DEMO ENTRY</span></div>
    <form class="form-stack" id="expenseForm">
-    <label>Expense name<input name="source" placeholder="e.g. Software subscription" required maxlength="60"></label>
-    <label>Amount (zł)<input name="amount" type="number" min="0.01" step="0.01" placeholder="49" required></label>
-    <button class="primary" type="submit">Record expense</button>
+    <label>What is it for?<input name="what" placeholder="e.g. Website hosting" required maxlength="60"></label>
+    <label>How much? (zł)<input name="amount" type="number" min="0.01" step="0.01" placeholder="49" required></label>
+    <label>Where to? (recipient or business)<input name="payTo" placeholder="e.g. Hosting company" required maxlength="80"></label>
+    <label>Payment due date<input name="dueDate" type="date"></label>
+    <button class="primary" type="submit">Add expense</button>
    </form><div class="muted" id="expenseFeedback" aria-live="polite"></div>
   </article>
  </div>
+ <div class="finance-two">
+  <article class="card"><div class="cardtitle"><div><h3>Income available</h3><div class="muted">Money recorded as coming into the business</div></div><span class="pill-demo">DEMO LEDGER</span></div><div id="incomeList" class="money-list"></div></article>
+  <article class="card"><div class="cardtitle"><div><h3>Expenses to pay</h3><div class="muted">Each expense shows how much and where it goes</div></div><span class="pill-demo">DEMO LEDGER</span></div><div id="expenseList" class="money-list"></div></article>
+ </div>
  <article class="card" style="margin-top:15px"><div class="cardtitle"><div><h3>Payment approval</h3><div class="muted">Prepared expenses wait for the account user's approval</div></div><span class="pill-demo">NO AUTO-PAYMENTS</span></div>
-  <p class="muted">SYNTRIX can organise income, calculate what is available and prepare payments based on rules you set. It will not send money on its own. Before any real payment, the authorised account user must review the amount, recipient and source account, then explicitly approve it with the banking or payment provider.</p>
+  <p class="muted">SYNTRIX totals the income you record, subtracts expenses already covered and shows what is available. You can choose to cover a listed expense from that available income. In this prototype, “Cover from income” only updates the demo ledger — it does not transfer or send money. A real payment would still need the authorised account user to review and approve it with the financial provider.</p>
   <button class="primary" type="button" data-approval>Review demo approval flow</button>
  </article>
 </section>
@@ -197,7 +219,85 @@ document.querySelectorAll('[data-connect]').forEach(b=>b.addEventListener('click
 document.querySelector('[data-approval]').addEventListener('click',()=>notify('Demo only: nothing was paid or transferred. A real payment must be reviewed and approved by the account user.'));
 document.getElementById('profileForm').addEventListener('submit',e=>{e.preventDefault();document.getElementById('profileFeedback').textContent='Demo profile updated in this page only. It is not saved to a live account.'});
 document.getElementById('ruleForm').addEventListener('submit',e=>{e.preventDefault();const f=new FormData(e.currentTarget);const item=document.createElement('div');item.className='rule-row';const dot=document.createElement('div');dot.className='rule-dot';dot.textContent='✓';const copy=document.createElement('div');const b=document.createElement('b');b.textContent=String(f.get('ruleName'));const small=document.createElement('small');small.textContent=(f.get('ruleType')==='reserve'?'Reserve ':'Prepare for approval ')+Number(f.get('ruleAmount')).toFixed(2)+' zł';copy.append(b,small);item.append(dot,copy);document.getElementById('ruleForm').before(item);document.getElementById('ruleFeedback').textContent='Rule added to this demo page. No real payment will be made.';e.currentTarget.reset()});
-function updateMoney(kind,amount,source){const total=document.getElementById(kind==='income'?'incomeTotal':'expenseTotal');const parsed=Number(amount);const current=Number(total.dataset.amount||(kind==='income'?8500:2300));const updated=current+parsed;total.dataset.amount=String(updated);total.textContent=updated.toLocaleString('pl-PL',{maximumFractionDigits:2})+' zł';const row=document.createElement('div');row.className='activityrow';const icon=document.createElement('div');icon.className='activityicon';icon.textContent=kind==='income'?'↗':'↘';const copy=document.createElement('div');copy.className='activitycopy';const b=document.createElement('b');b.textContent=source;const small=document.createElement('small');small.textContent=(kind==='income'?'Income added: ':'Expense recorded: ')+parsed.toFixed(2)+' zł';copy.append(b,small);row.append(icon,copy);document.getElementById(kind+'Feedback').textContent='Added to this demo only. No bank transaction occurred.'}
-document.getElementById('incomeForm').addEventListener('submit',e=>{e.preventDefault();const f=new FormData(e.currentTarget);updateMoney('income',f.get('amount'),String(f.get('source')));e.currentTarget.reset()});
-document.getElementById('expenseForm').addEventListener('submit',e=>{e.preventDefault();const f=new FormData(e.currentTarget);updateMoney('expense',f.get('amount'),String(f.get('source')));e.currentTarget.reset()});
+
+const moneyLedger={
+ income:8500,
+ expenseTotal:2300,
+ paidExpenses:2300,
+ reserved:1450,
+ incomes:[{source:'Opening income (sample)',amount:8500,date:'Sample'}],
+ expenses:[{what:'Operating costs (sample)',payTo:'Demo supplier',amount:2300,dueDate:'',paid:true}]
+};
+function moneyFormat(amount){return Number(amount).toLocaleString('pl-PL',{minimumFractionDigits:2,maximumFractionDigits:2})+' zł'}
+function updateMoneySummary(){
+ const available=moneyLedger.income-moneyLedger.paidExpenses-moneyLedger.reserved;
+ document.getElementById('incomeTotal').textContent=moneyFormat(moneyLedger.income);
+ document.getElementById('incomeTotal').dataset.amount=String(moneyLedger.income);
+ document.getElementById('expenseTotal').textContent=moneyFormat(moneyLedger.expenseTotal);
+ document.getElementById('expenseTotal').dataset.amount=String(moneyLedger.expenseTotal);
+ document.getElementById('reservedTotal').textContent=moneyFormat(moneyLedger.reserved);
+ document.getElementById('availableTotal').textContent=moneyFormat(available);
+}
+function renderIncomeList(){
+ const list=document.getElementById('incomeList');list.replaceChildren();
+ moneyLedger.incomes.forEach(item=>{
+  const row=document.createElement('div');row.className='money-entry';
+  const icon=document.createElement('div');icon.className='activityicon';icon.textContent='↗';
+  const copy=document.createElement('div');copy.className='money-entry-copy';
+  const title=document.createElement('b');title.textContent=item.source;
+  const detail=document.createElement('small');detail.textContent='Income received'+(item.date?' · '+item.date:'');
+  copy.append(title,detail);
+  const side=document.createElement('div');side.className='money-entry-side';
+  const amount=document.createElement('strong');amount.textContent='+'+moneyFormat(item.amount);
+  side.append(amount);row.append(icon,copy,side);list.append(row);
+ });
+}
+function renderExpenseList(){
+ const list=document.getElementById('expenseList');list.replaceChildren();
+ moneyLedger.expenses.forEach((item,index)=>{
+  const row=document.createElement('div');row.className='money-entry';
+  const icon=document.createElement('div');icon.className='activityicon';icon.textContent=item.paid?'✓':'↘';
+  const copy=document.createElement('div');copy.className='money-entry-copy';
+  const title=document.createElement('b');title.textContent=item.what;
+  const detail=document.createElement('small');detail.textContent='To: '+item.payTo+(item.dueDate?' · Due '+item.dueDate:'');
+  const status=document.createElement('small');status.className='money-status'+(item.paid?' paid':'');status.textContent=item.paid?'Covered from income':'Waiting to be covered';
+  copy.append(title,detail,status);
+  const side=document.createElement('div');side.className='money-entry-side';
+  const amount=document.createElement('strong');amount.textContent='−'+moneyFormat(item.amount);side.append(amount);
+  if(!item.paid){
+   const button=document.createElement('button');button.type='button';button.className='cover-btn';button.dataset.cover=String(index);button.textContent='Cover from income';
+   const available=moneyLedger.income-moneyLedger.paidExpenses-moneyLedger.reserved;
+   button.disabled=available<item.amount;button.title=button.disabled?'Not enough unallocated income yet':'Mark this expense as covered in the demo ledger';
+   side.append(button);
+  }
+  row.append(icon,copy,side);list.append(row);
+ });
+}
+function refreshMoney(){updateMoneySummary();renderIncomeList();renderExpenseList()}
+document.getElementById('incomeForm').addEventListener('submit',e=>{
+ e.preventDefault();const f=new FormData(e.currentTarget);const amount=Number(f.get('amount'));
+ if(!Number.isFinite(amount)||amount<=0)return;
+ moneyLedger.income+=amount;
+ moneyLedger.incomes.unshift({source:String(f.get('source')).trim(),amount,date:String(f.get('date')||'')});
+ refreshMoney();document.getElementById('incomeFeedback').textContent='Income added to the demo balance. It can now help cover expenses.';
+ e.currentTarget.reset();
+});
+document.getElementById('expenseForm').addEventListener('submit',e=>{
+ e.preventDefault();const f=new FormData(e.currentTarget);const amount=Number(f.get('amount'));
+ if(!Number.isFinite(amount)||amount<=0)return;
+ moneyLedger.expenseTotal+=amount;
+ moneyLedger.expenses.unshift({what:String(f.get('what')).trim(),payTo:String(f.get('payTo')).trim(),amount,dueDate:String(f.get('dueDate')||''),paid:false});
+ refreshMoney();document.getElementById('expenseFeedback').textContent='Expense added. Check the recipient, amount and available income below.';
+ e.currentTarget.reset();
+});
+document.getElementById('expenseList').addEventListener('click',e=>{
+ const button=e.target.closest('[data-cover]');if(!button)return;
+ const item=moneyLedger.expenses[Number(button.dataset.cover)];if(!item||item.paid)return;
+ const available=moneyLedger.income-moneyLedger.paidExpenses-moneyLedger.reserved;
+ if(available<item.amount){notify('There is not enough unallocated income to cover this expense yet.');return;}
+ item.paid=true;moneyLedger.paidExpenses+=item.amount;refreshMoney();
+ notify('Expense marked covered in the demo ledger. No money was transferred.');
+});
+refreshMoney();
+
 </script></body></html>
