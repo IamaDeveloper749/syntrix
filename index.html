@@ -772,7 +772,7 @@ function setGuestMode(){
 function initSupabaseClient(){
  const cfg=authConfig();
  if(!cfg.url||!cfg.anon||!window.supabase?.createClient){syntrixAuthClient=null;return false}
- try{syntrixAuthClient=window.supabase.createClient(cfg.url,cfg.anon);return true}catch(e){syntrixAuthClient=null;setAuthMessage('Could not connect. Check the Supabase URL and public anon key.');return false}
+ try{syntrixAuthClient=window.supabase.createClient(cfg.url,cfg.anon);syntrixAuthClient.auth.onAuthStateChange(event=>{if(event==='PASSWORD_RECOVERY')window.location.replace(window.location.origin+'/business.html?recovery=1')});return true}catch(e){syntrixAuthClient=null;setAuthMessage('Could not connect. Check the Supabase URL and public anon key.');return false}
 }
 function applyOwnerSecurityUI(){
  document.querySelectorAll('[data-owner-only]').forEach(el=>el.style.display=syntrixOwnerAccount&&syntrixOwnerUnlocked?'':'none');
