@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://syntrix-iota.vercel.app/sitemap.xml
