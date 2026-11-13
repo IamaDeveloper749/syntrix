@@ -137,7 +137,7 @@ button{font:inherit;color:inherit;cursor:pointer}.shell{min-height:100vh;display
   <button class="navbtn" data-page="finance" title="Money"><span>↕</span><span class="navtext">Money</span></button>
   <button class="navbtn" data-page="automation" title="Automation"><span>⟳</span><span class="navtext">Automation</span></button>
   <button class="navbtn" data-page="profile" title="Profile"><span>◉</span><span class="navtext">Profile</span></button>
-  <button class="navbtn" data-page="security" title="Security"><span>🔒</span><span class="navtext">Security</span></button>
+  <button class="navbtn" data-page="security" title="Security"><span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg></span><span class="navtext">Security</span></button>
   <button class="navbtn" data-page="settings" title="Settings"><span>⚙</span><span class="navtext">Settings</span></button>
  </nav>
  <div class="railbottom"><button id="help" title="Help">?</button></div>
@@ -195,7 +195,7 @@ button{font:inherit;color:inherit;cursor:pointer}.shell{min-height:100vh;display
  <div class="welcome"><div class="eyebrow">CUSTOMER HQ · PRIVATE NOTES</div><h2>Keep track of the people you work with.</h2><p>Add a customer and keep an internal note, such as preferences or follow-up details. <strong>These records are private to your signed-in account.</strong></p></div>
  <div class="customers-grid">
   <article class="card">
-   <div class="cardtitle"><h3 id="customerFormTitle">Add a customer</h3><span class="private-pill">🔒 PRIVATE</span></div>
+   <div class="cardtitle"><h3 id="customerFormTitle">Add a customer</h3><span class="private-pill"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg> PRIVATE</span></div>
    <form id="customerForm" class="form-stack">
     <label>Customer name<input id="customerName" maxlength="100" autocomplete="off" placeholder="e.g. Bob" required disabled></label>
     <label>Status<select id="customerStatus" disabled><option value="new">New</option><option value="active" selected>Active</option><option value="inactive">Inactive</option></select></label>
@@ -220,7 +220,7 @@ button{font:inherit;color:inherit;cursor:pointer}.shell{min-height:100vh;display
  <div class="welcome"><div class="eyebrow">ACCOUNT SECURITY</div><h2>Your password. Your account.</h2><p>Set a password for your SYNTRIX account, change it after verifying your email, or recover access if you forget it.</p></div>
  <div class="finance-two">
   <article class="card">
-   <div class="cardtitle"><h3>Set or change your password</h3><span class="private-pill">🔒 VERIFIED BY EMAIL</span></div>
+   <div class="cardtitle"><h3>Set or change your password</h3><span class="private-pill"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg> VERIFIED BY EMAIL</span></div>
    <p class="muted">We will send a secure link to the email address on your signed-in account. Open it to set a new password. This also lets Google sign-in users add a password.</p>
    <div class="mini-kv"><b>Signed-in account</b><span id="securityAccountEmail">Checking…</span></div>
    <button class="primary" id="sendPasswordLink" type="button" disabled>Email me a verification link</button>
